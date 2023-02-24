@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    <link href="{{ asset('assets/img/zeltjfaswjqr.png') }}" rel="icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
+    <!-- Vendor CSS Files -->
+    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css"
+        integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Template Main CSS File -->
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    {# end template #}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" /> {% block stylesheets %}{%
+    endblock %}
+</head>
+
+<body>
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px / 1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+        }
+
+        .rightModal {
+            position: fixed;
+            margin: auto;
+            width: 450px;
+            height: 100%;
+            right: 0;
+        }
+
+        .rightContentModal {
+            height: 100%;
+        }
+
+        .modal.fade.modal-right .modal-dialog {
+            transform: translate(125%, 0px);
+        }
+
+        .modal.show.modal-right .modal-dialog {
+            transform: none;
+        }
+    </style>
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="index.html" class="d-flex align-items-center">
+                <img src="{{ asset('assets/img/zeltjfaswjqr.png') }}" alt="" width="100" />
+                <span class="d-none d-lg-block text-white">
+                    <b>Camson Group SAV</b>
+                </span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn text-white" id="toggle-sidebar-button"></i>
+        </div>
+        <!-- End Logo -->
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-icon" id="clocheNotification" href="#" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-bell text-white"></i>
+                        <span class="badge bg-primary badge-number" id="nbMessageIcone"></span>
+                    </a>
+                    <!-- End Notification Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                        <li class="dropdown-header">
+                            <span id="nbMessageNonLue"></span>
+                        </li>
+                        <span id="contenusMessageNonLue"></span>
+                </li>
+                </li>
+            </ul>
+            <!-- End Notification Dropdown Items -->
+            </li>
+            <!-- End Notification Nav -->
+
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <span class="d-none d-md-block dropdown-toggle ps-2 text-white">{{ app.user.username}}</span>
+                </a>
+                <!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>{{ app.user.email}}</h6>
+                        <span>{{ app.user.roles[0]}}</span>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" id="addUser" style="cursor: pointer;">
+                            <i class="ri-user-add-line"></i>
+                            <span>Ajout du compte</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{{ path('app_logout') }}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Deconnecter</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- End Profile Dropdown Items -->
+            </li>
+            <!-- End Profile Nav -->
+            </ul>
+</body>
+
+</html>
+</nav>
+<!-- End Icons Navigation -->
+</header>
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_accueil') }}">
+                <i class="ri-home-8-fill"></i>
+                <span>Accueil</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_home') }}">
+                <i class="ri-dashboard-3-fill"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_sav') }}">
+                <i class="ri-caravan-fill"></i>
+                <span>SAV</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_client_index') }}">
+                <i class="ri-user-2-fill"></i>
+                <span>Client</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#magasin-nav" data-bs-toggle="collapse" href="#">
+                <i class="ri-shopping-bag-3-fill"></i>
+                <span>Magasin</span>
+                <i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="magasin-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{ path('app_magasin') }}">
+                        <span>Liste</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>Appel</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>Type apple</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_utilisateur') }}">
+                <i class="ri-user-follow-fill"></i>
+                <span>Utilisateur</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+<main id="main" class="main"> {% block body %}{% endblock %}
+</main>
+<!-- ====================== =Modal Update Sav ===========================-->
+<div class="modal fade" id="modalAddUser" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="signup-form">
+                    <form id="formAddUser">
+                        <p class="hint-text">Creer un utilisateur de cette application.</p>
+                        <div class="form-group">
+                            <div class="col">
+                                <input type="text" class="form-control" name="username"
+                                    placeholder="Nom d'utilisateur..." required="required" onkeyup="ctrlChamp()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" name="email" placeholder="Email..."
+                                onkeyup="ctrlChamp()" required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="Mots de passe..."
+                                onkeyup="ctrlChamp()" required="required">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="rePassword" class="form-control" name="confirm_password"
+                                onkeyup="ctrlChamp()" placeholder="Confirmation mots de passe..." required="required">
+                        </div>
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select name="role" id="" class="form-control" onchange="ctrlChamp()">
+                                <option value="" selected disabled>Selectioner</option>
+                                <option value="ROLE_ADMIN">Administrateur</option>
+                                <option value="ROLE_TECH">Technicien</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm btn-block closeModal">Annuler</button>
+                <button disabled type="button" class="btn btn-info btn-sm btn-block text-white" id="btnAddUser">Creer
+                    <span id="loadingAddUser"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Message-->
+<div class="modal fade modal-right" id="modalMessage" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog rightModal">
+        <div class="modal-content rightContentModal">
+            <div class="modal-header">
+                <h5 class="modal-title closeModal" style="cursor: pointer;" data-bs-dismiss="modal">
+                    <span id="clientNomMessage"></span>
+                </h5>
+                <h5 class="modal-title closeModal" style="cursor: pointer;" data-bs-dismiss="modal">
+                    <span id="userAddUsername"></span>
+                </h5>
+            </div>
+            <div class="modal-body overflow-auto">
+                <section>
+                    <span id="messageByIdSav"></span>
+                </section>
+            </div>
+            <form id="formMessage">
+                <input type="hidden" name="sav" id="idSav">
+                <div class="modal-footer">
+                    <div class="input-group mb-3">
+                        <input type="text" name="message" class="form-control" placeholder="Message..." aria-label=""
+                            aria-describedby="basic-addon2" />
+                        <div class="input-group-append">
+                            <button id="btnAddMessage" type="button" class="input-group-text bg-camson2 text-white">
+                                <i class="bi bi-send-fill"></i> <span id="loadingSendMessage"></span>
+                                </buttonid="">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Vendor JS Files -->
+<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+<script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+<!-- Template Main JS File -->
+<script src="{{ asset('assets/js/main.js') }}"></script>
+{# end template #}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('assets/js/sweetalert.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"
+    integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebarCollapse").on("click", function () {
+            $("#sidebar").toggleClass("active");
+        });
+    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    $("#addUser").click(function () {
+        $("#modalAddUser").modal("show");
+    });
+
+    $("#btnAddUser").click(function () {
+        let data = $("#formAddUser").serialize();
+        $.ajax({
+            type: "ajax",
+            method: "post",
+            url: '{{ path("app_add_user") }}',
+            data: data,
+            dataType: "json",
+            beforeSend: function () {
+                $("#btnAddUser").attr("disabled", "disabled");
+                $("#btnAddUser").find("#loadingAddUser").addClass("spinner-border spinner-border-sm");
+            },
+            success: function (response) {
+                $("#modalAddUser").modal("hide");
+                if (response.code == 200) {
+                    $("#btnAddUser").removeAttr("disabled", "disabled");
+                    $("#btnAddUser").find("#loadingAddUser").removeClass("spinner-border spinner-border-sm");
+                    $("#formAddUser")[0].reset()
+                    if ('{{ app.request.pathinfo }}' == "/utilisateur") {
+                        showAllUser();
+                    }
+                    successMessage();
+                } else if (response.code == 209) {
+                    $("#btnAddUser").removeAttr("disabled", "disabled");
+                    $("#btnAddUser").find("#loadingAddUser").removeClass("spinner-border spinner-border-sm");
+                    infoMessage();
+                }
+            },
+            error: function () {
+                $("#btnAddUser").removeAttr("disabled", "disabled");
+                $("#btnAddUser").find("#loadingAddUser").removeClass("spinner-border spinner-border-sm");
+                errorMessage()
+            }
+        });
+    });
+    var links = document.querySelectorAll('.nav-link');
+    for (link of links) {
+        if (window.location.pathname == link.getAttribute('href')) {
+            link.classList.add('bg-camson')
+        } else {
+            link.classList.remove('bg-camson')
+        }
+    }
+    function notifyMe(value) {
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            var notification = new Notification("vous avez " + value + " message non lue, consulter votre notification");
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+                if (!('permission' in Notification)) {
+                    Notification.permission = permission;
+                }
+                if (permission === "granted") {
+                    var notification = new Notification("vous avez " + value + " message non lue, consulter votre notification");
+                }
+            });
+        } else {
+            alert(`Permission is ${Notification.permission
+                }`);
+        }
+    }
+    findMessageTechNoRead();
+    // setInterval(() => {
+    //     findMessageTechNoRead();
+    // }, 10000);
+    function findMessageTechNoRead() {
+        $.ajax({
+            type: "ajax",
+            url: '{{ path("findMessageTechNoRead") }}',
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                let html = "";
+                $('#nbMessageIcone').html(data.length);
+                if (data.length >= 2) {
+                    $('#clocheNotification').find('i').addClass('fa-shake');
+                    $('#nbMessageNonLue').html('Vous avez ' + data.length + ' messages non lues')
+                } else if (data.length == 1) {
+                    $('#clocheNotification').find('i').addClass('fa-shake');
+                    $('#nbMessageNonLue').html('Vous avez ' + data.length + ' message non lue')
+                }
+                else {
+                    $('#clocheNotification').find('i').removeClass('fa-shake');
+                    $('#nbMessageNonLue').html('Pas message')
+                }
+
+                if (data.length > 0 && '{{ app.request.pathinfo }}' == "/sav") {
+                    notifyMe(data.length)
+                }
+                $.each(data, function (index, value) {
+                    html += '<li class="notification-item" style="cursor:pointer"  onclick="setMessageToRead(' + value.id + '); modalMessage(' + value.sav.id + ')">' + '<i class="bi bi-info-circle text-primary"></i>' + "<div>" + "<h4>" + value.sav.client.nomClient + "</h4>" + "<p>" + value.message + "</p>" + "</div>" + "</li>";
+                })
+                $('#contenusMessageNonLue').html(html);
+            },
+            error: function () {
+                errorMessage();
+            }
+        });
+    }
+    // ModalMessage
+    function modalMessage(value) {
+        $('#idSav').val(value)
+        $("#modalMessage").modal({ backdrop: "static", keyboard: false });
+        $("#modalMessage").modal("show");
+        messageShow(value);
+    }
+    function messageShow(value) {
+        $.ajax({
+            method: "get",
+            type: "ajax",
+            url: '{{ path("app_get_message_by_id_sav") }}',
+            async: false,
+            data: {
+                idSav: value
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $('#userAddUsername').html('User add : <span class="text-camson">' + data[1] + '</span>')
+                let html = "";
+                let EtatVue = "";
+                $.each(data[0], function (index, value) {
+                    if (value.readEtat == false && value.type == true) {
+                        EtatVue = "No"
+                    } else if (value.readEtat == true && value.type == true) {
+                        EtatVue = "Vue"
+                    }
+                    $('#clientNomMessage').html('Nom client: <span class="text-camson">' + value.sav.client.nomClient + '</span>')
+                    let date = new Date(value.date)
+                    let dateFormat = date.toLocaleDateString("fr-FR", '') + ' ' + date.toLocaleTimeString("fr-FR", '')
+                    let type = value.type
+                    if (type == 1) {
+                        html += '<div class="d-flex flex-row justify-content-end mb-4">' + EtatVue + ' ' + ' <div>' + '<p class="small p-2 me-3 mb-1 text-white rounded-3" style="background-color: #ff0085">' + value.message + '</p>' + '<p class="small me-3 mb-1 rounded-3 text-muted d-flex justify-content-end">' + dateFormat + '</p>' + '</div>' + '</div>';
+                    } else if (type == 0) {
+                        html += '<div class="d-flex flex-row justify-content-start mb-4">' + '<div>' + '<p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7">' + value.message + '</p>' + '<p class="small ms-3 mb-3 rounded-3 text-muted">' + dateFormat + '</p>' + '</div>' + '</div>';
+                    }
+
+                })
+                $("#messageByIdSav").html(html);
+
+            },
+            error: function () {
+                errorMessage();
+            }
+        });
+    }
+    $("#btnAddMessage").click(function () {
+        let data = $("#formMessage").serialize();
+        $.ajax({
+            type: "ajax",
+            method: "post",
+            url: '{{ path("app_add_message_user") }}',
+            data: data,
+            dataType: "json",
+            beforeSend: function () {
+                $("#btnAddMessage").attr("disabled", "disabled");
+                $("#btnAddMessage").find("#loadingSendMessage").addClass("spinner-border spinner-border-sm");
+            },
+            success: function (response) {
+                $("#btnAddMessage").removeAttr("disabled", "disabled");
+                $("#btnAddMessage").find("#loadingSendMessage").removeClass("spinner-border spinner-border-sm");
+                $('input[name=message]').val('');
+                messageShow($('#idSav').val());
+                if (data.length > 0 && '{{ app.request.pathinfo }}' == "/sav") {
+                    showAllSav();
+                }
+                $("#modalMessage").animate({ scrollTop: $('#modalMessage').prop("scrollHeight") }, 1000);
+            },
+            error: function () {
+                $("#btnAddMessage").removeAttr("disabled", "disabled");
+                $("#btnAddMessage").find("#loadingSendMessage").removeClass("spinner-border spinner-border-sm");
+                console.log('a3')
+            }
+        });
+    });
+    function setMessageToRead(value) {
+        $.ajax({
+            type: "ajax",
+            method: "post",
+            url: '{{ path("setMessageToRead") }}',
+            data: {
+                idMessage: value
+            },
+            async: false,
+            dataType: "json",
+            beforeSend: function () {
+                console.log('load')
+            },
+            success: function (response) {
+                findMessageTechNoRead();
+            },
+            error: function () {
+                console.log('a3be')
+            }
+        });
+    }
+    $('.closeModal').click(function () {
+        $('.modal').modal('hide');
+    })
+    $('select').selectpicker();
+</script>
+</body>
+
+</html>

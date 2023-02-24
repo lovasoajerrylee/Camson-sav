@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<title>SAV | Identification </title>
+	<meta charset="utf-8">
+    <link rel="icon" href="{{ asset('asset/img/fiuyegetpmzc.png')}}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="{{ asset('assets/css/styleLogin.css') }}" />
+
+</head>
+<style>
+	@media only screen and (max-width: 765px) {
+		.hiddenImg {
+			display: none;
+		}
+	}
+</style>
+<body>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-12 col-lg-10">
+					<div class="wrap d-md-flex">
+						<div class="text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last">
+							<div class="text w-100">
+								<img class="hiddenImg" src="{{ asset('assets/img/zeltjfaswjqr.png') }}" height="50%">
+								<h4 class="text-white">CAMSON GROUP : SAV</h4>
+							</div>
+						</div>
+						<div class="login-wrap p-4 p-lg-5">
+							{% if error %}
+							<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}
+							</div>
+							{% endif %}
+							{% if app.user %}
+							<div class="mb-3">
+								You are logged in as
+								{{ app.user.username }},
+								<a href="{{ path('app_logout') }}">Logout</a>
+							</div>
+							{% endif %}
+							<div class="text-center">
+								<img src="{{ asset('assets/img/male_user_96px.png') }}">
+							</div>
+							<form method="post" class="signin-form">
+								<div class="form-group mb-3">
+									<input type="email" class="form-control" placeholder="Email"
+										value="{{ last_username }}" name="email" autocomplete="email" required>
+								</div>
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+								<div class="form-group mb-3">
+									<input type="password" placeholder="Mot de passe" name="password"
+										class="form-control" autocomplete="current-password" required>
+								</div>
+								<div class="text-center"><a href="{{path('app_forgot_password_request')}}">Mot de passe
+										oublié?</a></div>
+								<div class="form-group">
+									<button type="submit" class="form-control btn submit px-3 text-white"
+										style="background-color: #ff0081;">Connecter</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+</html>

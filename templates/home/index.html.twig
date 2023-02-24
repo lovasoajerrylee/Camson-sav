@@ -1,0 +1,251 @@
+{% extends 'template.html.twig' %}
+{% block title %}Camson Group | Dashboard{% endblock %}
+{% block body %}
+<style>
+	/* canvas {
+
+		height: 350px !important;
+
+	} */
+</style>
+<div class="pagetitle">
+	<h1>Tableau de bord</h1>
+	<nav>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+		</ol>
+	</nav>
+</div><!-- End Page Title -->
+<section class="section">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-body bg-warning text-black">
+					<div class="card-title text-black">SAV (En attente)</div>
+					<h3 class="mt-0">{{ countSavAttente }}</h3>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-body bg-camson text-black">
+					<div class="card-title text-black">SAV (Encours)</div>
+					<h3 class="mt-0">{{ countSavEnCours }}</h3>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-body bg-dark text-white">
+					<div class="card-title text-white">SAV (Valider)</div>
+					<h3 class="mt-0">{{ countSavValider }}</h3>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-body bg-success text-white">
+					<div class="card-title text-white">SAV (Terminer)</div>
+					<h3 class="mt-0">{{ countSavTerminer }}</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body bg-info">
+						<div class="card-title text-white">Client</div>
+						<h3 class="mt-0 text-white">{{ countClient }}</h3>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body bg-secondary">
+						<div class="card-title text-white">Magasin</div>
+						<h3 class="mt-0 text-white">{{ countMagasin }}</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Statistique</h5>
+					<div class="card-title">
+						<nav>
+							<div class="nav nav-tabs" id="nav-tab" role="tablist">
+								<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+									data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+									aria-selected="true">Line</button>
+								<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+									data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
+									aria-selected="false">Pie</button>
+							</div>
+						</nav>
+					</div>
+					<div class="tab-content" id="nav-tabContent">
+						<div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+							aria-labelledby="nav-home-tab">
+							<div class="form-group">
+								<select id="selectAnnee" class="form-control text-center bg-secondary text-white select_box"
+									onchange="lineChartAnnee(this.value)">
+								</select>
+							</div>
+							<canvas id="myChartLine"></canvas>
+							<!-- End Line Chart -->
+						</div>
+						<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+							<canvas id="myChart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- End Reports -->
+
+	</div>
+</section>
+<script>
+	selectYears();
+	let chartLineLet;
+	lineChartAnneeInitiale();
+	const data = {
+		labels: [
+			'Sav attente',
+			'Sav encours',
+			'Sav valider',
+			'Client',
+			'Magasin'
+		],
+		datasets: [{
+			label: 'My First Dataset',
+			data: ['{{ countSavAttente }}', '{{ countSavEnCours }}', '{{ countSavValider }}', '{{ countClient }}', '{{ countMagasin }}'],
+			backgroundColor: [
+				'rgb(255 197 36)',
+				'rgb(246 197 222)',
+				'rgb(33 37 41)',
+				'rgb(54, 162, 235)',
+				'rgb(107 117 125)'
+			],
+			hoverOffset: 4
+		}]
+	};
+	const config = {
+		type: 'doughnut',
+		data: data,
+	};
+
+	const myChart = new Chart(
+		document.getElementById('myChart'),
+		config
+	);
+	// Line
+	function lineChart(dataLine) {
+		chartLineLet = new Chart(
+			document.getElementById('myChartLine'),
+			{
+				type: 'line',
+				data: {
+					labels: ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juillet", "Aout", "Sept", "Oct", "Nov", "Dec"],
+					datasets: [
+						{
+							label: 'Sav',
+							data: dataLine[0],
+							fill: false,
+							borderColor: 'rgb(255 0 24)',
+							tension: 0.1
+						}, {
+							label: 'Attente',
+							data: dataLine[1],
+							fill: false,
+							borderColor: 'rgb(255 197 36)',
+							tension: 0.1
+						}, {
+							label: 'En cours',
+							data: dataLine[2],
+							fill: false,
+							borderColor: 'rgb(246 197 222)',
+							tension: 0.1
+						}, {
+							label: 'Valider',
+							data: dataLine[3],
+							fill: false,
+							borderColor: 'rgb(33 37 41)',
+							tension: 0.1
+						}, {
+							label: 'Terminer',
+							data: dataLine[4],
+							fill: false,
+							borderColor: 'rgb(0 142 85)',
+							tension: 0.1
+						}
+					]
+				},
+				options: {
+					scales: {
+						y: {
+							min: 0,
+							ticks: {
+								stepSize: 1
+							}
+						}
+					}
+				}
+			}
+		);
+	}
+
+	function lineChartAnnee(value) {
+		chartLineLet.destroy()
+		$.ajax({
+			method: "get",
+			type: "ajax",
+			url: '{{ path("app_home_line_chart") }}',
+			async: false,
+			data: { annee: value },
+			dataType: "json",
+			success: function (dataLine) {
+				// console.log(dataLine)
+				lineChart(dataLine)
+			},
+			error: function (error) {
+				errorMessage()
+			}
+		})
+	}
+
+	function lineChartAnneeInitiale() {
+		let d = new Date();
+		let dateNow = d.getFullYear()
+		$.ajax({
+			method: "get",
+			type: "ajax",
+			url: '{{ path("app_home_line_chart") }}',
+			async: false,
+			data: { annee: dateNow },
+			dataType: "json",
+			success: function (dataLine) {
+				lineChart(dataLine)
+			},
+			error: function (error) {
+				errorMessage()
+			}
+		})
+	}
+
+	function selectYears() {
+		let htmlSelectAnnee = "";
+		let i;
+		let d = new Date();
+		let dateNow = d.getFullYear()
+		for (i = 2022; i < 2030; i++) {
+			htmlSelectAnnee += '<option class="selectValue" value =' + i + '>' + i + '</option>'
+		}
+		$('#selectAnnee').html(htmlSelectAnnee)
+		$('#selectAnnee').val(dateNow)
+	}
+
+</script>
+{% endblock %}

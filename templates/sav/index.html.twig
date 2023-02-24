@@ -1,0 +1,1462 @@
+{% extends 'template.html.twig' %}
+{% block title %}Camson Group | SAV Liste{% endblock %}
+{% block body %}
+<link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
+<div class="pagetitle">
+  <h1>SAV</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+      <li class="breadcrumb-item">SAV</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+<div class="d-flex bd-highlight mb-3">
+  <div class="me-auto p-2 bd-highlight">
+    <form id="formBetweenTwoDate">
+      <div class="row">
+        <div class="col-md-10">
+          <div class="input-group mb-3">
+            <input type="date" name="dateDebut" class="form-control">
+            <span class="input-group-text">A</span>
+            <input type="date" name="dateFin" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-sm bg-camson" type="button" id="searchBetweenTwoDate"><i
+              class="bi bi-search"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="p-2 bd-highlight">
+    <button class="btn btn-sm bg-camson" type="button" onclick="showAllSav()"><i class="ri-refresh-line"></i></button>
+    <button class="btn btn-dark btn-sm" id="btnShowListeProbleme">
+      <i class="ri-add-box-fill me-1"></i>Probleme
+    </button>
+    <button class="btn btn-dark btn-sm" id="btnShowPrioritaire">
+      <i class="ri-add-box-fill me-1"></i>Prioritaire
+    </button>
+    <button class="btn btn-primary btnSav btn-sm" id="addNewSave">
+      <i class="ri-user-add-fill"></i> SAV
+    </button>
+  </div>
+</div>
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button onclick="attenteClick()" class="nav-link active" id="attente-tab" data-bs-toggle="tab"
+                data-bs-target="#attente" type="button" role="tab" aria-controls="attente" aria-selected="true"><i
+                  class="fa-solid fa-cog fa-spin"></i> En attente <span class="badge bg-camson text-black"
+                  id="countAttente">0</span></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button onclick="coursClick()" class="nav-link" id="cours-tab" data-bs-toggle="tab"
+                data-bs-target="#cours" type="button" role="tab" aria-controls="cours" aria-selected="true"><i
+                  class="fa-solid fa-spinner"></i>
+                En cours <span class="badge bg-camson text-black" id="countEnCours">0</span></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button onclick="validerClick()" class="nav-link" id="valider-tab" data-bs-toggle="tab"
+                data-bs-target="#valider" type="button" role="tab" aria-controls="valider" aria-selected="true"><i
+                  class="fa-solid fa-thumbs-up"></i>
+                Valider <span class="badge bg-camson text-black" id="countValider">0</span></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button onclick="terminerClick()" class="nav-link" id="terminer-tab" data-bs-toggle="tab"
+                data-bs-target="#terminer" type="button" role="tab" aria-controls="terminer" aria-selected="true">
+                <i class="fa-solid fa-flag-checkered"></i> Terminer <span class="badge bg-camson text-black"
+                  id="countTerminer">0</span></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button onclick="archiverClick()" class="nav-link" id="archiver-tab" data-bs-toggle="tab"
+                data-bs-target="#archiver" type="button" role="tab" aria-controls="archiver" aria-selected="true"><i
+                  class="fa-solid fa-box-archive"></i>
+                Archiver <span class="badge bg-camson text-black" id="countArchiver">0</span></button>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="attente" role="tabpanel" aria-labelledby="attente-tab">
+              <table class="table table-striped">
+                <thead class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tfoot class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </tfoot>
+                <tbody id="dataSavAttente"></tbody>
+              </table>
+              <div class="demo_pag"></div>
+            </div>
+            <div class="tab-pane fade" id="cours" role="tabpanel" aria-labelledby="cours-tab">
+              <table class="table table-striped">
+                <thead class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tfoot class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </tfoot>
+                <tbody id="dataSavEnCours"></tbody>
+              </table>
+              <div class="demo_pag"></div>
+            </div>
+            <div class="tab-pane fade" id="valider" role="tabpanel" aria-labelledby="valider-tab">
+              <table class="table table-striped">
+                <thead class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tfoot class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </tfoot>
+                <tbody id="dataSavValider"></tbody>
+              </table>
+              <div class="demo_pag"></div>
+            </div>
+            <div class="tab-pane fade" id="terminer" role="tabpanel" aria-labelledby="terminer-tab">
+              <table class="table table-striped">
+                <thead class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tfoot class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </tfoot>
+                <tbody id="dataSavTerminer"></tbody>
+              </table>
+              <div class="demo_pag"></div>
+            </div>
+            <div class="tab-pane fade" id="archiver" role="tabpanel" aria-labelledby="archiver-tab">
+              <table class="table table-striped">
+                <thead class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tfoot class="bg-dark text-white">
+                  <tr>
+                    <th>Magasin</th>
+                    <th>Date intervention</th>
+                    <th>Message</th>
+                    <th>Niveau</th>
+                    <th>Action</th>
+                  </tr>
+                </tfoot>
+                <tbody id="dataSavArchiver"></tbody>
+              </table>
+              <div class="demo_pag"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+<!-- ======================= Modal All Prioritaire ===========================-->
+<div class="modal fade" id="modalAllPrioritaire" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-1">
+        <h5 class="modal-title" id="exampleModalLabel">Liste</h5>
+        <button type="button" class="btn-close btn-sm closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><button class="btn btn-secondary btn-sm" id="addPrioritaire">Ajouter</button></p>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr class="bg-dark">
+              <th class="text-center text-white">Niveau</th>
+            </tr>
+          </thead>
+          <tbody id="dataPrioritaire"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ======================= Modal All Prioritaire ===========================-->
+<!-- ======================= Modal Ajout Prioritaire ===========================-->
+<div class="modal fade" id="modalAddPrioritaire" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-1">
+        <h5 class="modal-title" id="exampleModalLabel">Ajout prioritaire</h5>
+        <button type="button" class="btn-close btn-sm closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="formPrioritaire">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nom">Niveau de prioritaire</label>
+            <input type="number" class="form-control" name="niveau" placeholder="niveau de prioritaire..." />
+          </div>
+          <div class="modal-footer border-top-1 d-flex">
+            <button type="button" id="btnSavePrioritaire" class="btn btn-sm btn-primary">
+              Creer <span id="loadingSave"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-sm closeModal">
+              Annuler
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ======================= Modal Ajout Prioritaire ===========================-->
+<!-- ====================== =Modal Ajout Sav ===========================-->
+<div class="modal fade" id="modalSav" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">
+          <i class="ti-marker-alt m-r-10"></i>
+        </h5>
+        <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="formSav">
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <input name="adminCreer" value="{{ app.user.id }}" hidden />
+                    <label class="control-label">Magasin</label>
+                    <input name="magasin" hidden />
+                    <input class="form-control magasinTags" name="magasinTags" placeholder="Taper ici" />
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Ajouter Probleme</label>
+                    {# <select name="probleme[]" id="" class="form-control js-example-basic-multiple"
+                      multiple="multiple">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                    </select> #}
+                    <div class="border border-danger rounded">
+                      <div class="input_fields_wrap"></div>
+                      <button type="button" class="add_field_button form-control btn btn-danger btn-sm">
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Date d'appel</label>
+                    <div>
+                      <input type="date" class="form-control input-lg" name="dateAppel" onkeyup="ctrlChamp()" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Reference</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="refSav" onkeyup="ctrlChamp()" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-check">
+                      <input type="checkbox" name="intervention" class="form-check-input" value="1" />
+                      <label class="form-check-label">Intervention</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">Client</label>
+                    <input name="client" hidden />
+                    <input class="form-control clientTags" name="clientTags" placeholder="Taper ici" />
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Niveau de prioritaire</label>
+                    <select name="niveau" class="form-control selectNiveau" onchange="ctrlChamp()"></select>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Date d'intervention</label>
+                    <div>
+                      <input type="date" class="form-control input-lg" name="dateIntervantion" onkeyup="ctrlChamp()" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">nombre de déplacement</label>
+                    <div>
+                      <input type="number" class="form-control input-lg" name="nbEmplacement" onkeyup="ctrlChamp()" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Technicien</label>
+                    <input id="user" name="user" hidden />
+                    <input class="form-control userTags" name="userTags" placeholder="Taper ici" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm closeModal">
+              Annuler
+            </button>
+            <button disabled type="button" id="btnSave" class="btn btn-sm btn-primary">
+              Creer <span id="loadingSaveSav"></span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ====================== =Modal Detaille Sav ===========================-->
+<div class="modal fade" id="modalDetailleSav" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">
+          <i class="ti-marker-alt m-r-10"></i>
+        </h5>
+        <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="control-label">Magasin</label>
+                  <input id="magasinDetaille" class="form-control" disabled />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="control-label">Client</label>
+                  <input id="nomClientDetaille" class="form-control" disabled />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="control-label">Probleme</label>
+                  <div class="border border-danger rounded bg-camson">
+                    <span id="problemeDetaille"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="control-label">Niveau de prioritaire</label>
+                  <input type="text" id="niveauDetaille" class="form-control" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="control-label">Date d'appel</label>
+                  <div>
+                    <input type="date" class="form-control input-lg" id="dateAppelDetaile" disabled />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="control-label">Date d'intervention</label>
+                  <div>
+                    <input type="date" class="form-control input-lg" id="dateInterventionDetaile" disabled />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="control-label">Reference</label>
+                  <div>
+                    <input type="text" class="form-control input-lg" id="refDavDetaille" disabled />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="control-label">nombre de déplacement</label>
+                  <div>
+                    <input type="number" class="form-control input-lg" id="nbEmplacementDetaille" disabled />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <div class="form-check">
+                    <input type="checkbox" id="interventionDetaille" class="form-check-input" value="1" />
+                    <label class="form-check-label">Intervention</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary closeModal">
+            Ok
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====================== =Modal Update Sav ===========================-->
+<div class="modal fade" id="modalUpdateSav" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">
+          <i class="ti-marker-alt m-r-10"></i>
+        </h5>
+        <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="formUpdateSav">
+        <input type="hidden" name="id">
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Magasin</label>
+                    <input name="magasin" hidden />
+                    <input class="form-control magasinTags" name="magasinTags" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Client</label>
+                    <input name="client" hidden />
+                    <input id="clientTags" class="form-control" name="clientTags" />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Ajouter Probleme</label>
+                    <div class="border border-danger rounded">
+                      <div class="input_fields_wrap" id="problemeUpdate"></div>
+                      <button type="button" class="add_field_button btn btn-danger sm">
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Niveau de prioritaire</label>
+                    <select name="niveau" class="form-control selectNiveau"></select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Date d'appel</label>
+                    <div>
+                      <input type="date" class="form-control input-lg" name="dateAppel" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Date d'intervention</label>
+                    <div>
+                      <input type="date" class="form-control input-lg" name="dateIntervantion" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Reference</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="refSav" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">nombre de déplacement</label>
+                    <div>
+                      <input type="number" class="form-control input-lg" name="nbEmplacement" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <div class="form-check">
+                      <input type="checkbox" name="intervention" class="form-check-input" value="1" />
+                      <label class="form-check-label">Intervention</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary closeModal">
+              Annuler
+            </button>
+            <button type="button" id="btnUpdate" class="btn btn-sm btn-primary">
+              Update <span id="loadingUpdateSav"></span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ======================= Modal All Probleme ===========================-->
+<div class="modal fade" id="modalAllProbleme" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-1">
+        <h5 class="modal-title" id="exampleModalLabel">Liste probleme</h5>
+        <button type="button" class="btn-close btn-sm closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><button class="btn btn-secondary btn-sm" id="addProbleme">Ajouter</button></p>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr class="bg-dark">
+              <th class="text-center text-white">Liste</th>
+            </tr>
+          </thead>
+          <tbody id="dataProbleme"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ======================= Modal Ajout Probleme ===========================-->
+<div class="modal fade" id="modalAddProbleme" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-1">
+        <h5 class="modal-title" id="exampleModalLabel">Ajout prioritaire</h5>
+        <button type="button" class="btn-close btn-sm closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="formListProbleme">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nom">Probleme</label>
+            <input type="text" class="form-control" name="listProbleme" placeholder="Probleme..." />
+          </div>
+          <div class="modal-footer border-top-1 d-flex">
+            <button type="button" id="btnSaveProbleme" class="btn btn-sm btn-primary">
+              Creer <span id="loadingSave"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-sm closeModal">
+              Annuler
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="{{ asset('assets/js/pagination.js') }}"></script>
+<script>
+  let options = { year: "numeric", month: "long", day: "numeric" };
+  let magasinArray = new Array();
+  let clientArray = new Array();
+  let userArray = new Array();
+  $("#addNewSave").click(function () {
+    $("#formSav")[0].reset();
+    $(".input_fields_wrap").html('');
+    $("#modalSav").modal("show");
+    $("#modalSav").find(".modal-title").text("Formulaire d'ajout");
+  });
+  $("#btnShowPrioritaire").click(function () {
+    $("#modalAllPrioritaire").modal("show");
+  });
+  $("#btnShowListeProbleme").click(function () {
+    $("#modalAllProbleme").modal("show");
+  });
+  $("#addPrioritaire").click(function () {
+    $("#modalAllPrioritaire").modal("hide");
+    $("#modalAddPrioritaire").modal("show");
+  });
+  $("#addProbleme").click(function () {
+    $("#modalAllProbleme").modal("hide");
+    $("#modalAddProbleme").modal("show");
+  });
+  $('.closeModal').click(function () {
+    $('.modal').modal('hide');
+  })
+  showAllSav();
+  function showAllSav() {
+    $("input[name=dateDebut]").val('')
+    $("input[name=dateFin]").val('')
+    $.ajax({
+      type: "ajax",
+      url: '{{ path("app_sav_all_sav") }}',
+      // async: false,
+      dataType: "json",
+      beforeSend: function () {
+        $("#dataSavAttente").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+        $("#dataSavEnCours").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+        $("#dataSavValider").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+        $("#dataSavTerminer").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+        $("#dataSavArchiver").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+      },
+      success: function (data) {
+        var result = [];
+        //debut de pagination
+        $('.demo_pag').pagination({
+          dataSource: function (done) {
+            result.push(data);
+            done(result[0]);
+            console.log(result[0]);
+          },
+          callback: function (data, pagination) {
+            $("#dataSavAttente").html("<td colspan='5' class='text-center'>No Data</td>");
+            $("#dataSavEnCours").html("<td colspan='5' class='text-center'>No Data</td>");
+            $("#dataSavValider").html("<td colspan='5' class='text-center'>No Data</td>");
+            $("#dataSavTerminer").html("<td colspan='5' class='text-center'>No Data</td>");
+            $("#dataSavArchiver").html("<td colspan='5' class='text-center'>No Data</td>");
+            let htmlEncours = "";
+            let htmlAttente = "";
+            let htmlValider = "";
+            let htmlTerminer = "";
+            let htmlArchiver = "";
+            let i;
+            let countAttente = 0;
+            let countEnCours = 0;
+            let countValider = 0;
+            let countTerminer = 0;
+            let countArchiver = 0;
+            $.each(data, function (index, value) {
+              let etat = value.etat;
+              const dateIntervantion = new Date(value.dateIntervantion);
+              let dateIntervantionFormat = dateIntervantion.toLocaleDateString(
+                undefined,
+                options
+              );
+              if (etat == 0) {
+                countAttente++;
+                htmlAttente +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button>' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavAttente").html(htmlAttente);
+                $("#countAttente").html(countAttente);
+              }
+              else if (etat == 1) {
+                countEnCours++;
+                htmlEncours +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavEnCours").html(htmlEncours);
+                $("#countEnCours").html(countEnCours);
+              }
+              else if (etat == 2) {
+                countValider++;
+                htmlValider +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavValider").html(htmlValider);
+                $("#countValider").html(countValider);
+              }
+              else if (etat == 3) {
+                countTerminer++;
+                htmlTerminer +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavTerminer").html(htmlTerminer);
+                $("#countTerminer").html(countTerminer);
+              }
+              else if (etat == 4) {
+                countArchiver++;
+                htmlArchiver +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavArchiver").html(htmlArchiver);
+                $("#countArchiver").html(countArchiver);
+              }
+            });
+          }
+        })
+
+      },
+      error: function () {
+        errorMessage();
+      },
+    });
+  }
+  showAllPrioritaire();
+  function showAllPrioritaire() {
+    $.ajax({
+      type: "ajax",
+      url: '{{ path("app_prioritaire_all") }}',
+      async: false,
+      dataType: "json",
+      success: function (data) {
+        let html = "";
+        let select = "<option selected disabled value=''>Selectionner</option>";
+        let i;
+        $.each(data, function (index, value) {
+          html +=
+            "<tr>" +
+            "<td class='text-center'>" +
+            value.niveau +
+            "</td>" +
+            +"</tr>";
+
+          select += '<option value=' + value.id + '>' + value.niveau + '</option>'
+        });
+        $("#dataPrioritaire").html(html);
+        $(".selectNiveau").html(select);
+      },
+      error: function () {
+        errorMessage();
+      },
+    });
+  }
+  showAllMagasin();
+  function showAllMagasin() {
+    $.ajax({
+      type: "ajax",
+      url: '{{ path("app_magasin_all_magasin") }}',
+      async: false,
+      dataType: "json",
+      success: function (data) {
+        var i;
+        for (i = 0; i < data.length; i++) {
+          magasinArray[i] = { value: data[i].id, label: data[i].nomMag };
+        }
+      },
+      error: function () {
+        errorMessage();
+      },
+    });
+  }
+  showAllClient();
+  function showAllClient() {
+    $.ajax({
+      type: "ajax",
+      url: '{{ path("app_client_all_client") }}',
+      async: false,
+      dataType: "json",
+      success: function (data) {
+        var i;
+        for (i = 0; i < data.length; i++) {
+          clientArray[i] = { value: data[i].id, label: data[i].nomClient };
+        }
+      },
+      error: function () {
+        errorMessage();
+      },
+    });
+  }
+  showAllUser();
+  function showAllUser() {
+    $.ajax({
+      type: "ajax",
+      url: '{{ path("app_User_all_User_tech") }}',
+      async: false,
+      dataType: "json",
+      success: function (data) {
+        var i;
+        for (i = 0; i < data.length; i++) {
+          userArray[i] = { value: data[i].id, label: data[i].username };
+        }
+      },
+      error: function () {
+        errorMessage();
+      },
+    });
+  }
+  $("#btnSave").click(function () {
+    let data = $("#formSav").serialize();
+    $.ajax({
+      type: "ajax",
+      method: "post",
+      url: '{{ path("app_addSav") }}',
+      data: data,
+      // async: false,
+      dataType: "json",
+      beforeSend: function () {
+        $("#btnSave").attr("disabled", "disabled");
+        $("#btnSave").find("#loadingSaveSav").addClass("spinner-border spinner-border-sm");
+      },
+      success: function (response) {
+        $("#formSav")[0].reset();
+        $("#btnSave").removeAttr("disabled", "disabled");
+        $("#btnSave").find("#loadingSaveSav").removeClass("spinner-border spinner-border-sm");
+        $("#modalSav").modal("hide");
+        showAllSav();
+        successMessage();
+      },
+      error: function () {
+        $("#btnSave").removeAttr("disabled", "disabled");
+        $("#btnSave").find("#loadingSaveSav").removeClass("spinner-border spinner-border-sm");
+        errorMessage();
+      },
+    });
+  });
+  $("#btnSavePrioritaire").click(function () {
+    let data = $("#formPrioritaire").serialize();
+    $.ajax({
+      type: "ajax",
+      method: "post",
+      url: '{{ path("app_addPrioritaire") }}',
+      data: data,
+      // async: false,
+      dataType: "json",
+      beforeSend: function () {
+        $("#btnSavePrioritaire").find("#loadingSave").addClass("spinner-border spinner-border-sm");
+        $("#btnSavePrioritaire").attr("disabled", "disabled");
+      },
+      success: function (response) {
+        $("#formPrioritaire")[0].reset();
+        $("#modalAddPrioritaire").modal("hide");
+        $("#btnSavePrioritaire").find("#loadingSave").removeClass("spinner-border spinner-border-sm");
+        $("#btnSavePrioritaire").removeAttr("disabled", "disabled");
+        successMessage();
+        showAllPrioritaire();
+      },
+      error: function () {
+        errorMessage();
+        $("#btnSavePrioritaire").find("#loadingSave").removeClass("spinner-border spinner-border-sm");
+        $("#btnSavePrioritaire").removeAttr("disabled", "disabled");
+      },
+    });
+  });
+
+  $(function () {
+    var magasinTags = magasinArray;
+    $(".magasinTags").autocomplete({
+      source: magasinTags,
+      appendTo: "#formSav",
+      select: function (event, ui) {
+        $("input[name=magasinTags]").val(ui.item.label);
+        $("input[name=magasin]").val(ui.item.value);
+        ctrlChamp()
+        return false;
+      },
+    });
+    var clientTags = clientArray;
+    $(".clientTags").autocomplete({
+      source: clientTags,
+      appendTo: "#formSav",
+      select: function (event, ui) {
+        $("input[name=clientTags]").val(ui.item.label);
+        $("input[name=client]").val(ui.item.value);
+        ctrlChamp()
+        return false;
+      },
+    });
+    var userTags = userArray;
+    $(".userTags").autocomplete({
+      source: userTags,
+      appendTo: "#formSav",
+      select: function (event, ui) {
+        $("input[name=userTags]").val(ui.item.label);
+        $("input[name=user]").val(ui.item.value);
+        ctrlChamp()
+        return false;
+      },
+    });
+  });
+  // addProbleme
+  $(document).ready(function () {
+    var max_fields = 51;
+    var wrapper = $(".input_fields_wrap");
+    var add_button = $(".add_field_button"); //Add button ID
+
+    var x = 1; //initlal text box count
+    $(add_button).click(function (e) {
+      //on add input button click
+      e.preventDefault();
+      if (x < max_fields) {
+        x++; //text box increment
+        $(wrapper).append(
+          '<div class="input-group mt-1 mb-1 ">' +
+          '<select name="probleme[]" class="form-control selectProbleme" onchange="ctrlChamp()">' +
+          '</select>' +
+          '<div class="input-group-append"><button class="btn btn-danger remove_field" type="button">X</button></div></div>'
+        ); //add input box
+        showAllProbleme();
+      }
+    });
+    $(wrapper).on("click", ".remove_field", function (e) {
+      e.preventDefault();
+      $(this).parent("div").parent("div").remove();
+      x--;
+    });
+  });
+  function ctrlChamp() {
+    let magasin = $("input[name=magasin]").val()
+    let client = $("input[name=client]").val()
+    let niveau = $("select[name=niveau]").val()
+    let dateAppel = $("input[name=dateAppel]").val()
+    let refSav = $("input[name=refSav]").val()
+    let dateIntervantion = $("input[name=dateIntervantion]").val()
+    let nbEmplacement = $("input[name=nbEmplacement]").val()
+    let user = $("input[name=user]").val()
+
+    var problemes = [];
+    $("select[name='probleme[]']").each(function () {
+      problemes.push($(this).val());
+    });
+
+    if (problemes.length == 0 || user == "" || magasin == "" || client == "" || niveau == "" || dateAppel == "" || refSav == "" || dateIntervantion == "" || nbEmplacement == "") {
+      $("#btnSave").attr("disabled", "disabled")
+    } else {
+      $("#btnSave").removeAttr("disabled", "disabled")
+    }
+  }
+
+  function detailleSav(value) {
+    $("#modalDetailleSav").find(".modal-title").text("Detaille");
+    $.ajax({
+      method: "get",
+      type: "ajax",
+      url: '{{ path("app_sav_get_id") }}',
+      async: false,
+      data: {
+        id: value
+      },
+      dataType: "json",
+      success: function (data) {
+        let i
+        let html = "";
+        for (i = 0; i < (data.problemes).length; i++) {
+          html += '<div class="m-2">' + parseFloat(i + 1) + ' - ' + data.problemes[i].probleme + '</div>'
+        }
+
+        $('#problemeDetaille').html(html)
+        $("#modalDetailleSav").modal("show");
+
+        $('#nomClientDetaille').val(data.client.nomClient)
+        $('#prenomClientDetaille').val(data.client.prenomClient)
+        $('#magasinDetaille').val(data.magasin.nomMag)
+        $('#telCientDetaille').val(data.client.telFixe)
+        $('#refDavDetaille').val(data.refSav)
+        $('#dateAppelDetaile').val(moment(data.dateAppel).format("YYYY-MM-DD"))
+        $('#dateInterventionDetaile').val(moment(data.dateIntervantion).format("YYYY-MM-DD"))
+        $('#niveauDetaille').val(data.niveau.niveau)
+        $('#nbEmplacementDetaille').val(data.nbEmplacement)
+        if (data.intervention == 1) {
+          $('#interventionDetaille').attr('checked', 'checked');
+        } else {
+          $('#interventionDetaille').removeAttr('checked', 'checked')
+        }
+      },
+      error: function () {
+        errorMessage();
+      },
+    });
+  }
+
+  function showModalUpdate(value) {
+    $.ajax({
+      method: "get",
+      type: "ajax",
+      url: '{{ path("app_sav_get_id") }}',
+      async: false,
+      data: {
+        id: value
+      },
+      dataType: "json",
+      success: function (data) {
+        let html = ""
+
+        $("#modalUpdateSav").modal("show");
+
+        $("select[name=niveau]").val(data.niveau.niveau);
+        $("input[name=id]").val(data.id);
+        $("input[name=refSav]").val(data.refSav);
+        $("input[name=nbEmplacement]").val(data.nbEmplacement);
+        $("input[name=dateIntervantion]").val(moment(data.dateIntervantion).format("YYYY-MM-DD"));
+        $("input[name=dateAppel]").val(moment(data.dateAppel).format("YYYY-MM-DD"));
+        $("input[name=magasin]").val(data.magasin.id);
+        $("input[name=magasinTags]").val(data.magasin.nomMag);
+        $("input[name=client]").val(data.client.id);
+        $("input[name=clientTags]").val(data.client.nomClient);
+
+        for (i = 0; i < data.problemes.length; i++) {
+          html += '<div class="input-group mt-1 mb-1"><input placeholder="Probleme ' +
+            parseFloat(i - 1) +
+            ' ..." type="text" name="probleme[]" value=' + data.problemes[i].probleme + ' class="form-control"><div class="input-group-append"><button class="btn btn-danger remove_field" type="button">X</button></div></div>'
+        }
+        $('#problemeUpdate').html(html)
+
+        if (data.intervention == 1) {
+          $('input[name=intervention]').attr('checked', 'checked');
+        } else {
+          $('input[name=intervention]').removeAttr('checked', 'checked')
+        }
+      },
+      error: function () {
+        errorMessage();
+      },
+    });
+  }
+  $('#btnUpdate').click(function () {
+    let data = $("#formUpdateSav").serialize();
+    $.ajax({
+      type: "ajax",
+      method: "post",
+      url: '{{ path("app_updateSav") }}',
+      data: data,
+      // async: false,
+      dataType: "json",
+      beforeSend: function () {
+        $("#btnUpdate").find("#loadingUpdateSav").addClass("spinner-border spinner-border-sm");
+        $("#btnUpdate").attr("disabled", "disabled");
+      },
+      success: function (response) {
+        $("#btnUpdate").find("#loadingUpdateSav").removeClass("spinner-border spinner-border-sm");
+        $("#btnUpdate").removeAttr("disabled", "disabled");
+        $("#modalUpdateSav").modal("hide");
+        successMessage()
+      },
+      error: function () {
+        $("#btnUpdate").find("#loadingUpdateSav").removeClass("spinner-border spinner-border-sm");
+        $("#btnUpdate").removeAttr("disabled", "disabled");
+        errorMessage()
+      },
+    });
+  })
+  $("#searchBetweenTwoDate").click(function () {
+    let data = $("#formBetweenTwoDate").serialize();
+    let dateDebutControl = $("input[name=dateDebut]").val()
+    let dateFinControl = $("input[name=dateFin]").val()
+    if (dateDebutControl == "" && dateFinControl == "") {
+      infoMessageChamp();
+    } else {
+      $.ajax({
+        type: "ajax",
+        method: "post",
+        url: '{{ path("app_sav_betweenTwoDate") }}',
+        data: data,
+        // async: false,
+        dataType: "json",
+        beforeSend: function () {
+          $("#dataSavAttente").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+          $("#dataSavEnCours").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+          $("#dataSavValider").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+          $("#dataSavTerminer").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+          $("#dataSavArchiver").html("<td colspan='5' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+        },
+        success: function (data) {
+          $("#dataSavAttente").html("<td colspan='5' class='text-center'>No Data</td>");
+          $("#dataSavEnCours").html("<td colspan='5' class='text-center'>No Data</td>");
+          $("#dataSavValider").html("<td colspan='5' class='text-center'>No Data</td>");
+          $("#dataSavTerminer").html("<td colspan='5' class='text-center'>No Data</td>");
+          $("#dataSavArchiver").html("<td colspan='5' class='text-center'>No Data</td>");
+          let htmlEncours = "";
+          let htmlAttente = "";
+          let htmlValider = "";
+          let htmlTerminer = "";
+          let htmlArchiver = "";
+          let i;
+          let countAttente = 0;
+          let countEnCours = 0;
+          let countValider = 0;
+          let countTerminer = 0;
+          let countArchiver = 0;
+          if (data.length > 0) {
+            $.each(data, function (index, value) {
+              let etat = value.etat;
+              const dateIntervantion = new Date(value.dateIntervantion);
+              let dateIntervantionFormat = dateIntervantion.toLocaleDateString(
+                undefined,
+                options
+              );
+              if (etat == 0) {
+                countAttente++;
+                htmlAttente +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"> <i class="fas fa-envelope fa-lg"></i><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button>' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavAttente").html(htmlAttente);
+              }
+              else if (etat == 1) {
+                countEnCours++;
+                htmlEncours +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"> <i class="fas fa-envelope fa-lg"></i><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavEnCours").html(htmlEncours);
+                $("#countEnCours").html(countEnCours);
+              }
+              else if (etat == 2) {
+                countValider++;
+                htmlValider +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"> <i class="fas fa-envelope fa-lg"></i><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavValider").html(htmlValider);
+              }
+              else if (etat == 3) {
+                countTerminer++;
+                htmlTerminer +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"> <i class="fas fa-envelope fa-lg"></i><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavTerminer").html(htmlTerminer);
+              }
+              else if (etat == 4) {
+                countArchiver++;
+                htmlArchiver +=
+                  "<tr>" +
+                  "<td>" +
+                  value.magasin.nomMag +
+                  "</td>" +
+                  "<td>" +
+                  dateIntervantionFormat +
+                  "</td>" +
+                  "<td onclick=modalMessage(" +
+                  value.id +
+                  ') style="cursor: pointer;"> <i class="fas fa-envelope fa-lg"></i><span class="badge bg-camson text-dark bg-camson text-dark">' +
+                  value.messages.length +
+                  "</span></td>" +
+                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td>" +
+                  '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                  "</td>" +
+                  +"</tr>";
+                $("#dataSavArchiver").html(htmlArchiver);
+              }
+            });
+          } else {
+            $("#dataSavAttente").html("<tr><td colspan =5 class='text-center'>No data</td></tr>");
+            $("#dataSavValider").html("<tr><td colspan =5 class='text-center'>No data</td></tr>");
+            $("#dataSavTerminer").html("<tr><td colspan =5 class='text-center'>No data</td></tr>");
+            $("#dataSavEnCours").html("<tr><td colspan =5 class='text-center'>No data</td></tr>");
+          }
+
+          if (countAttente > 0) {
+            $("#countAttente").html(countAttente);
+          }
+          else {
+            $("#countAttente").html('0');
+          }
+
+          if (countEnCours > 0) {
+            $("#countEnCours").html(countEnCours);
+          }
+          else {
+            $("#countEnCours").html('0');
+          }
+
+          if (countValider > 0) {
+            $("#countValider").html(countValider);
+          }
+          else {
+            $("#countValider").html('0');
+          }
+
+          if (countTerminer > 0) {
+            $("#countTerminer").html(countTerminer);
+          }
+          else {
+            $("#countTerminer").html('0');
+          }
+        },
+        error: function () {
+          console.log('a3')
+        },
+      });
+    }
+
+  });
+  function attenteClick() {
+    $("#attente-tab").find("i").addClass("fa-spin");
+    $("#cours-tab").find("i").removeClass("fa-spin-pulse");
+    $("#valider-tab").find("i").removeClass("fa-bounce");
+    $("#terminer-tab").find("i").removeClass("fa-shake");
+    $("#archiver-tab").find("i").removeClass(" fa-beat-fade");
+  }
+  function coursClick() {
+    $("#attente-tab").find("i").removeClass("fa-spin");
+    $("#cours-tab").find("i").addClass("fa-spin-pulse");
+    $("#valider-tab").find("i").removeClass("fa-bounce");
+    $("#terminer-tab").find("i").removeClass("fa-shake");
+    $("#archiver-tab").find("i").removeClass(" fa-beat-fade");
+  }
+  function validerClick() {
+    $("#attente-tab").find("i").removeClass("fa-spin");
+    $("#cours-tab").find("i").removeClass("fa-spin-pulse");
+    $("#valider-tab").find("i").addClass("fa-bounce");
+    $("#terminer-tab").find("i").removeClass("fa-shake");
+    $("#archiver-tab").find("i").removeClass(" fa-beat-fade");
+  }
+  function terminerClick() {
+    $("#attente-tab").find("i").removeClass("fa-spin");
+    $("#cours-tab").find("i").removeClass("fa-spin-pulse");
+    $("#valider-tab").find("i").removeClass("fa-bounce");
+    $("#terminer-tab").find("i").addClass("fa-shake");
+    $("#archiver-tab").find("i").removeClass(" fa-beat-fade");
+  }
+  function archiverClick() {
+    $("#attente-tab").find("i").removeClass("fa-spin");
+    $("#cours-tab").find("i").removeClass("fa-spin-pulse");
+    $("#valider-tab").find("i").removeClass("fa-bounce");
+    $("#terminer-tab").find("i").removeClass("fa-shake");
+    $("#archiver-tab").find("i").addClass(" fa-beat-fade");
+  }
+  showAllProbleme();
+  function showAllProbleme() {
+    $.ajax({
+      type: "ajax",
+      url: '{{ path("app_ListeProbleme_all") }}',
+      async: false,
+      dataType: "json",
+      success: function (data) {
+        let html = "";
+        let select = "<option selected disabled value=''>Selectionner</option>";
+        let i;
+        $.each(data, function (index, value) {
+          html +=
+            "<tr>" +
+            "<td class='text-center'>" +
+            value.nom +
+            "</td>" +
+            +"</tr>";
+
+          select += '<option value=' + value.id + '>' + value.nom + '</option>'
+        });
+        $("#dataProbleme").html(html);
+        $(".selectProbleme").html(select);
+      },
+      error: function () {
+        errorMessage();
+      },
+    });
+  }
+  $("#btnSaveProbleme").click(function () {
+    let data = $("#formListProbleme").serialize();
+    $.ajax({
+      type: "ajax",
+      method: "post",
+      url: '{{ path("app_addListeProbleme") }}',
+      data: data,
+      // async: false,
+      dataType: "json",
+      beforeSend: function () {
+        $("#btnSaveProbleme").find("#loadingSave").addClass("spinner-border spinner-border-sm");
+        $("#btnSaveProbleme").attr("disabled", "disabled");
+      },
+      success: function (response) {
+        $("#formPrioritaire")[0].reset();
+        $("#modalAddProbleme").modal("hide");
+        $("#btnSaveProbleme").find("#loadingSave").removeClass("spinner-border spinner-border-sm");
+        $("#btnSaveProbleme").removeAttr("disabled", "disabled");
+        successMessage();
+        showAllProbleme();
+      },
+      error: function () {
+        errorMessage();
+        $("#btnSaveProbleme").find("#loadingSave").removeClass("spinner-border spinner-border-sm");
+        $("#btnSaveProbleme").removeAttr("disabled", "disabled");
+      },
+    });
+  });
+</script>
+{% endblock %}

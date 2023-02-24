@@ -1,0 +1,44 @@
+sav
+    -#idMagasin
+    -#idClient
+    -refSav
+    -probleme
+    -dateAppel
+    -prioritaire
+    -dateIntervation
+    -nbEmplacement
+
+message
+    -#idSav
+    -date
+    -message
+    -type
+
+Client
+    -nomClient
+    -prenomClient
+    -telFixe
+    -telPortable1
+    -telPortable2
+    -refClient
+    -Etat
+Magasin
+    -nomMagasin
+    -nomSocial
+    -Rue
+    -Ville
+    -Fax
+    -dateCreation
+    -email
+    -nomRue
+    -phoneFix
+    -Dette
+    -white
+Responsable
+    -nomRespo
+    -telRespo1
+    -telRespo2
+
+
+
+analyse, conception et devellopement d'application web et mobile de la gestion stock, facturation en ligne, service apres vente

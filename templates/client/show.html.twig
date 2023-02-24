@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client{% endblock %}
+
+{% block body %}
+    <h1>Client</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ client.id }}</td>
+            </tr>
+            <tr>
+                <th>NomClient</th>
+                <td>{{ client.nomClient }}</td>
+            </tr>
+            <tr>
+                <th>PrenomClient</th>
+                <td>{{ client.prenomClient }}</td>
+            </tr>
+            <tr>
+                <th>TelFixe</th>
+                <td>{{ client.telFixe }}</td>
+            </tr>
+            <tr>
+                <th>TelPortable1</th>
+                <td>{{ client.telPortable1 }}</td>
+            </tr>
+            <tr>
+                <th>TelPortable2</th>
+                <td>{{ client.telPortable2 }}</td>
+            </tr>
+            <tr>
+                <th>RefClient</th>
+                <td>{{ client.refClient }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ client.etat ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{{ path('app_client_index') }}">back to list</a>
+    <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+     <a href="{{ path('app_client_delete', {'id': client.id}) }}">edit</a>
+{% endblock %}

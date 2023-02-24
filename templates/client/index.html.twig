@@ -1,0 +1,794 @@
+{% extends 'template.html.twig' %}
+{% block title %}Camson Group | Client{% endblock %}
+{% block body %}
+<link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
+<div class="pagetitle">
+  <h1>Liste Client</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+      <li class="breadcrumb-item active"><a href="#">Client</a></li>
+    </ol>
+  </nav>
+</div>
+<!-- ====================== =AJOUTER CLIENT ===========================-->
+<div class="d-flex bd-highlight mb-3">
+  <div class="me-auto p-2 bd-highlight">
+    <div class="row">
+      <div class="col-md-10">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Rechercher..." name="searchClient">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button class="btn bg-camson" type="button" onclick="searchAllClient()"><i class="bi bi-search"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="p-2 bd-highlight">
+    <button class="btn bg-camson" type="button" onclick="showAllClient()"><i class="ri-refresh-line"></i></button>
+    <button class="btn bg-dark btnSav text-white" id="ajoutClient">
+      <i class="ri-user-3-fill"></i> Nouvelle client
+    </button>
+  </div>
+
+  <div class="modal fade" id="modalClient" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModalLabel">
+            <i class="ti-marker-alt m-r-10"></i>
+          </h5>
+          <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="formClient" method="post">
+          <div class="modal-body">
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Nom Client</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="nomClient" id="nom_Client"
+                          onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Prenom</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="prenomClient" id="prenomClient"
+                          onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Date de paiement</label>
+                      <div>
+                        <input type="date" class="form-control input-lg" name="datePaiement" id="datePaiment"
+                          onchange="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Reférence client</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="reference" id="reference"
+                          onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Gerant</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="gerant" id="gerant"
+                          onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Portable 1</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="portable1" id="portable1"
+                          onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Portable 2</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="portable2" id="portable2"
+                          onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Tél. Fixe</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="fixe" id="fixe" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">email</label>
+                      <div>
+                        <input type="email" class="form-control input-lg" name="email" id="email" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Etat</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="etat" id="etat">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Date de client</label>
+                      <div>
+                        <input type="date" class="form-control input-lg" name="dateClient" id="dateClient"
+                          onchange="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--Footer Modal-->
+              <div class="modal-footer flex-center">
+                <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Annuler</button>
+                <button disabled type="button" class="btn btn-info text-white" id="btnClient">Creer <span
+                    id="loadingAddClient"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+<!-- ====================== =FIN AJOUTER CLIENT ===========================-->
+<!-- ====================== =EDITER CLIENT ===========================-->
+<div class="modal fade" id="modalEditClient" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">
+          <i class="ti-marker-alt m-r-10"></i>
+        </h5>
+        <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="formEditClient">
+        <input type="hidden" name="id">
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Nom Client</label>
+                    <input class="form-control magasinTags" name="nomClient" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Prenom</label>
+                    <input class="form-control" name="prenomClient" />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Tel Fixe</label>
+                    <input name="telFixe" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Portabel 1</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="portable1" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Portable 2</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="portable2" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Reference</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="reference" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Date Paiment</label>
+                    <div>
+                      <input type="date" class="form-control input-lg" name="datePaiment" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Gerant</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="nomGerant" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="email" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <div class="form-check">
+                      <input type="checkbox" id="etat" name="etat" class="form-check-input" value="1" />
+                      <label class="form-check-label" for="sav_form_ajouteIntervention">Etat</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary closeModal">
+              Annuler
+            </button>
+            <button type="button" id="btnEditer" class="btn btn-primary">
+              Update<span id="loadingUpdateClient"></span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ====================== =FIN EDITER CLIENT ===========================-->
+<!-- ====================== =DETAILLE CLIENT ===========================-->
+<div class="modal fade" id="modalDetailleClient" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">
+          <i class="ti-marker-alt m-r-10"></i>
+        </h5>
+        <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <form id=" ">
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Nom Client</label>
+                    <input class="form-control magasinTags" name="nomClient" disabled />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Prenom</label>
+                    <input class="form-control" name="prenomClient" disabled />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Tel Fixe</label>
+                    <input name="telFixe" class="form-control" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Portabel 1</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="portable1" disabled />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Portable 2</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="portable2" disabled />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Reference</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="reference" disabled />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Date Paiment</label>
+                    <div>
+                      <input type="date" class="form-control input-lg" name="datePaiment" disabled />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Gerant</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="nomGerant" disabled />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <div>
+                      <input type="text" class="form-control input-lg" name="email" disabled />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <div class="form-check">
+                      <input type="checkbox" id="etat" name="etat" class="form-check-input" value="1" disabled />
+                      <label class="form-check-label" for="sav_form_ajouteIntervention">Etat</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary closeModal">
+              Ok
+            </button>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- ====================== =FIN DETAILLE CLIENT ===========================-->
+<!-- ====================== =LISTE CLIENT ===========================-->
+<div class="card cardCamson">
+  <div class="card-header">
+  </div>
+  <!-- /.col -->
+  <div class="card-body" id="valider">
+    <table class="table">
+      <thead class="table bg-dark text-white">
+        <tr>
+          <th>NomClient</th>
+          <th>PrenomClient</th>
+          <th>TelFixe</th>
+          <th>RefClient</th>
+          <th>Etat</th>
+          <th>Email</th>
+          <th>actions</th>
+        </tr>
+      </thead>
+      <tfoot class="table bg-dark text-white">
+        <tr>
+          <th>NomClient</th>
+          <th>PrenomClient</th>
+          <th>TelFixe</th>
+          <th>RefClient</th>
+           <th>Etat</th>
+          <th>Email</th>
+          <th>actions</th>
+        </tr>
+      </tfoot>
+      <tbody id="dataClient">
+      </tbody>
+    </table>
+    <div id = "demo" ></div>
+  </div>
+  <div class="">
+					</div>
+  <!-- ====================== =FIN LISTE CLIENT ===========================-->
+  <!-- ======================= Modal Suppression Client ===========================-->
+  <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" name="id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ====================== =Fin Modal Suppression Client ===========================-->
+
+  
+  <!-- ====================== =SCRIPT ===========================-->
+  <script src="{{ asset('assets/js/pagination.js') }}"></script>
+  <script>
+    $("#ajoutClient").click(function () {
+      $("#formClient")[0].reset();
+      $(".input_fields_wrap").html('');
+      $("#modalClient").modal("show");
+      $("#modalClient").find(".modal-title").text("Formulaire d'ajout");
+    })
+
+    showAllClient();
+    function showAllClient() {
+      $('input[name=searchClient]').val('');
+      $.ajax({
+        type: "ajax",
+        url: '{{ path("app_client_all_client") }}',
+        // async: false,
+        dataType: "json",
+        beforeSend: function () {
+          $("#dataClient").html("<td colspan='7' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+        },
+        success: function (data) {
+          var result = [];
+          //pagination client
+          $('#demo').pagination({
+         dataSource:  function(done){
+							result.push(data);
+							done(result[0]);
+							console.log(result[0]);
+						},
+          callback: function(data, pagination) {
+          let html = ""
+          let telPortable2;
+          if (data.length <= 0) {
+            $("#dataClient").html("<td colspan ='9' class='text-center'>No data</td>")
+            $("tfoot").attr("hidden", 'hidden')
+          } else {
+            $("tfoot").removeAttr("hidden", 'hidden')
+            $.each(data, function (index, value) {
+              let date = moment(value.datePaiment).format("ll")
+              if (value.telPortable2 == null) {
+                telPortable2 = "";
+              } else {
+                telPortable2 = value.telPortable2;
+              }
+              // if () {
+
+              // } else {
+
+              // }
+              html += "<tr>" +
+                "<td>" + value.nomClient + "</td>" +
+                "<td>" + value.prenomClient + "</td>" +
+                "<td>" + value.telFixe + "</td>" +
+                "<td>" + value.refClient + "</td>" +
+                "<td>" + value.etat + "</td>" +
+                "<td>" + value.email + "</td>" +
+                "<td>" +
+                '<button type="button" class="btn btn-dark btn-sm" onclick="modifClient(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button> ' +
+                '<button type="button"  class="btn btn-danger btn-sm"  onclick="modalDelete(' + value.id + ')" data-toggle="tooltip" data-placement="left"  title="Supprimer"><i class="bi bi-trash3"></i></button>' +                           
+                "</td>" +
+                "</tr>"
+            })
+            $("#dataClient").html(html)
+          }
+    }
+})
+          //fin pagination
+        },
+        error: function () {
+
+        },
+      });
+    }
+    /* fonction click boutton ajout client */
+    $("#btnClient").click(function () {
+      let data = $("#formClient").serialize();
+      $.ajax({
+        type: "ajax",
+        method: "post",
+        url: '{{ path("app_client_new") }}',
+        data: data,
+        // async: false,
+        dataType: "json",
+        beforeSend: function () {
+          $("#btnClient").attr("disabled", "disabled");
+          $("#btnClient").find("#loadingAddClient").addClass("spinner-border spinner-border-sm");
+        },
+        success: function (response) {
+          $("#modalClient").modal("hide");
+          $("#btnClient").removeAttr("disabled", "disabled");
+          $("#btnClient").find("#loadingAddClient").removeClass("spinner-border spinner-border-sm");
+          showAllClient();
+          successMessage();
+        },
+        error: function () {
+          $("#btnClient").removeAttr("disabled", "disabled");
+          $("#btnClient").find("#loadingAddClient").removeClass("spinner-border spinner-border-sm");
+          errorMessage();
+        },
+      });
+    });
+    /* fonction editer client */
+    function showModalUpdate(value) {
+      $("#modalEditClient").modal("show")
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_client_findById") }}',
+        async: false,
+        data: {
+          id: value
+        },
+        dataType: "json",
+        success: function (data) {
+          $("input[name=nomClient]").val(data.nomClient);
+          $("input[name=prenomClient]").val(data.prenomClient);
+          $("input[name=telFixe]").val(data.telFixe);
+          $("input[name=portable1]").val(data.telPortable1);
+          $("input[name=portable2]").val(data.telPortable2);
+          $("input[name=reference]").val(data.refClient);
+          $("input[name=datePaiment]").val(moment(data.datePaiment).format("YYYY-MM-DD"));
+          $("input[name=nomGerant]").val(data.nomGerant);
+          $("input[name=email]").val(data.email);
+          $("input[name=id]").val(data.id);
+          if (data.etat == 1) {
+            $('input[name=etat]').attr('checked', 'checked');
+          } else {
+            $('input[name=etat]').removeAttr('checked', 'checked')
+          }
+        },
+        error: function () {
+          errorMessage();
+        },
+      });
+    }
+    /*boutton editer client */
+    $('#btnEditer').click(function () {
+      let data = $("#formEditClient").serialize();
+      $.ajax({
+        type: "ajax",
+        method: "post",
+        url: '{{ path("app_edit") }}',
+        data: data,
+        // async: false,
+        dataType: "json",
+        beforeSend: function () {
+          $("#btnEditer").attr("disabled", "disabled");
+          $("#btnEditer").find("#loadingUpdateClient").addClass("spinner-border spinner-border-sm");
+        },
+        success: function (response) {
+          $("#btnEditer").removeAttr("disabled", "disabled");
+          $("#btnEditer").find("#loadingUpdateClient").removeClass("spinner-border spinner-border-sm");
+          $("#modalEditClient").modal("hide");
+          successMessage()
+          showAllClient()
+        },
+        error: function () {
+          $("#btnEditer").removeAttr("disabled", "disabled");
+          $("#btnEditer").find("#loadingUpdateClient").removeClass("spinner-border spinner-border-sm");
+          errorMessage()
+        },
+      });
+    })
+
+    /* fonction click boutton delete client */
+    function modalDelete() {
+      $("#modalDelete").modal("show")
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_client_findById") }}',
+        async: false,
+        data: {
+          id: value
+        },
+        dataType: "json",
+        success: function (data) {
+          $("input[name=id]").val(data.id);
+
+        },
+        error: function () {
+          errorMessage();
+        },
+      });
+    }
+    /* fonction click modifier client */
+    function modifClient(value) {
+      $("#modalDetailleClient").modal("show");
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_client_findById") }}',
+        async: false,
+        data: {
+          id: value
+        },
+        dataType: "json",
+        success: function (data) {
+          $("input[name=nomClient]").val(data.nomClient);
+          $("input[name=prenomClient]").val(data.prenomClient);
+          $("input[name=telFixe]").val(data.telFixe);
+          $("input[name=portable1]").val(data.telPortable1);
+          $("input[name=portable2]").val(data.telPortable2);
+          $("input[name=reference]").val(data.refClient);
+          $("input[name=datePaiment]").val(moment(data.datePaiment).format("YYYY-MM-DD"));
+          $("input[name=nomGerant]").val(data.nomGerant);
+          $("input[name=email]").val(data.email);
+          $("input[name=id]").val(data.id);
+          if (data.etat == 1) {
+            $('input[name=etat]').attr('checked', 'checked');
+          } else {
+            $('input[name=etat]').removeAttr('checked', 'checked')
+          }
+
+        },
+        error: function (error) {
+          console.log(error)
+        }
+      })
+    }
+    /* fonction click boutton recherche client */
+    function searchAllClient() {
+      let param = $('input[name=searchClient]').val()
+      $.ajax({
+        method: "post",
+        type: "ajax",
+        url: '{{ path("app_client_search") }}',
+        // async: false,
+        data: {
+          param: param
+        },
+        dataType: "json",
+        beforeSend: function () {
+          $("#dataClient").html("<td colspan='7' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+        },
+        success: function (data) {
+          $("#dataClient").html("<td colspan='7' class='text-center'>No data</td>");
+          let i;
+          let html = "";
+          let telPortable2;
+          if (data.length > 0) {
+            console.log(data)
+            $.each(data, function (index, value) {
+              let date = moment(value.datePaiment).format("ll")
+              if (value.telPortable2 == null) {
+                telPortable2 = "";
+              } else {
+                telPortable2 = value.telPortable2;
+              }
+              html += "<tr>" +
+                "<td>" + value.nomClient + "</td>" +
+                "<td>" + value.prenomClient + "</td>" +
+                "<td>" + value.telFixe + "</td>" +
+                "<td>" + value.refClient + "</td>" +
+                "<td>" + value.etat + "</td>" +
+                "<td>" + value.email + "</td>" +
+                "<td>" +
+                '<button type="button" class="btn btn-dark btn-sm" onclick="modifClient(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button> ' +
+                '<button type="button" onclick="modalDelete(' + value.id + ')" class="btn bg-camson btn-sm text-black" data-toggle="tooltip" data-placement="left" title="Supprimer"><i class="bi bi-trash3"></i></button>' +
+                "</td>" +
+                "</tr>"
+            })
+            $('#dataClient').html(html);
+          } else {
+            $("#dataClient").html("<tr><td colspan =11 class='text-center'>No data</td></tr>");
+          }
+        },
+        error: function () {
+          errorMessage();
+        },
+      });
+    }
+    /* modal de suppression client */
+    function modalDelete(value) {
+      Swal.fire({
+        title: 'Suppression',
+        text: "Voulez-vous vraiment supprimer le champ?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok, supprimer!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            method: "post",
+            type: "ajax",
+            url: '{{ path("app_client_delete") }}',
+            data: {
+              id: value
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+              successMessage();
+              showAllClient();
+            },
+            error: function () {
+              errorMessage();
+            },
+          });
+
+        }
+      })
+    }
+    $('.closeModal').click(function () {
+      $('.modal').modal('hide');
+    })
+    /* fonction controle champ client */
+    function ctrlChamp() {
+      let nomClient = $("input[name=nomClient]").val()
+      let prenomClient = $("input[name=prenomClient]").val()
+      let telFixe = $("input[name=fixe]").val()
+      let portable1 = $("input[name=portable1]").val()
+      let portable2 = $("input[name=portable2]").val()
+      let reference = $("input[name=reference]").val()
+      let datePaiment = $("input[name=datePaiement]").val()
+      let dateClient = $("input[name=dateClient]").val()
+      let nomGerant = $("input[name=gerant]").val()
+      let email = $("input[name=email]").val()
+      if (dateClient == "" || prenomClient == "" || nomClient == "" || datePaiment == "" || telFixe == "" || portable1 == "" || portable2 == "" || reference == "" || email == "" || nomGerant == "") {
+        $("#btnClient").attr("disabled", "disabled")
+      } else {
+        console.log('no disabled')
+        $("#btnClient").removeAttr("disabled", "disabled")
+      }
+    }
+  </script>
+  {% endblock %}

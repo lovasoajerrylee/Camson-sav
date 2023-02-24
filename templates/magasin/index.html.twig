@@ -1,0 +1,539 @@
+{% extends 'template.html.twig' %}
+{% block title %}Camson Group | Magasin{% endblock %}
+{% block body %}
+<link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
+<style>
+    /* canvas {
+
+		height: 350px !important;
+
+	} */
+</style>
+<div class="pagetitle">
+    <h1>Magasin</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+            <li class="breadcrumb-item">Magasin</li>
+            <li class="breadcrumb-item">Liste</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="d-flex bd-highlight mb-2">
+    <div class="me-auto p-2 bd-highlight">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <input type="text" class="form-control sm" placeholder="Rechercher..." name="searchMagasin">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn bg-camson btn-sm" type="button" onclick="searchAllMagasin()">
+                <i class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="p-2 bd-highlight">
+        <button class="btn bg-camson btn-sm" type="button" onclick="showAllMagasin()"><i class="ri-refresh-line"></i></button>
+        <button class="btn bg-dark btnSav btn-sm text-white" id="addNewMagasin">
+            <i class="ri-shopping-bag-3-fill"></i> Nouvelle magasin
+        </button>
+    </div>
+</div>
+<section class="section">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body mt-2">
+                <table class="table table-striped">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Nom social</th>
+                            <th>Rue</th>
+                            <th>Ville</th>
+                            <th>Tel</th>
+                            <th>Dette</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot class="bg-dark text-white">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Nom social</th>
+                            <th>Rue</th>
+                            <th>Ville</th>
+                            <th>Tel</th>
+                            <th>Dette</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody id="dataMagasin"></tbody>
+                </table>
+                <div id="pagination"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade" id="modalMagasin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-1">
+                <h5 class="modal-title" id="exampleModalLabel">Formulaire d'ajout</h5>
+                <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formMagasin">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="hidden" name="id">
+                            <div class="form-group">
+                                <label>Nom magasin</label>
+                                <input type="text" name="nomMag" class="form-control" onkeyup="ctrlChamp()">
+                            </div>
+                            <div class="form-group">
+                                <label>Nom social</label>
+                                <input type="text" name="nomSocial" class="form-control" onkeyup="ctrlChamp()">
+                            </div>
+                            <div class="form-group">
+                                <label>Rue</label>
+                                <input type="text" name="rue" class="form-control" onkeyup="ctrlChamp()">
+                            </div>
+                            <div class="form-group">
+                                <label>Nom rue</label>
+                                <input type="text" name="nomRue" class="form-control" onkeyup="ctrlChamp()">
+                            </div>
+                            <div class="form-group">
+                                <label>Ville</label>
+                                <input type="text" name="ville" class="form-control" onkeyup="ctrlChamp()">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Fax</label>
+                                <input type="text" name="fax" class="form-control" onkeyup="ctrlChamp()">
+                            </div>
+                            <div class="form-group">
+                                <label>Date de creation</label>
+                                <input type="date" name="dateCreation" class="form-control" onclick="ctrlChamp()">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" name="email" class="form-control" onkeyup="ctrlChamp()">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone fix</label>
+                                <input type="text" name="phoneFix" class="form-control" onkeyup="ctrlChamp()">
+                            </div>
+                            <div class="form-group">
+                                <label>Dette</label>
+                                <input type="number" name="dette" class="form-control" onkeyup="ctrlChamp()">
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="sav_form_ajouteIntervention" name="white"
+                                        class="form-check-input" value="1" />
+                                    <label class="form-check-label" for="sav_form_ajouteIntervention">White</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top-1 d-flex">
+                <button type="button" class="btn btn-sm btn-default closeModal">
+                    Annuler
+                </button>
+                <button type="button" disabled id="btnSaveMagasin" class="btn btn-sm btn-primary">
+                    Creer <span id="loadingAddMagasin"></span>
+                </button>
+                <button type="button" id="btnUpdateMagasin" class="btn btn-sm btn-primary">
+                    Update <span id="loadingUpdateMagasin"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ asset('assets/js/pagination.js') }}"></script>
+<!--- modal Detail Magasin -->
+<div class="modal fade" id="modalDetailMagasin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-1">
+                <h5 class="modal-title" id="exampleModalLabel">Formulaire detail</h5>
+                <button type="button" class="btn-close btn-sm closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="hidden" name="id">
+                            <div class="form-group">
+                                <label>Nom magasin</label>
+                                <input type="text" name="nomMag" class="form-control"disabled />
+                            </div>
+                            <div class="form-group">
+                                <label>Nom social</label>
+                                <input type="text" name="nomSocial" class="form-control" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label>Rue</label>
+                                <input type="text" name="rue" class="form-control" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label>Nom rue</label>
+                                <input type="text" name="nomRue" class="form-control" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label>Ville</label>
+                                <input type="text" name="ville" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Fax</label>
+                                <input type="text" name="fax" class="form-control"disabled />
+                            </div>
+                            <div class="form-group">
+                                <label>Date de creation</label>
+                                <input type="date" name="dateCreation" class="form-control" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" name="email" class="form-control" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label>Phone fix</label>
+                                <input type="text" name="phoneFix" class="form-control" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label>Dette</label>
+                                <input type="number" name="dette" class="form-control" disabled />
+                            </div>
+                           
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top-1 d-flex">
+                <button type="button" class="btn btn-sm btn-default closeModal">
+                OK
+                </button>             
+            </div>
+        </div>
+    </div>
+</div>
+<!---fin modal detail magasin-->
+<script>
+    $("#addNewMagasin").click(function () {
+        $("#formMagasin")[0].reset();
+        $('#btnUpdateMagasin').attr('hidden', 'hidden')
+        $('#btnSaveMagasin').removeAttr('hidden', 'hidden')
+        $("#modalMagasin").modal("show");
+    });
+    showAllMagasin();
+
+    function showAllMagasin() {
+        $.ajax({
+            type: "ajax",
+            url: '{{ path("app_magasin_all_magasin") }}',
+            dataType: "json",
+            beforeSend: function () {
+                $("#dataMagasin").html(
+                    "<td colspan='7' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>"
+                    );
+            },
+            success: function (data) {
+                var result = [];
+                //=============================pagination===========================
+                $('#pagination').pagination({
+                    dataSource: function (done) {
+                        result.push(data);
+                        done(result[0]);
+                        console.log(result[0]);
+                    },
+                    callback: function (data, pagination) {
+                        let i;
+                        let html = "";
+                        
+                        if (data.length <= 0) {
+                            $("#dataMagasin").html(
+                                "<td colspan ='7' class='text-center'>No data</td>")
+                            $("tfoot").attr("hidden", 'hidden')
+                        } else {
+                            $("tfoot").removeAttr("hidden", 'hidden')
+                            for (i = 0; i < data.length; i++) {
+                                var euro = "€ ";
+                                var dettes = data[i].dette;
+
+                                html += '<tr>' +
+                                    '<td>' + data[i].nomMag + '</td>' +
+                                    '<td>' + data[i].nomSocial + '</td>' +
+                                    '<td>' + data[i].nomRue + '</td>' +
+                                    '<td>' + data[i].ville + '</td>' +
+                                    '<td>' + data[i].phoneFix + '</td>' +
+                                    '<td>' + euro + dettes + '</td>' +
+                                    '<td>' +
+                                    '<button type="button" class="btn btn-dark btn-sm" onclick="detailleMagasin(' +
+                                    data[i].id +
+                                    ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                                    '<button type="button" class="btn btn-sm btn-secondary btn-sm" onclick="modifMagasin(' +
+                                    data[i].id +
+                                    ')" data-toggle="tooltip" data-placement="right" title="Modification"><i class="bi bi-pencil-square"></i></button> ' +
+                                    '<button type="button" class="btn bg-camson text-black btn-sm" onclick="deleteMagasin(' +
+                                    data[i].id +
+                                    ')" data-toggle="tooltip" data-placement="right" title="Supprimer"><i class="bi bi-trash"></i></button> ' +
+                                    '</td>' +
+                                    '</tr>'
+                            }
+                            $('#dataMagasin').html(html);
+                        }
+                    }
+                })
+                //===========================fin pagination=========================
+            },
+            error: function () {
+                errorMessage();
+            },
+        });
+    }
+    $("#btnSaveMagasin").click(function () {
+        $('#btnUpdateMagasin').attr('hidden', 'hidden')
+        $('#btnSaveMagasin').removeAttr('hidden', 'hidden')
+        let data = $("#formMagasin").serialize();
+        $.ajax({
+            type: "ajax",
+            method: "post",
+            url: '{{ path("app_magasin_add") }}',
+            data: data,
+            dataType: "json",
+            beforeSend: function () {
+                $("#btnSaveMagasin").attr("disabled", "disabled");
+                $("#btnSaveMagasin").find("#loadingAddMagasin").addClass(
+                    "spinner-border spinner-border-sm");
+            },
+            success: function (data) {
+                $("#btnSaveMagasin").removeAttr("disabled", "disabled");
+                $("#btnSaveMagasin").find("#loadingAddMagasin").removeClass(
+                    "spinner-border spinner-border-sm");
+                showAllMagasin();
+                successMessage();
+                $("#modalMagasin").modal("hide");
+            },
+            error: function () {
+                $("#btnSaveMagasin").removeAttr("disabled", "disabled");
+                $("#btnSaveMagasin").find("#loadingAddMagasin").removeClass(
+                    "spinner-border spinner-border-sm");
+                errorMessage();
+            },
+        });
+    });
+
+    function modifMagasin(value) {
+        $('#btnUpdateMagasin').removeAttr('hidden', 'hidden')
+        $('#btnSaveMagasin').attr('hidden', 'hidden')
+        $("#modalMagasin").modal('show')
+        $.ajax({
+            method: "get",
+            type: "ajax",
+            url: '{{ path("app_magasin_get") }}',
+            async: false,
+            data: {
+                id: value
+            },
+            dataType: "json",
+            success: function (data) {
+                $("input[name=id]").val(data.id)
+                $("input[name=nomSocial]").val(data.nomSocial)
+                $("input[name=nomMag]").val(data.nomMag)
+                $("input[name=rue]").val(data.rue)
+                $("input[name=nomRue]").val(data.nomRue)
+                $("input[name=ville]").val(data.ville)
+                $("input[name=fax]").val(data.fax)
+                $("input[name=dateCreation]").val(moment(data.dateCreation).format("YYYY-MM-DD"))
+                $("input[name=email]").val(data.email)
+                $("input[name=phoneFix]").val(data.phoneFix)
+                $("input[name=dette]").val(data.dette)
+                if (data.white == 1) {
+                    $('input[name=white]').attr('checked', 'checked');
+                } else {
+                    $('input[name=white]').removeAttr('checked', 'checked')
+                }
+            },
+            error: function () {
+                console.log("error")
+            },
+        });
+    }
+    $("#btnUpdateMagasin").click(function () {
+        let data = $("#formMagasin").serialize();
+        $.ajax({
+            type: "ajax",
+            method: "post",
+            url: '{{ path("app_magasin_update") }}',
+            data: data,
+            // async: false,
+            dataType: "json",
+            beforeSend: function () {
+                $("#btnUpdateMagasin").attr("disabled", "disabled");
+                $("#btnUpdateMagasin").find("#loadingUpdateMagasin").addClass(
+                    "spinner-border spinner-border-sm");
+            },
+            success: function (data) {
+                $("#btnUpdateMagasin").removeAttr("disabled", "disabled");
+                $("#btnUpdateMagasin").find("#loadingUpdateMagasin").removeClass(
+                    "spinner-border spinner-border-sm");
+                showAllMagasin();
+                successMessage();
+                $("#modalMagasin").modal("hide");
+            },
+            error: function () {
+                $("#btnUpdateMagasin").removeAttr("disabled", "disabled");
+                $("#btnUpdateMagasin").find("#loadingUpdateMagasin").removeClass(
+                    "spinner-border spinner-border-sm");
+                errorMessage();
+            },
+        });
+    })
+
+    function deleteMagasin(value) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: "post",
+                    type: "ajax",
+                    url: '{{ path("app_magasin_delete") }}',
+                    data: {
+                        id: value
+                    },
+                    async: false,
+                    dataType: "json",
+                    success: function (data) {
+                        successMessage();
+                        showAllMagasin();
+                    },
+                    error: function () {
+                        errorMessage();
+                    },
+                });
+
+            }
+        })
+    }
+
+    function searchAllMagasin() {
+        let param = $('input[name=searchMagasin]').val()
+        $.ajax({
+            method: "post",
+            type: "ajax",
+            url: '{{ path("app_magasin_search") }}',
+            data: {
+                param: param
+            },
+            dataType: "json",
+            beforeSend: function () {
+                $("#dataMagasin").html(
+                    "<td colspan='7' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>"
+                    );
+            },
+            success: function (data) {
+                let i;
+                let html = "";
+                if (data.length > 0) {
+                    for (i = 0; i < data.length; i++) {
+                        html += '<tr>' +
+                            '<td>' + data[i].nomMag + '</td>' +
+                            '<td>' + data[i].nomSocial + '</td>' +
+                            '<td>' + data[i].nomRue + '</td>' +
+                            '<td>' + data[i].ville + '</td>' +
+                            '<td>' + data[i].phoneFix + '</td>' +
+                            '<td>' + data[i].dette + '</td>' +
+                            '<td>' +
+                            '<button type="button" class="btn btn-dark btn-sm" onclick="detailleMagasin(' +
+                            data[i].id +
+                            ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                            '<button type="button" class="btn btn-secondary btn-sm" onclick="modifMagasin(' + data[i].id +')" data-toggle="tooltip" data-placement="right" title="Modification"><i class="bi bi-pencil-square"></i></button> ' +
+                            '<button type="button" class="btn btn-danger btn-sm"  onclick="deleteMagasin('+ data[i].id +')" data-toggle="tooltip" data-placement="left"  title="Supprimer"><i class="bi bi-trash3"></i></button>' +                                          
+                            '</td>' +
+                            '</tr>'
+                    }
+                    $('#dataMagasin').html(html);
+                } else {
+                    $("#dataMagasin").html("<tr><td colspan =7 class='text-center'>No data</td></tr>");
+                }
+            },
+            error: function () {
+                errorMessage();
+            },
+        });
+    }
+
+     function detailleMagasin(value) {
+      $("#modalDetailMagasin").modal("show");
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_magasin_get") }}',
+        async: false,
+        data: {
+          id: value
+        },
+        dataType: "json",
+        success: function (data) {
+            
+                $("input[name=id]").val(data.id)
+                $("input[name=nomSocial]").val(data.nomSocial)
+                $("input[name=nomMag]").val(data.nomMag)
+                $("input[name=rue]").val(data.rue)
+                $("input[name=nomRue]").val(data.nomRue)
+                $("input[name=ville]").val(data.ville)
+                $("input[name=fax]").val(data.fax)
+                $("input[name=dateCreation]").val(moment(data.dateCreation).format("YYYY-MM-DD"))
+                $("input[name=email]").val(data.email)
+                $("input[name=phoneFix]").val(data.phoneFix)
+                $("input[name=dette]").val(data.dette)
+                if (data.white == 1) {
+                    $('input[name=white]').attr('checked', 'checked');
+                } else {
+                    $('input[name=white]').removeAttr('checked', 'checked')
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+
+    function ctrlChamp() {
+        let nomMag = $("input[name=nomMag]").val() 
+        let nomSocial = $("input[name=nomSocial]").val()
+        let rue = $("input[name=rue]").val()
+        let nomRue = $("input[name=nomRue]").val()
+        let ville = $("input[name=ville]").val()
+        let fax = $("input[name=fax]").val()
+        let dateCreation = $("input[name=dateCreation]").val()
+        let email = $("input[name=email]").val()
+        let phoneFix = $("input[name=phoneFix]").val()
+        let dette = $("input[name=dette]").val()
+        if (email == "" || nomMag == "" || dateCreation == "" || rue == "" || nomRue == "" || ville == "" || fax ==
+            "" || email == "" || phoneFix == "" || dette <0) {
+            $("#btnSaveMagasin").attr("disabled", "disabled")
+            console.log('disabled')
+        } else {
+            console.log('no disabled')
+            $("#btnSaveMagasin").removeAttr("disabled", "disabled")
+        }
+    }
+    $('.closeModal').click(function () {
+        $('.modal').modal('hide');
+    })
+</script>
+{% endblock %}
