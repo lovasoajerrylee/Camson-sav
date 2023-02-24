@@ -21,3 +21,5 @@
 
 ###> lexik/jwt-authentication-bundle ###
 ###< lexik/jwt-authentication-bundle ###
+.env
+.env
