@@ -245,6 +245,9 @@
                         if (result[0].length <= 4) {
                             $('#pagination').attr('hidden', 'hidden');
                         }
+                        else {
+                            $('#pagination').removeAttr('hidden');
+                        }
                     },
                     callback: function (data, pagination) {
                         let i;
