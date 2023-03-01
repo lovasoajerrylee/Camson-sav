@@ -56,17 +56,6 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tfoot class="bg-dark text-white">
-                        <tr>
-                            <th>Nom</th>
-                            <th>Nom social</th>
-                            <th>Rue</th>
-                            <th>Ville</th>
-                            <th>Tel</th>
-                            <th>Dette</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
                     <tbody id="dataMagasin"></tbody>
                 </table>
                 <div id="pagination"></div>
@@ -259,9 +248,9 @@
                         if (data.length <= 0) {
                             $("#dataMagasin").html(
                                 "<td colspan ='7' class='text-center'>No data</td>")
-                            $("tfoot").attr("hidden", 'hidden')
+                            // $("tfoot").attr("hidden", 'hidden')
                         } else {
-                            $("tfoot").removeAttr("hidden", 'hidden')
+                            // $("tfoot").removeAttr("hidden", 'hidden')
                             for (i = 0; i < data.length; i++) {
                                 var euro = "€ ";
                                 var dettes = data[i].dette;
