@@ -420,17 +420,6 @@
           <th>actions</th>
         </tr>
       </thead>
-      <tfoot class="table bg-dark text-white">
-        <tr>
-          <th>NomClient</th>
-          <th>PrenomClient</th>
-          <th>TelFixe</th>
-          <th>RefClient</th>
-           <th>Etat</th>
-          <th>Email</th>
-          <th>actions</th>
-        </tr>
-      </tfoot>
       <tbody id="dataClient">
       </tbody>
     </table>
@@ -495,9 +484,9 @@
           let telPortable2;
           if (data.length <= 0) {
             $("#dataClient").html("<td colspan ='9' class='text-center'>No data</td>")
-            $("tfoot").attr("hidden", 'hidden')
+            // $("tfoot").attr("hidden", 'hidden')
           } else {
-            $("tfoot").removeAttr("hidden", 'hidden')
+            // $("tfoot").removeAttr("hidden", 'hidden')
             $.each(data, function (index, value) {
               let date = moment(value.datePaiment).format("ll")
               if (value.telPortable2 == null) {
