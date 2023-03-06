@@ -591,22 +591,22 @@
         <h5 class="modal-title" id="exampleModalLabel">Personnalisation des colonnes</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="all_check">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-          <label class="form-check-label" for="flexCheckDefault">Magasin</label>
+          <input class="form-check-input" type="checkbox" value="" id="check_magasin">
+          <label class="form-check-label" for="check_magasin">Magasin</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-          <label class="form-check-label" for="flexCheckChecked">Date intervention</label>
+          <input class="form-check-input" type="checkbox" value="" id="check_date_intervention">
+          <label class="form-check-label" for="check_date_intervention">Date intervention</label>
         </div>
          <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-          <label class="form-check-label" for="flexCheckDefault">Message</label>
+          <input class="form-check-input" type="checkbox" value="" id="check_message">
+          <label class="form-check-label" for="check_message">Message</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-          <label class="form-check-label" for="flexCheckChecked">Niveau</label>
+          <input class="form-check-input" type="checkbox" value="" id="check_niveau">
+          <label class="form-check-label" for="check_niveau">Niveau</label>
         </div>
       </div>
       <div class="modal-footer">
@@ -1450,6 +1450,22 @@
       },
     });
   });
+
+
+  function Personnalisation_colonne(){
+    localStorage.setItem("magasin", "afficher");
+    localStorage.setItem("date_intervention", "afficher");
+    localStorage.setItem("message", "afficher");
+    localStorage.setItem("niveau", "afficher");
+  }
+
+  $("#all_check").click(function() {
+    if($("#check_magasin").prop('checked')) {
+        alert("Checked Box Selected");
+    } else {
+        alert("Checked Box deselect");
+    }
+});
 
  
 
