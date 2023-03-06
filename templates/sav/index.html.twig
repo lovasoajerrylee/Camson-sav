@@ -593,19 +593,19 @@
       </div>
       <div class="modal-body" id="all_check">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="check_magasin">
+          <input class="form-check-input" type="checkbox" value="" id="check_magasin" checked>
           <label class="form-check-label" for="check_magasin">Magasin</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="check_date_intervention">
+          <input class="form-check-input" type="checkbox" value="" id="check_date_intervention" checked>
           <label class="form-check-label" for="check_date_intervention">Date intervention</label>
         </div>
          <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="check_message">
+          <input class="form-check-input" type="checkbox" value="" id="check_message" checked>
           <label class="form-check-label" for="check_message">Message</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="check_niveau">
+          <input class="form-check-input" type="checkbox" value="" id="check_niveau" checked>
           <label class="form-check-label" for="check_niveau">Niveau</label>
         </div>
       </div>
@@ -699,7 +699,7 @@
                 countAttente++;
                 htmlAttente +=
                   "<tr>" +
-                  "<td>" +
+                  "<td class='colonne_magasin' id='colonne_magasin'>" +
                   value.magasin.nomMag +
                   "</td>" +
                   "<td>" +
@@ -1453,22 +1453,37 @@
 
 
   function Personnalisation_colonne(){
-    localStorage.setItem("magasin", "afficher");
-    localStorage.setItem("date_intervention", "afficher");
     localStorage.setItem("message", "afficher");
     localStorage.setItem("niveau", "afficher");
   }
 
   $("#all_check").click(function() {
     if($("#check_magasin").prop('checked')) {
-        alert("Checked Box Selected");
+      localStorage.setItem("magasin", "afficher");
     } else {
-        alert("Checked Box deselect");
+      localStorage.setItem("magasin", "masquer");
+      document.getElementById("colonne_magasin").className = "MyClass";
     }
-});
 
- 
+    if($("#check_date_intervention").prop('checked')) {
+      localStorage.setItem("date_intervention", "afficher");
+    } else {
+      localStorage.setItem("date_intervention", "masquer");
+    }
 
-  
+    if($("#check_message").prop('checked')) {
+      localStorage.setItem("message", "afficher");
+    } else {
+      localStorage.setItem("message", "masquer");
+    }
+
+    if($("#check_niveau").prop('checked')) {
+      localStorage.setItem("niveau", "afficher");
+    } else {
+      localStorage.setItem("niveau", "masquer");
+    }
+  });
+
+
 </script>
 {% endblock %}
