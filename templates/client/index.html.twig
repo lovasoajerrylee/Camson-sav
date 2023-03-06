@@ -408,7 +408,7 @@
   </div>
   <!-- /.col -->
   <div class="card-body" id="valider">
-    <a href="#" style="float: right" class="m-3">Personnaliser les colonnes</a>
+    <a href="#" style="float: right" class="m-3" data-bs-toggle="modal" data-bs-target="#modal_personnaliser_colonne">Personnaliser les colonnes</a>
     <table class="table">
       <thead class="table bg-dark text-white">
         <tr>
@@ -449,6 +449,49 @@
   </div>
   <!-- ====================== =Fin Modal Suppression Client ===========================-->
 
+  <!-- Modal personnaliser colonne -->
+  <div class="modal fade" id="modal_personnaliser_colonne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Personnalisation des colonnes</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="all_check">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_nom" checked>
+            <label class="form-check-label" for="check_nom">Nom</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_prenom" checked>
+            <label class="form-check-label" for="check_prenom">Prénom</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_tel" checked>
+            <label class="form-check-label" for="check_tel">Tel</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_ref" checked>
+            <label class="form-check-label" for="check_ref">Ref</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_etat" checked>
+            <label class="form-check-label" for="check_etat">Etat</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_email" checked>
+            <label class="form-check-label" for="check_email">Email</label>
+          </div>
+          
+        </div>
+        {# <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary">Enregistrer</button>
+        </div> #}
+      </div>
+    </div>
+  </div>
+  <!-- Modal personnaliser colonne -->
   
   <!-- ====================== =SCRIPT ===========================-->
   <script src="{{ asset('assets/js/pagination.js') }}"></script>
@@ -475,11 +518,17 @@
           var result = [];
           //pagination client
           $('#demo').pagination({
-         dataSource:  function(done){
-							result.push(data);
-							done(result[0]);
-							console.log(result[0]);
-						},
+          dataSource:  function(done){
+            result.push(data);
+            done(result[0]);
+            console.log(result[0]);
+            if (result[0].length <= 15) {
+              $('#demo').attr('hidden', 'hidden');
+            }
+            else {
+              $('#demo').removeAttr('hidden');
+            }
+					},
           callback: function(data, pagination) {
           let html = ""
           let telPortable2;
