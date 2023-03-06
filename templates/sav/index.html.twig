@@ -87,10 +87,10 @@
               <table class="table table-striped">
                 <thead class="bg-dark text-white">
                   <tr>
-                    <th>Magasin</th>
-                    <th>Date intervention</th>
-                    <th>Message</th>
-                    <th>Niveau</th>
+                    <th class="colonne_magasin">Magasin</th>
+                    <th class="colonne_date_intervention">Date intervention</th>
+                    <th class="colonne_message">Message</th>
+                    <th class="colonne_niveau">Niveau</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -102,10 +102,10 @@
               <table class="table table-striped">
                 <thead class="bg-dark text-white">
                   <tr>
-                    <th>Magasin</th>
-                    <th>Date intervention</th>
-                    <th>Message</th>
-                    <th>Niveau</th>
+                    <th class="colonne_magasin">Magasin</th>
+                    <th class="colonne_date_intervention">Date intervention</th>
+                    <th class="colonne_message">Message</th>
+                    <th class="colonne_niveau">Niveau</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -117,10 +117,10 @@
               <table class="table table-striped">
                 <thead class="bg-dark text-white">
                   <tr>
-                    <th>Magasin</th>
-                    <th>Date intervention</th>
-                    <th>Message</th>
-                    <th>Niveau</th>
+                    <th class="colonne_magasin">Magasin</th>
+                    <th class="colonne_date_intervention">Date intervention</th>
+                    <th class="colonne_message">Message</th>
+                    <th class="colonne_niveau">Niveau</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -132,10 +132,10 @@
               <table class="table table-striped">
                 <thead class="bg-dark text-white">
                   <tr>
-                    <th>Magasin</th>
-                    <th>Date intervention</th>
-                    <th>Message</th>
-                    <th>Niveau</th>
+                    <th class="colonne_magasin">Magasin</th>
+                    <th class="colonne_date_intervention">Date intervention</th>
+                    <th class="colonne_message">Message</th>
+                    <th class="colonne_niveau">Niveau</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -147,10 +147,10 @@
               <table class="table table-striped">
                 <thead class="bg-dark text-white">
                   <tr>
-                    <th>Magasin</th>
-                    <th>Date intervention</th>
-                    <th>Message</th>
-                    <th>Niveau</th>
+                    <th class="colonne_magasin">Magasin</th>
+                    <th class="colonne_date_intervention">Date intervention</th>
+                    <th class="colonne_message">Message</th>
+                    <th class="colonne_niveau">Niveau</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -609,10 +609,10 @@
           <label class="form-check-label" for="check_niveau">Niveau</label>
         </div>
       </div>
-      <div class="modal-footer">
+      {# <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
         <button type="button" class="btn btn-primary">Enregistrer</button>
-      </div>
+      </div> #}
     </div>
   </div>
 </div>
@@ -670,6 +670,12 @@
             result.push(data);
             done(result[0]);
             console.log(result[0]);
+            if (result[0].length <= 15) {
+                $('.demo_pag').attr('hidden', 'hidden');
+            }
+            else {
+                $('.demo_pag').removeAttr('hidden');
+            }
           },
           callback: function (data, pagination) {
             $("#dataSavAttente").html("<td colspan='5' class='text-center'>No Data</td>");
@@ -699,18 +705,18 @@
                 countAttente++;
                 htmlAttente +=
                   "<tr>" +
-                  "<td class='colonne_magasin' id='colonne_magasin'>" +
+                  "<td class='colonne_magasin'>" +
                   value.magasin.nomMag +
                   "</td>" +
-                  "<td>" +
+                  "<td class='colonne_date_intervention'>" +
                   dateIntervantionFormat +
                   "</td>" +
-                  "<td onclick=modalMessage(" +
+                  "<td class='colonne_message' onclick=modalMessage(" +
                   value.id +
                   ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
                   value.messages.length +
                   "</span></td>" +
-                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td class='colonne_niveau'>" + value.niveau.niveau + "</td>" +
                   "<td>" +
                   '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
                   '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button>' +
@@ -718,23 +724,24 @@
                   +"</tr>";
                 $("#dataSavAttente").html(htmlAttente);
                 $("#countAttente").html(countAttente);
+                Personnalisation_colonne();
               }
               else if (etat == 1) {
                 countEnCours++;
                 htmlEncours +=
                   "<tr>" +
-                  "<td>" +
+                  "<td class='colonne_magasin'>" +
                   value.magasin.nomMag +
                   "</td>" +
-                  "<td>" +
+                  "<td class='colonne_date_intervention'>" +
                   dateIntervantionFormat +
                   "</td>" +
-                  "<td onclick=modalMessage(" +
+                  "<td class='colonne_message' onclick=modalMessage(" +
                   value.id +
                   ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
                   value.messages.length +
                   "</span></td>" +
-                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td class='colonne_niveau'>" + value.niveau.niveau + "</td>" +
                   "<td>" +
                   '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
                   "</td>" +
@@ -746,18 +753,18 @@
                 countValider++;
                 htmlValider +=
                   "<tr>" +
-                  "<td>" +
+                  "<td class='colonne_magasin'>" +
                   value.magasin.nomMag +
                   "</td>" +
-                  "<td>" +
+                  "<td class='colonne_date_intervention'>" +
                   dateIntervantionFormat +
                   "</td>" +
-                  "<td onclick=modalMessage(" +
+                  "<td class='colonne_message' onclick=modalMessage(" +
                   value.id +
                   ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
                   value.messages.length +
                   "</span></td>" +
-                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td class='colonne_niveau'>" + value.niveau.niveau + "</td>" +
                   "<td>" +
                   '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
                   "</td>" +
@@ -769,18 +776,18 @@
                 countTerminer++;
                 htmlTerminer +=
                   "<tr>" +
-                  "<td>" +
+                  "<td class='colonne_magasin'>" +
                   value.magasin.nomMag +
                   "</td>" +
-                  "<td>" +
+                  "<td class='colonne_date_intervention'>" +
                   dateIntervantionFormat +
                   "</td>" +
-                  "<td onclick=modalMessage(" +
+                  "<td class='colonne_message' onclick=modalMessage(" +
                   value.id +
                   ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
                   value.messages.length +
                   "</span></td>" +
-                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td class='colonne_niveau'>" + value.niveau.niveau + "</td>" +
                   "<td>" +
                   '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
                   "</td>" +
@@ -792,18 +799,18 @@
                 countArchiver++;
                 htmlArchiver +=
                   "<tr>" +
-                  "<td>" +
+                  "<td class='colonne_magasin'>" +
                   value.magasin.nomMag +
                   "</td>" +
-                  "<td>" +
+                  "<td class='colonne_date_intervention'>" +
                   dateIntervantionFormat +
                   "</td>" +
-                  "<td onclick=modalMessage(" +
+                  "<td class='colonne_message' onclick=modalMessage(" +
                   value.id +
                   ') style="cursor: pointer;"><span class="badge bg-camson text-dark bg-camson text-dark">' +
                   value.messages.length +
                   "</span></td>" +
-                  "<td>" + value.niveau.niveau + "</td>" +
+                  "<td class='colonne_niveau'>" + value.niveau.niveau + "</td>" +
                   "<td>" +
                   '<button type="button" class="btn btn-dark btn-sm" onclick="detailleSav(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
                   "</td>" +
@@ -1451,36 +1458,62 @@
     });
   });
 
+  
+
 
   function Personnalisation_colonne(){
-    localStorage.setItem("message", "afficher");
-    localStorage.setItem("niveau", "afficher");
+    if (localStorage.getItem("magasin") =="masquer") {
+      $(".colonne_magasin").hide();
+      $("#check_magasin").prop("checked", false);
+    }
+
+    if (localStorage.getItem("date_intervention") =="masquer") {
+      $(".colonne_date_intervention").hide();
+      $("#check_date_intervention").prop("checked", false);
+    }
+
+    if (localStorage.getItem("message") =="masquer") {
+      $(".colonne_message").hide();
+      $("#check_message").prop("checked", false);
+    }
+
+    if (localStorage.getItem("niveau") =="masquer") {
+      $(".colonne_niveau").hide();
+      $("#check_niveau").prop("checked", false);
+    }
   }
 
   $("#all_check").click(function() {
     if($("#check_magasin").prop('checked')) {
       localStorage.setItem("magasin", "afficher");
+      $(".colonne_magasin").show();
     } else {
       localStorage.setItem("magasin", "masquer");
-      document.getElementById("colonne_magasin").className = "MyClass";
+      $(".colonne_magasin").hide();
     }
 
     if($("#check_date_intervention").prop('checked')) {
       localStorage.setItem("date_intervention", "afficher");
+      $(".colonne_date_intervention").show();
     } else {
       localStorage.setItem("date_intervention", "masquer");
+      $(".colonne_date_intervention").hide();
     }
 
     if($("#check_message").prop('checked')) {
       localStorage.setItem("message", "afficher");
+      $(".colonne_message").show();
     } else {
       localStorage.setItem("message", "masquer");
+      $(".colonne_message").hide();
     }
 
     if($("#check_niveau").prop('checked')) {
       localStorage.setItem("niveau", "afficher");
+      $(".colonne_niveau").show();
     } else {
       localStorage.setItem("niveau", "masquer");
+      $(".colonne_niveau").hide();
     }
   });
 
