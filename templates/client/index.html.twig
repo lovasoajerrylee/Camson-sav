@@ -412,13 +412,13 @@
     <table class="table">
       <thead class="table bg-dark text-white">
         <tr>
-          <th>NomClient</th>
-          <th>PrenomClient</th>
-          <th>TelFixe</th>
-          <th>RefClient</th>
-          <th>Etat</th>
-          <th>Email</th>
-          <th>actions</th>
+          <th class="colonne_nom">NomClient</th>
+          <th class="colonne_tel">PrenomClient</th>
+          <th class="colonne_prenom">TelFixe</th>
+          <th class="colonne_ref">RefClient</th>
+          <th class="colonne_etat">Etat</th>
+          <th class="colonne_email">Email</th>
+          <th class="">actions</th>
         </tr>
       </thead>
       <tbody id="dataClient">
@@ -550,20 +550,21 @@
 
               // }
               html += "<tr>" +
-                "<td>" + value.nomClient + "</td>" +
-                "<td>" + value.prenomClient + "</td>" +
-                "<td>" + value.telFixe + "</td>" +
-                "<td>" + value.refClient + "</td>" +
-                "<td>" + value.etat + "</td>" +
-                "<td>" + value.email + "</td>" +
-                "<td>" +
+                "<td class='colonne_nom'>" + value.nomClient + "</td>" +
+                "<td class='colonne_tel'>" + value.telFixe + "</td>" +
+                "<td class='colonne_prenom'>" + value.prenomClient + "</td>" +
+                "<td class='colonne_ref'>" + value.refClient + "</td>" +
+                "<td class='colonne_etat'>" + value.etat + "</td>" +
+                "<td class='colonne_email'>" + value.email + "</td>" +
+                "<td class=''>" +
                 '<button type="button" class="btn btn-dark btn-sm" onclick="modifClient(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
                 '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button> ' +
                 '<button type="button"  class="btn btn-danger btn-sm"  onclick="modalDelete(' + value.id + ')" data-toggle="tooltip" data-placement="left"  title="Supprimer"><i class="bi bi-trash3"></i></button>' +                           
                 "</td>" +
                 "</tr>"
             })
-            $("#dataClient").html(html)
+            $("#dataClient").html(html);
+            Personnalisation_colonne();
           }
     }
 })
@@ -829,5 +830,90 @@
         $("#btnClient").removeAttr("disabled", "disabled")
       }
     }
+
+
+    $("#all_check").click(function() {
+    if($("#check_nom").prop('checked')) {
+      localStorage.setItem("nom", "afficher");
+      $(".colonne_nom").show();
+    } else {
+      localStorage.setItem("nom", "masquer");
+      $(".colonne_nom").hide();
+    }
+
+    if($("#check_prenom").prop('checked')) {
+      localStorage.setItem("prenom", "afficher");
+      $(".colonne_prenom").show();
+    } else {
+      localStorage.setItem("prenom", "masquer");
+      $(".colonne_prenom").hide();
+    }
+
+    if($("#check_tel").prop('checked')) {
+      localStorage.setItem("tel", "afficher");
+      $(".colonne_tel").show();
+    } else {
+      localStorage.setItem("tel", "masquer");
+      $(".colonne_tel").hide();
+    }
+
+    if($("#check_ref").prop('checked')) {
+      localStorage.setItem("ref", "afficher");
+      $(".colonne_ref").show();
+    } else {
+      localStorage.setItem("ref", "masquer");
+      $(".colonne_ref").hide();
+    }
+
+    if($("#check_etat").prop('checked')) {
+      localStorage.setItem("etat", "afficher");
+      $(".colonne_etat").show();
+    } else {
+      localStorage.setItem("etat", "masquer");
+      $(".colonne_etat").hide();
+    }
+
+    if($("#check_email").prop('checked')) {
+      localStorage.setItem("email", "afficher");
+      $(".colonne_email").show();
+    } else {
+      localStorage.setItem("email", "masquer");
+      $(".colonne_email").hide();
+    }
+  });
+
+  function Personnalisation_colonne(){
+    if (localStorage.getItem("nom") =="masquer") {
+      $(".colonne_nom").hide();
+      $("#check_nom").prop("checked", false);
+    }
+
+    if (localStorage.getItem("prenom") =="masquer") {
+      $(".colonne_prenom").hide();
+      $("#check_prenom").prop("checked", false);
+    }
+
+    if (localStorage.getItem("tel") =="masquer") {
+      $(".colonne_tel").hide();
+      $("#check_tel").prop("checked", false);
+    }
+
+    if (localStorage.getItem("ref") =="masquer") {
+      $(".colonne_ref").hide();
+      $("#check_ref").prop("checked", false);
+    }
+
+    if (localStorage.getItem("etat") =="masquer") {
+      $(".colonne_etat").hide();
+      $("#check_etat").prop("checked", false);
+    }
+
+    if (localStorage.getItem("email") =="masquer") {
+      $(".colonne_email").hide();
+      $("#check_email").prop("checked", false);
+    }
+  }
+  
+  
   </script>
   {% endblock %}
