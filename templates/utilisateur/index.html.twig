@@ -14,7 +14,7 @@
 <section class="section">
     <div class="card">
         <div class="card-body">
-            <a href="#" style="float: right" class="mt-4">Personnaliser les colonnes</a>
+            <a href="#" style="float: right" class="mt-4"  data-bs-toggle="modal" data-bs-target="#modal_personnaliser_colonne">Personnaliser les colonnes</a>
             <nav class=" mt-4">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
@@ -29,9 +29,9 @@
                     <table class="table table-striped">
                         <thead class="bg-dark text-white">
                             <tr>
-                                <th>Nom d'utilisateur</th>
-                                <th>Email</th>
-                                <th>Role</th>
+                                <th class="colonne_nom">Nom d'utilisateur</th>
+                                <th class="colonne_email">Email</th>
+                                <th class="colonne_role">Role</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -44,9 +44,9 @@
                     <table class="table table-striped">
                         <thead class="bg-dark text-white">
                             <tr>
-                                <th>Nom d'utilisateur</th>
-                                <th>Email</th>
-                                <th>Role</th>
+                                <th class="colonne_nom">Nom d'utilisateur</th>
+                                <th class="colonne_email">Email</th>
+                                <th class="colonne_role">Role</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -209,6 +209,46 @@
         </div>
     </div>
 </div>
+
+<!-- Modal personnaliser colonne -->
+    <div class="modal fade" id="modal_personnaliser_colonne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Personnalisation des colonnes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="all_check">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="check_nom" checked>
+                        <label class="form-check-label" for="check_nom">Nom d'utilisateur</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="check_email" checked>
+                        <label class="form-check-label" for="check_email">Email</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="check_role" checked>
+                        <label class="form-check-label" for="check_role">Role</label>
+                    </div>
+                </div>
+                {# <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-primary">Enregistrer</button>
+                </div> #}
+            </div>
+        </div>
+    </div>
+<!-- Modal personnaliser colonne -->
+
+
+
+
+
+
+
+
+
 <script src="{{ asset('assets/js/pagination.js') }}"></script>
 <script>
     let options = {
@@ -273,13 +313,13 @@
                             if (value.roles[0] == "ROLE_ADMIN") {
                                 html +=
                                     "<tr>" +
-                                    "<td>" +
+                                    "<td class='colonne_nom'>" +
                                     value.username +
                                     "</td>" +
-                                    "<td>" +
+                                    "<td class='colonne_email'>" +
                                     value.email +
                                     "</td>" +
-                                    "<td>" + value.roles[0] + "</td>" +
+                                    "<td class='colonne_role'>" + value.roles[0] + "</td>" +
                                     "<td class='text-center'>" +
                                     '<button type="button" class="btn btn-dark btn-sm" onclick="userDetail(' +
                                     value.id +
@@ -295,13 +335,13 @@
                                 0] == "ROLE_USER") {
                                 htmlTechnicien +=
                                     "<tr>" +
-                                    "<td>" +
+                                    "<td class='colonne_nom'>" +
                                     value.username +
                                     "</td>" +
-                                    "<td>" +
+                                    "<td class='colonne_email'>" +
                                     value.email +
                                     "</td>" +
-                                    "<td>" + value.roles[0] + "</td>" +
+                                    "<td class='colonne_role'>" + value.roles[0] + "</td>" +
                                     "<td class='text-center'>" +
                                     '<button type="button" class="btn btn-dark btn-sm" onclick="userDetail(' +
                                     value.id +
@@ -313,6 +353,7 @@
                                     "</td>" +
                                     +"</tr>";
                                 $("#dataUtilisateurTech").html(htmlTechnicien);
+                                Personnalisation_colonne();
                             }
                         });
                     }
@@ -583,6 +624,52 @@
         } else {
             console.log('no disabled')
             $("#btnAddUser").removeAttr("disabled", "disabled")
+        }
+    }
+
+
+
+
+    $("#all_check").click(function() {
+        if($("#check_nom").prop('checked')) {
+        localStorage.setItem("nom", "afficher");
+        $(".colonne_nom").show();
+        } else {
+        localStorage.setItem("nom", "masquer");
+        $(".colonne_nom").hide();
+        }
+
+        if($("#check_email").prop('checked')) {
+        localStorage.setItem("email", "afficher");
+        $(".colonne_email").show();
+        } else {
+        localStorage.setItem("email", "masquer");
+        $(".colonne_email").hide();
+        }
+
+        if($("#check_role").prop('checked')) {
+        localStorage.setItem("role", "afficher");
+        $(".colonne_role").show();
+        } else {
+        localStorage.setItem("rue", "masquer");
+        $(".colonne_role").hide();
+        }
+    });
+
+    function Personnalisation_colonne(){
+        if (localStorage.getItem("nom") =="masquer") {
+        $(".colonne_nom").hide();
+        $("#check_nom").prop("checked", false);
+        }
+
+        if (localStorage.getItem("email") =="masquer") {
+        $(".colonne_email").hide();
+        $("#check_email").prop("checked", false);
+        }
+
+        if (localStorage.getItem("role") =="masquer") {
+        $(".colonne_role").hide();
+        $("#check_role").prop("checked", false);
         }
     }
 </script>

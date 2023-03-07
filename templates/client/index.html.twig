@@ -17,7 +17,7 @@
     <div class="row">
       <div class="col-md-10">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Rechercher..." name="searchClient">
+          <input type="text" class="form-control" placeholder="Rechercher..." name="searchClient" id="searchClient">
         </div>
       </div>
       <div class="col-md-2">
@@ -413,8 +413,8 @@
       <thead class="table bg-dark text-white">
         <tr>
           <th class="colonne_nom">NomClient</th>
-          <th class="colonne_tel">PrenomClient</th>
-          <th class="colonne_prenom">TelFixe</th>
+          <th class="colonne_prenom">PrenomClient</th>
+          <th class="colonne_tel">TelFixe</th>
           <th class="colonne_ref">RefClient</th>
           <th class="colonne_etat">Etat</th>
           <th class="colonne_email">Email</th>
@@ -832,7 +832,7 @@
     }
 
 
-    $("#all_check").click(function() {
+  $("#all_check").click(function() {
     if($("#check_nom").prop('checked')) {
       localStorage.setItem("nom", "afficher");
       $(".colonne_nom").show();
@@ -913,6 +913,18 @@
       $("#check_email").prop("checked", false);
     }
   }
+
+
+  $("#searchClient").keyup(function() {
+    let parametre = $('input[name=searchClient]').val()
+    if (parametre.length >= 2) {
+      searchAllClient();
+    }
+
+    if (parametre == "") {
+      showAllClient();
+    }
+  });
   
   
   </script>

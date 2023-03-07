@@ -69,11 +69,10 @@ class ClientRepository extends ServiceEntityRepository
 
         $query = $entityManager
             ->createQuery(
-                'SELECT m
+                "SELECT m
         FROM App\Entity\Client m
-        WHERE m.nomClient LIKE :param OR m.prenomClient LIKE :param OR m.telFixe LIKE :param OR m.telPortable1 LIKE :param OR m.telPortable2 LIKE :param OR m.refClient LIKE :param OR m.nomGerant LIKE :param OR m.email LIKE :param'
-            )
-            ->setParameter('param', $param);
+        WHERE m.nomClient LIKE '%$param%' OR m.prenomClient LIKE '%$param%' OR m.telFixe LIKE '%$param%' OR m.telPortable1 LIKE '%$param%' OR m.telPortable2 LIKE '%$param%' OR m.refClient LIKE '%$param%' OR m.nomGerant LIKE '%$param%' OR m.email LIKE '%$param%'"
+            );
 
         // returns an array of Product objects
         return $query->getResult();

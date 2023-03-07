@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-md-10">
                 <div class="form-group">
-                    <input type="text" class="form-control sm" placeholder="Rechercher..." name="searchMagasin">
+                    <input type="text" class="form-control sm" placeholder="Rechercher..." name="searchMagasin" id="searchMagasin">
                 </div>
             </div>
             <div class="col-md-2">
@@ -44,17 +44,17 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body mt-2">
-                <a href="#" style="float: right" class="m-3">Personnaliser les colonnes</a>
+                <a href="#" style="float: right" class="m-3" data-bs-toggle="modal" data-bs-target="#modal_personnaliser_colonne">Personnaliser les colonnes</a>
                 <table class="table table-striped">
                     <thead class="bg-dark text-white">
                         <tr>
-                            <th>Nom</th>
-                            <th>Nom social</th>
-                            <th>Rue</th>
-                            <th>Ville</th>
-                            <th>Tel</th>
-                            <th>Dette</th>
-                            <th style="width: 120px;">Action</th>
+                            <th class='colonne_nom'>Nom</th>
+                            <th class='colonne_nom_social'>Nom social</th>
+                            <th class='colonne_rue'>Rue</th>
+                            <th class='colonne_ville'>Ville</th>
+                            <th class='colonne_tel'>Tel</th>
+                            <th class='colonne_dette'>Dette</th>
+                            <th style="width: 125px;">Action</th>
                         </tr>
                     </thead>
                     <tbody id="dataMagasin"></tbody>
@@ -214,6 +214,51 @@
     </div>
 </div>
 <!---fin modal detail magasin-->
+
+<!-- Modal personnaliser colonne -->
+  <div class="modal fade" id="modal_personnaliser_colonne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Personnalisation des colonnes</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="all_check">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_nom" checked>
+            <label class="form-check-label" for="check_nom">Nom</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_nom_social" checked>
+            <label class="form-check-label" for="check_nom_social">Nom social</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_rue" checked>
+            <label class="form-check-label" for="check_rue">Rue</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_ville" checked>
+            <label class="form-check-label" for="check_ville">Ville</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_tel" checked>
+            <label class="form-check-label" for="check_tel">Tel</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check_dette" checked>
+            <label class="form-check-label" for="check_dette">Dette</label>
+          </div>
+          
+        </div>
+        {# <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary">Enregistrer</button>
+        </div> #}
+      </div>
+    </div>
+  </div>
+<!-- Modal personnaliser colonne -->
+
 <script>
     $("#addNewMagasin").click(function () {
         $("#formMagasin")[0].reset();
@@ -264,12 +309,12 @@
                                 var dettes = data[i].dette;
 
                                 html += '<tr>' +
-                                    '<td>' + data[i].nomMag + '</td>' +
-                                    '<td>' + data[i].nomSocial + '</td>' +
-                                    '<td>' + data[i].nomRue + '</td>' +
-                                    '<td>' + data[i].ville + '</td>' +
-                                    '<td>' + data[i].phoneFix + '</td>' +
-                                    '<td>' + euro + dettes + '</td>' +
+                                    '<td class="colonne_nom">' + data[i].nomMag + '</td>' +
+                                    '<td class="colonne_nom_social">' + data[i].nomSocial + '</td>' +
+                                    '<td class="colonne_rue">' + data[i].nomRue + '</td>' +
+                                    '<td class="colonne_ville">' + data[i].ville + '</td>' +
+                                    '<td class="colonne_tel">' + data[i].phoneFix + '</td>' +
+                                    '<td class="colonne_dette">' + euro + dettes + '</td>' +
                                     '<td>' +
                                     '<button type="button" class="btn btn-dark btn-sm" onclick="detailleMagasin(' +
                                     data[i].id +
@@ -284,6 +329,7 @@
                                     '</tr>'
                             }
                             $('#dataMagasin').html(html);
+                            Personnalisation_colonne();
                         }
                     }
                 })
@@ -532,5 +578,101 @@
     $('.closeModal').click(function () {
         $('.modal').modal('hide');
     })
+
+
+
+    $("#all_check").click(function() {
+        if($("#check_nom").prop('checked')) {
+        localStorage.setItem("nom", "afficher");
+        $(".colonne_nom").show();
+        } else {
+        localStorage.setItem("nom", "masquer");
+        $(".colonne_nom").hide();
+        }
+
+        if($("#check_nom_social").prop('checked')) {
+        localStorage.setItem("nom_social", "afficher");
+        $(".colonne_nom_social").show();
+        } else {
+        localStorage.setItem("nom_social", "masquer");
+        $(".colonne_nom_social").hide();
+        }
+
+        if($("#check_rue").prop('checked')) {
+        localStorage.setItem("rue", "afficher");
+        $(".colonne_rue").show();
+        } else {
+        localStorage.setItem("rue", "masquer");
+        $(".colonne_rue").hide();
+        }
+
+        if($("#check_ville").prop('checked')) {
+        localStorage.setItem("ville", "afficher");
+        $(".colonne_ville").show();
+        } else {
+        localStorage.setItem("ville", "masquer");
+        $(".colonne_ville").hide();
+        }
+
+        if($("#check_tel").prop('checked')) {
+        localStorage.setItem("tel", "afficher");
+        $(".colonne_tel").show();
+        } else {
+        localStorage.setItem("tel", "masquer");
+        $(".colonne_tel").hide();
+        }
+
+        if($("#check_dette").prop('checked')) {
+        localStorage.setItem("dette", "afficher");
+        $(".colonne_dette").show();
+        } else {
+        localStorage.setItem("dette", "masquer");
+        $(".colonne_dette").hide();
+        }
+    });
+
+    function Personnalisation_colonne(){
+        if (localStorage.getItem("nom") =="masquer") {
+        $(".colonne_nom").hide();
+        $("#check_nom").prop("checked", false);
+        }
+
+        if (localStorage.getItem("nom_social") =="masquer") {
+        $(".colonne_nom_social").hide();
+        $("#check_nom_social").prop("checked", false);
+        }
+
+        if (localStorage.getItem("rue") =="masquer") {
+        $(".colonne_rue").hide();
+        $("#check_rue").prop("checked", false);
+        }
+
+        if (localStorage.getItem("ville") =="masquer") {
+        $(".colonne_ville").hide();
+        $("#check_ville").prop("checked", false);
+        }
+
+        if (localStorage.getItem("tel") =="masquer") {
+        $(".colonne_tel").hide();
+        $("#check_tel").prop("checked", false);
+        }
+
+        if (localStorage.getItem("dette") =="masquer") {
+        $(".colonne_dette").hide();
+        $("#check_dette").prop("checked", false);
+        }
+    }
+
+
+    $("#searchMagasin").keyup(function() {
+    let parametre = $('input[name=searchMagasin]').val()
+    if (parametre.length >= 2) {
+      searchAllMagasin();
+    }
+
+    if (parametre == "") {
+      showAllMagasin();
+    }
+  });
 </script>
 {% endblock %}
