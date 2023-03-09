@@ -34,7 +34,7 @@
         </ol>
     </nav>
     <div class="p-2 bd-highlight" style="float:right; margin-top: -70px">
-        <button class="btn bg-dark btnSav text-white" id="ajoutClient" onClick="change_order()">
+        <button class="btn bg-dark btnSav text-white" id="ajoutClient" data-bs-toggle="modal" data-bs-target="#modal_personnaliser_colonne">
             Personnalisation des boutons
         </button>
     </div>
@@ -126,6 +126,101 @@
         </div>
     </div>
 </section>
+
+<!-- Modal personnaliser colonne -->
+<div class="modal fade" id="modal_personnaliser_colonne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Personnalisation des boutons</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="all_check">
+				<table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th scope="col">Ordre</th>
+                            <th scope="col">Bouton</th>
+                            <th scope="col">Afficher</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>
+                                <select aria-label="Default select example">
+                                    <option selected value="blockDashbord">Dashboard</option>
+                                    <option value="blockSav">Sav</option>
+                                    <option value="blockClient">Client</option>
+                                    <option value="blockMagasin">Magasin</option>
+                                    <option value="blockUtilisateur">Utilisateur</option>
+                                </select>
+                            </td>
+                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>
+                                <select aria-label="Default select example">
+                                    <option value="blockDashbord">Dashboard</option>
+                                    <option selected value="blockSav">Sav</option>
+                                    <option value="blockClient">Client</option>
+                                    <option value="blockMagasin">Magasin</option>
+                                    <option value="blockUtilisateur">Utilisateur</option>
+                                </select>
+                            </td>
+                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>
+                                <select aria-label="Default select example">
+                                    <option value="blockDashbord">Dashboard</option>
+                                    <option value="blockSav">Sav</option>
+                                    <option selected value="blockClient">Client</option>
+                                    <option value="blockMagasin">Magasin</option>
+                                    <option value="blockUtilisateur">Utilisateur</option>
+                                </select>
+                            </td>
+                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>
+                                <select aria-label="Default select example">
+                                    <option value="blockDashbord">Dashboard</option>
+                                    <option value="blockSav">Sav</option>
+                                    <option value="blockClient">Client</option>
+                                    <option selected value="blockMagasin">Magasin</option>
+                                    <option value="blockUtilisateur">Utilisateur</option>
+                                </select>
+                            </td>
+                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">5</th>
+                            <td>
+                                <select aria-label="Default select example">
+                                    <option value="blockDashbord">Dashboard</option>
+                                    <option value="blockSav">Sav</option>
+                                    <option value="blockClient">Client</option>
+                                    <option value="blockMagasin">Magasin</option>
+                                    <option selected value="blockUtilisateur">Utilisateur</option>
+                                </select>
+                            </td>
+                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal personnaliser colonne -->
+
 <script>
     // $("#toggle-sidebar-button").attr("hidden", "hidden")
     // $(".sidebar").attr("hidden", "hidden")
@@ -144,8 +239,8 @@
         $("#blockDashbord").css("-webkit-box-ordinal-group","1");
         $("#blockSav").css("-webkit-box-ordinal-group","2");
         $("#blockClient").css("-webkit-box-ordinal-group","3");
-        $("#blockMagasin").css("-webkit-box-ordinal-group","4");
-        $("#blockUtilisateur").css("-webkit-box-ordinal-group","5");
+        $("#blockMagasin").css("-webkit-box-ordinal-group","5");
+        $("#blockUtilisateur").css("-webkit-box-ordinal-group","4");
     }
     
 </script>
