@@ -1,6 +1,31 @@
 {% extends 'template.html.twig' %}
 {% block title %}Camson Group | Accueil Liste{% endblock %}
 {% block body %}
+
+
+<style>
+    #blockContainer {
+        display: -webkit-box;
+        display: -moz-box;
+        display: box;
+        
+        /* -webkit-box-orient: ;
+        -moz-box-orient: vertical;
+        box-orient: vertical; */
+    }
+
+    /* #blockA {
+        -webkit-box-ordinal-group: 2;
+        -moz-box-ordinal-group: 2;
+        box-ordinal-group: 2;
+    }
+    #blockB {
+        -webkit-box-ordinal-group: 3;
+        -moz-box-ordinal-group: 3;
+        box-ordinal-group: 3;
+    } */
+
+</style>
 <div class="pagetitle">
     <h1>Accueil</h1>
     <nav>
@@ -9,7 +34,7 @@
         </ol>
     </nav>
     <div class="p-2 bd-highlight" style="float:right; margin-top: -70px">
-        <button class="btn bg-dark btnSav text-white" id="ajoutClient">
+        <button class="btn bg-dark btnSav text-white" id="ajoutClient" onClick="change_order()">
             Personnalisation des boutons
         </button>
     </div>
@@ -18,8 +43,8 @@
 
 
 <section class="section">
-    <div class="row mt-5">
-        <div class="col-md-2 offset-md-1">
+    <div class="row mt-5" id="blockContainer">
+        <div class="col-md-2 offset-md-1" id="blockDashbord">
             <div class="card">
                 <a href="{{ path('app_home') }}">
                     <div class="card-title ms-2 text-center">
@@ -35,7 +60,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" id="blockSav">
             <div class="card">
                 <a href="{{ path('app_sav') }}">
                     <div class="card-title ms-2 text-center">
@@ -51,7 +76,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" id="blockClient">
             <div class="card">
                 <a href="{{ path('app_client_index') }}">
                     <div class="card-title ms-2 text-center">
@@ -67,7 +92,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" id="blockMagasin">
             <div class="card">
                 <a href="{{ path('app_magasin') }}">
                     <div class="card-title ms-2 text-center">
@@ -83,7 +108,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" id="blockUtilisateur">
             <div class="card">
                 <a href="{{ path('app_utilisateur') }}">
                     <div class="card-title ms-2 text-center">
@@ -105,5 +130,23 @@
     // $("#toggle-sidebar-button").attr("hidden", "hidden")
     // $(".sidebar").attr("hidden", "hidden")
     // $("body").addClass("toggle-sidebar", "toggle-sidebar")
+
+
+    function change_order() {
+        // $("#blockA").css("-webkit-box-ordinal-group","2");
+        // $("#blockA").css("-moz-box-ordinal-group","2");
+        // $("#blockA").css("box-ordinal-group","2");
+
+        // $("#blockB").css("-webkit-box-ordinal-group","3");
+        // $("#blockB").css("-moz-box-ordinal-group","3");
+        // $("#blockB").css("box-ordinal-group","3");
+
+        $("#blockDashbord").css("-webkit-box-ordinal-group","1");
+        $("#blockSav").css("-webkit-box-ordinal-group","2");
+        $("#blockClient").css("-webkit-box-ordinal-group","3");
+        $("#blockMagasin").css("-webkit-box-ordinal-group","4");
+        $("#blockUtilisateur").css("-webkit-box-ordinal-group","5");
+    }
+    
 </script>
 {% endblock %}
