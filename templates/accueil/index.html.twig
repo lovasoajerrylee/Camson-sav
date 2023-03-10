@@ -174,13 +174,20 @@
         // $("#blockB").css("-moz-box-ordinal-group","3");
         // $("#blockB").css("box-ordinal-group","3");
 
-        $("#blockDashbord").css("-webkit-box-ordinal-group","1");
-        $("#blockSav").css("-webkit-box-ordinal-group","2");
-        $("#blockClient").css("-webkit-box-ordinal-group","3");
-        $("#blockMagasin").css("-webkit-box-ordinal-group","5");
-        $("#blockUtilisateur").css("-webkit-box-ordinal-group","4");
+        // $("#blockDashbord").css("-webkit-box-ordinal-group","1");
+        // $("#blockSav").css("-webkit-box-ordinal-group","2");
+        // $("#blockClient").css("-webkit-box-ordinal-group","3");
+        // $("#blockMagasin").css("-webkit-box-ordinal-group","5");
+        // $("#blockUtilisateur").css("-webkit-box-ordinal-group","4");
 
-        console.log('danger');
+        $("#sortable-list #blockDashbord").css("order",5);
+        $("#sortable-list #blockSav").css("order",4);
+        $("#sortable-list #blockClient").css("order",3);
+        $("#sortable-list #blockMagasin").css("order",2);
+        $("#sortable-list #blockUtilisateur").css("order",1);
+
+
+        
     }
 
     var submit = $('#autoSubmit'),
@@ -194,8 +201,7 @@
         });
     
         sortInput.val(sortOrder.join(','));
-        
-        $('#sort-result').text(sortOrder);   
+         
         console.log(sortOrder);
     };
     
