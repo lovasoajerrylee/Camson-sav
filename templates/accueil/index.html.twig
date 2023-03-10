@@ -125,80 +125,27 @@
 				<h5 class="modal-title" id="exampleModalLabel">Personnalisation des boutons</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body" id="all_check">
+			<div class="modal-body" id="all_check" onClick="change_order()">
 				<table class="table table-borderless">
                     <thead>
                         <tr>
-                            <th scope="col">Ordre</th>
-                            <th scope="col">Bouton</th>
                             <th scope="col">Afficher</th>
-                            
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">1</th>
-                            <td>
-                                <select aria-label="Default select example">
-                                    <option selected value="blockDashbord">Dashboard</option>
-                                    <option value="blockSav">Sav</option>
-                                    <option value="blockClient">Client</option>
-                                    <option value="blockMagasin">Magasin</option>
-                                    <option value="blockUtilisateur">Utilisateur</option>
-                                </select>
-                            </td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                         <tr>
-                            <th scope="row">2</th>
-                            <td>
-                                <select aria-label="Default select example">
-                                    <option value="blockDashbord">Dashboard</option>
-                                    <option selected value="blockSav">Sav</option>
-                                    <option value="blockClient">Client</option>
-                                    <option value="blockMagasin">Magasin</option>
-                                    <option value="blockUtilisateur">Utilisateur</option>
-                                </select>
-                            </td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                         <tr>
-                            <th scope="row">3</th>
-                            <td>
-                                <select aria-label="Default select example">
-                                    <option value="blockDashbord">Dashboard</option>
-                                    <option value="blockSav">Sav</option>
-                                    <option selected value="blockClient">Client</option>
-                                    <option value="blockMagasin">Magasin</option>
-                                    <option value="blockUtilisateur">Utilisateur</option>
-                                </select>
-                            </td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                         <tr>
-                            <th scope="row">4</th>
-                            <td>
-                                <select aria-label="Default select example">
-                                    <option value="blockDashbord">Dashboard</option>
-                                    <option value="blockSav">Sav</option>
-                                    <option value="blockClient">Client</option>
-                                    <option selected value="blockMagasin">Magasin</option>
-                                    <option value="blockUtilisateur">Utilisateur</option>
-                                </select>
-                            </td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                         <tr>
-                            <th scope="row">5</th>
-                            <td>
-                                <select aria-label="Default select example">
-                                    <option value="blockDashbord">Dashboard</option>
-                                    <option value="blockSav">Sav</option>
-                                    <option value="blockClient">Client</option>
-                                    <option value="blockMagasin">Magasin</option>
-                                    <option selected value="blockUtilisateur">Utilisateur</option>
-                                </select>
-                            </td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                     </tbody>
@@ -226,11 +173,14 @@
         // $("#blockB").css("-webkit-box-ordinal-group","3");
         // $("#blockB").css("-moz-box-ordinal-group","3");
         // $("#blockB").css("box-ordinal-group","3");
+
         $("#blockDashbord").css("-webkit-box-ordinal-group","1");
         $("#blockSav").css("-webkit-box-ordinal-group","2");
         $("#blockClient").css("-webkit-box-ordinal-group","3");
         $("#blockMagasin").css("-webkit-box-ordinal-group","5");
         $("#blockUtilisateur").css("-webkit-box-ordinal-group","4");
+
+        console.log('danger');
     }
 
     var submit = $('#autoSubmit'),
