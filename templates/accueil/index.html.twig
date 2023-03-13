@@ -204,25 +204,25 @@
         list = $('#sortable-list'),
         sortInput = $('#sort_order');
             
-    // var fnSubmit = function(save){
-    //     var sortOrder = [];
-    //     list.children('li').each(function(){
-    //         sortOrder.push($(this).data('id'));
-    //         console.log('hello');
-    //     });
+    var fnSubmit = function(save){
+        var sortOrder = [];
+        list.children('li').each(function(){
+            sortOrder.push($(this).data('id'));
+            console.log('hello');
+        });
     
-    //     sortInput.val(sortOrder.join(','));
+        sortInput.val(sortOrder.join(','));
          
-    //     console.log(sortOrder);
-    // };
+        console.log(sortOrder);
+    };
     
     /* store values */
-    // list.children('li').each(function() {
-    //     var li = $(this);
+    list.children('li').each(function() {
+        var li = $(this);
         
-    //     //store value and clear title value
-    //     li.data('id',li.attr('title')).attr('title','');
-    // });
+        //store value and clear title value
+        li.data('id',li.attr('title')).attr('title','');
+    });
     
     /* sortables */
     list.sortable({
