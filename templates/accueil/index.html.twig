@@ -32,9 +32,9 @@
 
 <section class="section">
     <div class="row mt-5">
-        <ul id="sortable-list" class="ui-sortable" unselectable="on" style="-moz-user-select: none;">    
+        <ul id="sortable-list"  class="ui-sortable" unselectable="on" style="-moz-user-select: none;">    
             <li title="1" class="col-md-2 offset-md-1 m-3" id="blockDashbord">
-                <div class="card">
+                <div class="card" ondragstart="resetPosition(event)" draggable="true">
                     <a href="{{ path('app_home') }}">
                         <div class="card-title ms-2 text-center">
                             Dashboard
@@ -190,34 +190,48 @@
         
     }
 
+    function resetPosition(event) {
+        // $("#sortable-list #blockDashbord").css("order","");
+        // $("#sortable-list #blockSav").css("order","");
+        // $("#sortable-list #blockClient").css("order","");
+        // $("#sortable-list #blockMagasin").css("order","");
+        // $("#sortable-list #blockUtilisateur").css("order","");
+
+        console.log('hello');
+    }
+
     var submit = $('#autoSubmit'),
         list = $('#sortable-list'),
         sortInput = $('#sort_order');
             
-    var fnSubmit = function(save){
-        var sortOrder = [];
-        list.children('li').each(function(){
-            sortOrder.push($(this).data('id'));
-        });
+    // var fnSubmit = function(save){
+    //     var sortOrder = [];
+    //     list.children('li').each(function(){
+    //         sortOrder.push($(this).data('id'));
+    //         console.log('hello');
+    //     });
     
-        sortInput.val(sortOrder.join(','));
+    //     sortInput.val(sortOrder.join(','));
          
-        console.log(sortOrder);
-    };
+    //     console.log(sortOrder);
+    // };
     
     /* store values */
-    list.children('li').each(function() {
-        var li = $(this);
+    // list.children('li').each(function() {
+    //     var li = $(this);
         
-        //store value and clear title value
-        li.data('id',li.attr('title')).attr('title','');
-    });
+    //     //store value and clear title value
+    //     li.data('id',li.attr('title')).attr('title','');
+    // });
     
     /* sortables */
     list.sortable({
         opacity: 0.7,
+        animation: 150,
         update: function() {
-        fnSubmit(); //.checked return boolean
+        // fnSubmit(); 
+        //.checked return boolean
+        console.log(list);
         }
     });
 
