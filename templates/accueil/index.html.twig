@@ -32,8 +32,8 @@
 
 <section class="section">
     <div class="row mt-5">
-        <ul id="sortable-list" ondrag="resetPosition(event)" draggable="true" class="ui-sortable" unselectable="on" style="-moz-user-select: none;">    
-            <li title="1" class="col-md-2 offset-md-1 m-3" id="blockDashbord">
+        <ul id="sortable-list" class="ui-sortable" unselectable="on" style="-moz-user-select: none;">    
+            <li title="dashbord" class="col-md-2 offset-md-1 m-3" id="blockDashbord">
                 <div class="card">
                     <a href="{{ path('app_home') }}">
                         <div class="card-title ms-2 text-center">
@@ -49,7 +49,7 @@
                     </a>
                 </div>
             </li>
-            <li title="2" class="col-md-2 m-3" id="blockSav">
+            <li title="sav" class="col-md-2 m-3" id="blockSav">
                 <div class="card">
                     <a href="{{ path('app_sav') }}">
                         <div class="card-title ms-2 text-center">
@@ -65,7 +65,7 @@
                     </a>
                 </div>
             </li>
-            <li title="3" class="col-md-2 m-3" id="blockClient">
+            <li title="client" class="col-md-2 m-3" id="blockClient">
                 <div class="card">
                     <a href="{{ path('app_client_index') }}">
                         <div class="card-title ms-2 text-center">
@@ -81,7 +81,7 @@
                     </a>
                 </div>
             </li>
-            <li title="4" class="col-md-2 m-3" id="blockMagasin">
+            <li title="magasin" class="col-md-2 m-3" id="blockMagasin">
                 <div class="card">
                     <a href="{{ path('app_magasin') }}">
                         <div class="card-title ms-2 text-center">
@@ -97,7 +97,7 @@
                     </a>
                 </div>
             </li>
-            <li title="5" class="col-md-2 m-3" id="blockUtilisateur">
+            <li title="utilisateur" class="col-md-2 m-3" id="blockUtilisateur">
                 <div class="card">
                     <a href="{{ path('app_utilisateur') }}">
                         <div class="card-title ms-2 text-center">
@@ -166,72 +166,26 @@
     // $(".sidebar").attr("hidden", "hidden")
     // $("body").addClass("toggle-sidebar", "toggle-sidebar")
 
-    function change_order() {
-        // $("#blockA").css("-webkit-box-ordinal-group","2");
-        // $("#blockA").css("-moz-box-ordinal-group","2");
-        // $("#blockA").css("box-ordinal-group","2");
-        // $("#blockB").css("-webkit-box-ordinal-group","3");
-        // $("#blockB").css("-moz-box-ordinal-group","3");
-        // $("#blockB").css("box-ordinal-group","3");
+    $(function() {
+        var $sortable = $('#sortable-list');
+        var pos = JSON.parse(localStorage.getItem('positions'));
+        if (pos) {
+            $.each(pos, function(i, position) {
+            var $target = $sortable.find('#' + position);
+            $target.appendTo($sortable); // or prependTo
+            });
+        }
 
-        // $("#blockDashbord").css("-webkit-box-ordinal-group","1");
-        // $("#blockSav").css("-webkit-box-ordinal-group","2");
-        // $("#blockClient").css("-webkit-box-ordinal-group","3");
-        // $("#blockMagasin").css("-webkit-box-ordinal-group","5");
-        // $("#blockUtilisateur").css("-webkit-box-ordinal-group","4");
-
-        $("#sortable-list #blockDashbord").css("order",5);
-        $("#sortable-list #blockSav").css("order",4);
-        $("#sortable-list #blockClient").css("order",3);
-        $("#sortable-list #blockMagasin").css("order",2);
-        $("#sortable-list #blockUtilisateur").css("order",1);
-
-
-        
-    }
-
-    function resetPosition(event) {
-        $("#sortable-list #blockDashbord").css("order","");
-        $("#sortable-list #blockSav").css("order","");
-        $("#sortable-list #blockClient").css("order","");
-        $("#sortable-list #blockMagasin").css("order","");
-        $("#sortable-list #blockUtilisateur").css("order","");
-
-        console.log('hello');
-    }
-
-    var submit = $('#autoSubmit'),
-        list = $('#sortable-list'),
-        sortInput = $('#sort_order');
-            
-    var fnSubmit = function(save){
-        var sortOrder = [];
-        list.children('li').each(function(){
-            sortOrder.push($(this).data('id'));
+        $sortable.sortable({
+            update: saveNewOrder
         });
-    
-        sortInput.val(sortOrder.join(','));
-         
-        console.log(sortOrder);
-    };
-    
-    /* store values */
-    list.children('li').each(function() {
-        var li = $(this);
-        
-        //store value and clear title value
-        li.data('id',li.attr('title')).attr('title','');
-    });
-    
-    /* sortables */
-    list.sortable({
-        opacity: 0.7,
-        animation: 150,
-        update: function() {
-        fnSubmit(); 
-        //.checked return boolean
+
+        function saveNewOrder() {
+            var pos = JSON.stringify($sortable.sortable("toArray"));
+            localStorage.setItem('positions', pos);
         }
     });
+
 
     
 </script>
