@@ -32,9 +32,9 @@
 
 <section class="section">
     <div class="row mt-5">
-        <ul id="sortable-list"  class="ui-sortable" unselectable="on" style="-moz-user-select: none;">    
+        <ul id="sortable-list" ondrag="resetPosition(event)" draggable="true" class="ui-sortable" unselectable="on" style="-moz-user-select: none;">    
             <li title="1" class="col-md-2 offset-md-1 m-3" id="blockDashbord">
-                <div class="card" ondragstart="resetPosition(event)" draggable="true">
+                <div class="card">
                     <a href="{{ path('app_home') }}">
                         <div class="card-title ms-2 text-center">
                             Dashboard
@@ -191,11 +191,11 @@
     }
 
     function resetPosition(event) {
-        // $("#sortable-list #blockDashbord").css("order","");
-        // $("#sortable-list #blockSav").css("order","");
-        // $("#sortable-list #blockClient").css("order","");
-        // $("#sortable-list #blockMagasin").css("order","");
-        // $("#sortable-list #blockUtilisateur").css("order","");
+        $("#sortable-list #blockDashbord").css("order","");
+        $("#sortable-list #blockSav").css("order","");
+        $("#sortable-list #blockClient").css("order","");
+        $("#sortable-list #blockMagasin").css("order","");
+        $("#sortable-list #blockUtilisateur").css("order","");
 
         console.log('hello');
     }
@@ -208,7 +208,6 @@
         var sortOrder = [];
         list.children('li').each(function(){
             sortOrder.push($(this).data('id'));
-            console.log('hello');
         });
     
         sortInput.val(sortOrder.join(','));
@@ -229,9 +228,8 @@
         opacity: 0.7,
         animation: 150,
         update: function() {
-        // fnSubmit(); 
+        fnSubmit(); 
         //.checked return boolean
-        console.log(list);
         }
     });
 
