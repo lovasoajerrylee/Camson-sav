@@ -125,27 +125,33 @@
 				<h5 class="modal-title" id="exampleModalLabel">Personnalisation des boutons</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body" id="all_check" onClick="change_order()">
+			<div class="modal-body" id="all_check">
 				<table class="table table-borderless">
                     <thead>
                         <tr>
+                            <th scope="col">Boutons</th>
                             <th scope="col">Afficher</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <td>Dashboard</td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                         <tr>
+                            <td>SAV</td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                         <tr>
+                            <td>Client</td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                         <tr>
+                            <td>Magasin</td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                         <tr>
+                            <td>Utilisateur</td>
                             <td><input class="form-check-input" type="checkbox" value="" checked></td>
                         </tr>
                     </tbody>
@@ -169,10 +175,12 @@
     $(function() {
         var $sortable = $('#sortable-list');
         var pos = JSON.parse(localStorage.getItem('positions'));
+        
         if (pos) {
             $.each(pos, function(i, position) {
-            var $target = $sortable.find('#' + position);
-            $target.appendTo($sortable); // or prependTo
+                var $target = $sortable.find('#' + position);
+                console.log($target);
+                $target.appendTo($sortable); // or prependTo
             });
         }
 
