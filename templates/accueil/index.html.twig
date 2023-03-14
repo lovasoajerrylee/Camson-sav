@@ -136,23 +136,23 @@
                     <tbody>
                         <tr>
                             <td>Dashboard</td>
-                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                            <td><input class="form-check-input" type="checkbox" value="" id="check_dashbord" checked></td>
                         </tr>
                         <tr>
                             <td>SAV</td>
-                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                            <td><input class="form-check-input" type="checkbox" value="" id="check_sav" checked></td>
                         </tr>
                         <tr>
                             <td>Client</td>
-                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                            <td><input class="form-check-input" type="checkbox" value="" id="check_client" checked></td>
                         </tr>
                         <tr>
                             <td>Magasin</td>
-                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                            <td><input class="form-check-input" type="checkbox" value="" id="check_magasin" checked></td>
                         </tr>
                         <tr>
                             <td>Utilisateur</td>
-                            <td><input class="form-check-input" type="checkbox" value="" checked></td>
+                            <td><input class="form-check-input" type="checkbox" value="" id="check_utilisateur" checked></td>
                         </tr>
                     </tbody>
 
@@ -193,6 +193,49 @@
             localStorage.setItem('positions', pos);
         }
     });
+
+
+    $("#all_check").click(function() {
+    if($("#check_dashbord").prop('checked')) {
+      localStorage.setItem("dashbord_accueil", "afficher");
+      $("#blockDashbord").show();
+    } else {
+      localStorage.setItem("dashbord_accueil", "masquer");
+      $("#blockDashbord").hide();
+    }
+
+    if($("#check_sav").prop('checked')) {
+      localStorage.setItem("sav_accueil", "afficher");
+      $("#blockSav").show();
+    } else {
+      localStorage.setItem("sav_accueil", "masquer");
+      $("#blockSav").hide();
+    }
+
+    if($("#check_client").prop('checked')) {
+      localStorage.setItem("client_accueil", "afficher");
+      $("#blockClient").show();
+    } else {
+      localStorage.setItem("client_accueil", "masquer");
+      $("#blockClient").hide();
+    }
+
+    if($("#check_magasin").prop('checked')) {
+      localStorage.setItem("magasin_accueil", "afficher");
+      $("#blockMagasin").show();
+    } else {
+      localStorage.setItem("magasin_accueil", "masquer");
+      $("#blockMagasin").hide();
+    }
+
+    if($("#check_utilisateur").prop('checked')) {
+      localStorage.setItem("utilisateur_accueil", "afficher");
+      $("#blockUtilisateur").show();
+    } else {
+      localStorage.setItem("utilisateur_accueil", "masquer");
+      $("#blockUtilisateur").hide();
+    }
+  });
 
 
     
