@@ -238,6 +238,36 @@
   });
 
 
+  function Personnalisation_boutons(){
+    if (localStorage.getItem("dashbord_accueil") =="masquer") {
+      $("#blockDashbord").hide();
+      $("#check_dashbord").prop("checked", false);
+    }
+
+    if (localStorage.getItem("sav_accueil") =="masquer") {
+      $("#blockSav").hide();
+      $("#check_sav").prop("checked", false);
+    }
+
+    if (localStorage.getItem("client_accueil") =="masquer") {
+      $("#blockClient").hide();
+      $("#check_client").prop("checked", false);
+    }
+
+    if (localStorage.getItem("magasin_accueil") =="masquer") {
+      $("#blockMagasin").hide();
+      $("#check_magasin").prop("checked", false);
+    }
+
+    if (localStorage.getItem("utilisateur_accueil") =="masquer") {
+      $("#blockUtilisateur").hide();
+      $("#check_utilisateur").prop("checked", false);
+    }
+
+  }
+
+  Personnalisation_boutons();
+
     
 </script>
 
