@@ -59,7 +59,7 @@ class TablePrefixEventListener
         //dd($bundleName);
 
         if (!$bundleName || !isset($this->config[$bundleName])) {
-            return 'cg2023_';
+            return 'cg2023_';  
         }
 
         $prefix = $this->config[$bundleName];
