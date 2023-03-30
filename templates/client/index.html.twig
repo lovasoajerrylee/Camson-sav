@@ -136,7 +136,11 @@
                     <div class="form-group">
                       <label class="control-label">Etat</label>
                       <div>
-                        <input type="text" class="form-control input-lg" name="etat" id="etat">
+                        <select class="form-select input-lg" aria-label="Default select example" name="etat" id="etat">
+                          <option selected>Open this select menu</option>
+                          <option value="0">Non active</option>
+                          <option value="1">Active</option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -551,8 +555,8 @@
               // }
               html += "<tr>" +
                 "<td class='colonne_nom'>" + value.nomClient + "</td>" +
-                "<td class='colonne_tel'>" + value.telFixe + "</td>" +
                 "<td class='colonne_prenom'>" + value.prenomClient + "</td>" +
+                "<td class='colonne_tel'>" + value.telFixe + "</td>" +
                 "<td class='colonne_ref'>" + value.refClient + "</td>" +
                 "<td class='colonne_etat'>" + value.etat + "</td>" +
                 "<td class='colonne_email'>" + value.email + "</td>" +
