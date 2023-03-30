@@ -1517,6 +1517,24 @@
     }
   });
 
+  function date_now() {
+
+    console.log("today");
+
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+    $('#date_debut').val(today);
+
+    console.log(today);
+  }
+
+  date_now();
+
 
 </script>
 {% endblock %}
