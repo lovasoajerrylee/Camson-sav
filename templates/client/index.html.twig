@@ -69,8 +69,7 @@
                     <div class="form-group">
                       <label class="control-label">Date de paiement</label>
                       <div>
-                        <input type="date" class="form-control input-lg" name="datePaiement" id="datePaiment"
-                          onchange="ctrlChamp()">
+                        <input type="date" class="form-control input-lg" name="datePaiement" id="datePaiment" onchange="ctrlChamp()">
                       </div>
                     </div>
                   </div>
@@ -928,6 +927,23 @@
       showAllClient();
     }
   });
+
+  function date_now() {
+
+    console.log("today");
+
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+    $('#datePaiment').val(today);
+
+  }
+
+  date_now();
   
   
   </script>
