@@ -278,7 +278,14 @@
                     dataSource: function (done) {
                         result.push(data);
                         done(result[0]);
-                        console.log(result[0]);
+                        console.log(result.length);
+
+                        if (result.length <= 1) {
+                            $('#btn_adm_delete').attr('disabled','disabled');
+                        }
+                        else {
+                            $('#btn_adm_delete').removeAttr('disabled');
+                        }
                     },
                     callback: function (data, pagination) {
                         let html = "";
@@ -313,22 +320,22 @@
                             if (value.roles[0] == "ROLE_ADMIN") {
                                 html +=
                                     "<tr>" +
-                                    "<td class='colonne_nom'>" +
-                                    value.username +
-                                    "</td>" +
-                                    "<td class='colonne_email'>" +
-                                    value.email +
-                                    "</td>" +
-                                    "<td class='colonne_role'>" + value.roles[0] + "</td>" +
-                                    "<td class='text-center'>" +
-                                    '<button type="button" class="btn btn-dark btn-sm" onclick="userDetail(' +
-                                    value.id +
-                                    ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
-                                    btn +
-                                    '<button type="button" onclick="modalDeleteTech(' +
-                                    value.id +
-                                    ')" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="left" title="Supprimer"><i class="bi bi-trash3"></i></button>' +
-                                    "</td>" +
+                                        "<td class='colonne_nom'>" +
+                                            value.username +
+                                        "</td>" +
+                                        "<td class='colonne_email'>" +
+                                            value.email +
+                                        "</td>" +
+                                        "<td class='colonne_role'>" + value.roles[0] + "</td>" +
+                                        "<td class='text-center'>" +
+                                        '<button type="button" class="btn btn-dark btn-sm" onclick="userDetail(' +
+                                        value.id + 
+                                        ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                                        btn +
+                                        '<button type="button" style="margin-left: 4px;" onclick="modalDeleteTech(' +
+                                        value.id +
+                                        ')" class="btn btn-danger btn-sm" id="btn_adm_delete" data-toggle="tooltip" data-placement="left" title="Supprimer"><i class="bi bi-trash3"></i></button>' +
+                                        "</td>" +
                                     +"</tr>";
                                 $("#dataUtilisateurAdmin").html(html);
                             } else if (value.roles[0] == "ROLE_TECH" || value.roles[
