@@ -148,8 +148,7 @@
                     <div class="form-group">
                       <label class="control-label">Date de client</label>
                       <div>
-                        <input type="date" class="form-control input-lg" name="dateClient" id="dateClient"
-                          onchange="ctrlChamp()">
+                        <input type="date" class="form-control input-lg" name="dateClient" id="dateClient" onchange="ctrlChamp()" value="{{ 'now'|date('Y-m-d') }}">
                       </div>
                     </div>
                   </div>
