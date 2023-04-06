@@ -62,6 +62,10 @@ class Client
     #[Groups(['client:read'])]
     private ?string $email = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['client:read'])]
+    private ?string $abonnement = null;
+
     public function __construct()
     {
         $this->savs = new ArrayCollection();
@@ -218,6 +222,18 @@ class Client
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getAbonnement(): ?string
+    {
+        return $this->abonnement;
+    }
+
+    public function setAbonnement(?string $abonnement): self
+    {
+        $this->abonnement = $abonnement;
 
         return $this;
     }

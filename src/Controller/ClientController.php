@@ -78,6 +78,7 @@ class ClientController extends AbstractController
            $portable1 = $request->request->get('portable1');
            $portable2 = $request->request->get('portable2');
            $mail = $request->request->get('email');
+           $abonnement = $request->request->get('abonnement');
        
            $client->setNomClient($nomClient);
            $client->setPrenomClient($prenomClient);
@@ -87,7 +88,8 @@ class ClientController extends AbstractController
            $client->setNomGerant($nomGerant);
            $client->setEtat($etat);        
            $client->setTelFixe($telFixe);        
-           $client->setEmail($mail);        
+           $client->setEmail($mail); 
+           $client->setAbonnement($abonnement);        
            $client->setDatePaiment(
                \DateTime::createFromFormat('Y-m-d', $datePaiment)
            );
