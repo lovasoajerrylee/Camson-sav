@@ -78,7 +78,25 @@ class ClientController extends AbstractController
            $portable1 = $request->request->get('portable1');
            $portable2 = $request->request->get('portable2');
            $mail = $request->request->get('email');
-           $abonnement = $request->request->get('abonnement');
+
+           $abonnement = "";
+           
+
+           $photocopie = $request->request->get('photocopie');
+           $maintenance = $request->request->get('maintenance');
+
+           if (!$maintenance) {
+            $abonnement =  $photocopie;
+           }
+
+           if (!$photocopie) {
+            $abonnement =  $maintenance;
+           }
+
+
+           if ($maintenance && $photocopie) {
+            $abonnement = $photocopie.", ".$maintenance;
+           }
        
            $client->setNomClient($nomClient);
            $client->setPrenomClient($prenomClient);
