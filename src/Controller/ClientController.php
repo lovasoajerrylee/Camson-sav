@@ -43,6 +43,10 @@ class ClientController extends AbstractController
     #[Route('/', name: 'app_client_index')]
     public function index(): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute("app_login");
+        }
         return $this->render('client/index.html.twig');
     }
   

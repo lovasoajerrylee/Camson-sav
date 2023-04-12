@@ -27,6 +27,10 @@ class MagasinController extends AbstractController
     #[Route('/magasin', name: 'app_magasin')]
     public function index()
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute("app_login");
+        }
         return $this->render('magasin/index.html.twig');
     }
     #[Route('/magasin/allMagasin', name: 'app_magasin_all_magasin')]

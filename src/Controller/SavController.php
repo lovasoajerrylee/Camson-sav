@@ -71,6 +71,10 @@ class SavController extends AbstractController
 
         // }
         // dd($datas);
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute("app_login");
+        }
 
         return $this->render('sav/index.html.twig');
     }

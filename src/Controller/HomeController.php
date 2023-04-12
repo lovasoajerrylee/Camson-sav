@@ -38,6 +38,10 @@ class HomeController extends AbstractController
     #[Route('/home', name: 'app_home')]
     public function index(): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute("app_login");
+        }
         $countSavAttente = count($this->SavRepository->findBy(['etat' => 0]));
         $countSav = count($this->SavRepository->findAll());
         $countSavEnCours = count($this->SavRepository->findBy(['etat' => 1]));
