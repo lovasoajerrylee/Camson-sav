@@ -146,7 +146,7 @@ class ClientController extends AbstractController
         $telFixe = $request->request->get('telFixe');
         $refClient = $request->request->get('reference');
         $etat = $request->request->get('etat');
-        $datePaiment = $request->request->get('datePaiment');
+        $datePaiment = $request->request->get('datePaiement');
         $nomGerant = $request->request->get('nomGerant');
         $portable1 = $request->request->get('portable1');
         $portable2 = $request->request->get('portable2');

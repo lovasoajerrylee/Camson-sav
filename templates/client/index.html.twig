@@ -31,9 +31,7 @@
       <i class="ri-user-3-fill"></i> Nouvelle client
     </button>
   </div>
-
-  <div class="modal fade" id="modalClient" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="modalClient" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -43,6 +41,7 @@
           <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="formClient" method="post">
+          <input type="text" name="id" hidden>
           <div class="modal-body">
             <div class="modal-body">
               <div class="container-fluid">
@@ -51,8 +50,7 @@
                     <div class="form-group">
                       <label class="control-label">Nom Client</label>
                       <div>
-                        <input type="text" class="form-control input-lg" name="nomClient" id="nom_Client"
-                          onkeyup="ctrlChamp()">
+                        <input type="text" class="form-control input-lg" name="nomClient" id="nom_Client" onkeyup="ctrlChamp()">
                       </div>
                     </div>
                   </div>
@@ -60,8 +58,7 @@
                     <div class="form-group">
                       <label class="control-label">Prénom</label>
                       <div>
-                        <input type="text" class="form-control input-lg" name="prenomClient" id="prenomClient"
-                          onkeyup="ctrlChamp()">
+                        <input type="text" class="form-control input-lg" name="prenomClient" id="prenomClient" onkeyup="ctrlChamp()">
                       </div>
                     </div>
                   </div>
@@ -77,8 +74,7 @@
                     <div class="form-group">
                       <label class="control-label">Reférence client</label>
                       <div>
-                        <input type="text" class="form-control input-lg" name="reference" id="reference"
-                          onkeyup="ctrlChamp()">
+                        <input type="text" class="form-control input-lg" name="reference" id="reference" onkeyup="ctrlChamp()">
                       </div>
                     </div>
                   </div>
@@ -88,8 +84,7 @@
                     <div class="form-group">
                       <label class="control-label">Gerant</label>
                       <div>
-                        <input type="text" class="form-control input-lg" name="gerant" id="gerant"
-                          onkeyup="ctrlChamp()">
+                        <input type="text" class="form-control input-lg" name="gerant" id="gerant" onkeyup="ctrlChamp()">
                       </div>
                     </div>
                   </div>
@@ -97,8 +92,7 @@
                     <div class="form-group">
                       <label class="control-label">Portable 1</label>
                       <div>
-                        <input type="text" class="form-control input-lg" name="portable1" id="portable1"
-                          onkeyup="ctrlChamp()">
+                        <input type="text" class="form-control input-lg" name="portable1" id="portable1" onkeyup="ctrlChamp()">
                       </div>
                     </div>
                   </div>
@@ -108,8 +102,7 @@
                     <div class="form-group">
                       <label class="control-label">Portable 2</label>
                       <div>
-                        <input type="text" class="form-control input-lg" name="portable2" id="portable2"
-                          onkeyup="ctrlChamp()">
+                        <input type="text" class="form-control input-lg" name="portable2" id="portable2" onkeyup="ctrlChamp()">
                       </div>
                     </div>
                   </div>
@@ -135,7 +128,7 @@
                     <div class="form-group">
                       <label class="control-label">Etat</label>
                       <div>
-                        <select class="form-control input-lg" aria-label="Default select example" name="etat" id="etat">
+                        <select class="form-control input-lg" name="etat" id="etat">
                           <option value="3">Archivé</option>
                           <option value="2">En attente</option>
                           <option value="1">Active</option>
@@ -157,9 +150,9 @@
                   </div>
                   <div class="col-lg-6">
                     <div class="form-group">
-                    <label class="control-label">Abonnement</label>
-                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="photocopie" name="photocopie" >
+                      <label class="control-label">Abonnement</label>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="photocopie" name="photocopie">
                         <label class="form-check-label" for="flexCheckDefault">
                           Photocopie
                         </label>
@@ -173,13 +166,13 @@
                     </div>
                   </div>
                 </div>
-                
+
               </div>
               <!--Footer Modal-->
               <div class="modal-footer flex-center">
                 <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Annuler</button>
-                <button disabled type="button" class="btn btn-info text-white" id="btnClient">Creer <span
-                    id="loadingAddClient"></span>
+                <button disabled type="button" class="btn btn-info text-white" id="btnClient">Creer <span id="loadingAddClient"></span>
+                <button type="button" class="btn btn-info text-white" id="btnEditer">Modifier <span id="loadingAddClient"></span>
                 </button>
               </div>
             </div>
@@ -191,239 +184,6 @@
 </div>
 </div>
 <!-- ====================== =FIN AJOUTER CLIENT ===========================-->
-<!-- ====================== =EDITER CLIENT ===========================-->
-<div class="modal fade" id="modalEditClient" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createModalLabel">
-          <i class="ti-marker-alt m-r-10"></i>
-        </h5>
-        <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form id="formEditClient">
-        <input type="hidden" name="id">
-        <div class="modal-body">
-          <div class="modal-body">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Nom Client</label>
-                    <input class="form-control magasinTags" name="nomClient" />
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Prenom</label>
-                    <input class="form-control" name="prenomClient" />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Tel Fixe</label>
-                    <input name="telFixe" class="form-control">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Portabel 1</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="portable1" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Portable 2</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="portable2" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Reference</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="reference" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Date Paiment</label>
-                    <div>
-                      <input type="date" class="form-control input-lg" name="datePaiment" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Gerant</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="nomGerant" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Email</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="email" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <div class="form-check">
-                      <input type="checkbox" id="etat" name="etat" class="form-check-input" value="1" />
-                      <label class="form-check-label" for="sav_form_ajouteIntervention">Etat</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary closeModal">
-              Annuler
-            </button>
-            <button type="button" id="btnEditer" class="btn btn-primary">
-              Update<span id="loadingUpdateClient"></span>
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- ====================== =FIN EDITER CLIENT ===========================-->
-<!-- ====================== =DETAILLE CLIENT ===========================-->
-<div class="modal fade" id="modalDetailleClient" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createModalLabel">
-          <i class="ti-marker-alt m-r-10"></i>
-        </h5>
-        <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      <form id=" ">
-        <div class="modal-body">
-          <div class="modal-body">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Nom Client</label>
-                    <input class="form-control magasinTags" name="nomClient" disabled />
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Prenom</label>
-                    <input class="form-control" name="prenomClient" disabled />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Tel Fixe</label>
-                    <input name="telFixe" class="form-control" disabled>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Portabel 1</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="portable1" disabled />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Portable 2</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="portable2" disabled />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Reference</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="reference" disabled />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Date Paiment</label>
-                    <div>
-                      <input type="date" class="form-control input-lg" name="datePaiment" disabled />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Gerant</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="nomGerant" disabled />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="control-label">Email</label>
-                    <div>
-                      <input type="text" class="form-control input-lg" name="email" disabled />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <div class="form-check">
-                      <input type="checkbox" id="etat" name="etat" class="form-check-input" value="1" disabled />
-                      <label class="form-check-label" for="sav_form_ajouteIntervention">Etat</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary closeModal">
-              Ok
-            </button>
-          </div>
-        </div>
-    </div>
-  </div>
-</div>
-</div>
-<!-- ====================== =FIN DETAILLE CLIENT ===========================-->
 <!-- ====================== =LISTE CLIENT ===========================-->
 <div class="card cardCamson">
   <div class="card-header">
@@ -447,10 +207,10 @@
       <tbody id="dataClient">
       </tbody>
     </table>
-    <div id = "demo" ></div>
+    <div id="demo"></div>
   </div>
   <div class="">
-					</div>
+  </div>
   <!-- ====================== =FIN LISTE CLIENT ===========================-->
   <!-- ======================= Modal Suppression Client ===========================-->
   <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -505,7 +265,7 @@
             <input class="form-check-input" type="checkbox" value="" id="check_email" checked>
             <label class="form-check-label" for="check_email">Email</label>
           </div>
-          
+
         </div>
         {# <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -515,18 +275,23 @@
     </div>
   </div>
   <!-- Modal personnaliser colonne -->
-  
+
   <!-- ====================== =SCRIPT ===========================-->
   <script src="{{ asset('assets/js/pagination.js') }}"></script>
   <script>
-    $("#ajoutClient").click(function () {
+    $("#ajoutClient").click(function() {
       $("#formClient")[0].reset();
       $(".input_fields_wrap").html('');
       $("#modalClient").modal("show");
       $("#modalClient").find(".modal-title").text("Formulaire d'ajout");
+      $('input[name=photocopie]').removeAttr('checked', 'checked')
+      $('input[name=maintenance]').removeAttr('checked', 'checked')
+      $('#btnClient').removeAttr('hidden', 'hidden')
+      $('#btnEditer').attr('hidden', 'hidden')
     })
 
     showAllClient();
+
     function showAllClient() {
       $('input[name=searchClient]').val('');
       $.ajax({
@@ -534,73 +299,72 @@
         url: '{{ path("app_client_all_client") }}',
         // async: false,
         dataType: "json",
-        beforeSend: function () {
+        beforeSend: function() {
           $("#dataClient").html("<td colspan='7' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
         },
-        success: function (data) {
+        success: function(data) {
           var result = [];
           //pagination client
           $('#demo').pagination({
-          dataSource:  function(done){
-            result.push(data);
-            done(result[0]);
-            console.log(result[0]);
-            if (result[0].length <= 15) {
-              $('#demo').attr('hidden', 'hidden');
-            }
-            else {
-              $('#demo').removeAttr('hidden');
-            }
-					},
-          callback: function(data, pagination) {
-          let html = ""
-          let telPortable2;
-          if (data.length <= 0) {
-            $("#dataClient").html("<td colspan ='9' class='text-center'>No data</td>")
-            // $("tfoot").attr("hidden", 'hidden')
-          } else {
-            // $("tfoot").removeAttr("hidden", 'hidden')
-            $.each(data, function (index, value) {
-              let date = moment(value.datePaiment).format("ll")
-              if (value.telPortable2 == null) {
-                telPortable2 = "";
+            dataSource: function(done) {
+              result.push(data);
+              done(result[0]);
+              console.log(result[0]);
+              if (result[0].length <= 15) {
+                $('#demo').attr('hidden', 'hidden');
               } else {
-                telPortable2 = value.telPortable2;
+                $('#demo').removeAttr('hidden');
               }
-              // if () {
+            },
+            callback: function(data, pagination) {
+              let html = ""
+              let telPortable2;
+              if (data.length <= 0) {
+                $("#dataClient").html("<td colspan ='9' class='text-center'>No data</td>")
+                // $("tfoot").attr("hidden", 'hidden')
+              } else {
+                // $("tfoot").removeAttr("hidden", 'hidden')
+                $.each(data, function(index, value) {
+                  let date = moment(value.datePaiment).format("ll")
+                  if (value.telPortable2 == null) {
+                    telPortable2 = "";
+                  } else {
+                    telPortable2 = value.telPortable2;
+                  }
+                  // if () {
 
-              // } else {
+                  // } else {
 
-              // }
-              html += "<tr>" +
-                "<td class='colonne_nom'>" + value.nomClient + "</td>" +
-                "<td class='colonne_prenom'>" + value.prenomClient + "</td>" +
-                "<td class='colonne_tel'>" + value.telFixe + "</td>" +
-                "<td class='colonne_ref'>" + value.refClient + "</td>" +
-                "<td class='colonne_etat'>" + value.etat + "</td>" +
-                "<td class='colonne_email'>" + value.email + "</td>" +
-                "<td class='colonne_abonnement'>" + value.abonnement + "</td>" +
-                "<td class=''>" +
-                '<button type="button" class="btn btn-dark btn-sm" onclick="modifClient(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
-                '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button> ' +
-                '<button type="button"  class="btn btn-danger btn-sm"  onclick="modalDelete(' + value.id + ')" data-toggle="tooltip" data-placement="left"  title="Supprimer"><i class="bi bi-trash3"></i></button>' +                           
-                "</td>" +
-                "</tr>"
-            })
-            $("#dataClient").html(html);
-            Personnalisation_colonne();
-          }
-    }
-})
+                  // }
+                  html += "<tr>" +
+                    "<td class='colonne_nom'>" + value.nomClient + "</td>" +
+                    "<td class='colonne_prenom'>" + value.prenomClient + "</td>" +
+                    "<td class='colonne_tel'>" + value.telFixe + "</td>" +
+                    "<td class='colonne_ref'>" + value.refClient + "</td>" +
+                    "<td class='colonne_etat'>" + value.etat + "</td>" +
+                    "<td class='colonne_email'>" + value.email + "</td>" +
+                    "<td class='colonne_abonnement'>" + value.abonnement + "</td>" +
+                    "<td class=''>" +
+                    '<button type="button" class="btn btn-dark btn-sm" onclick="modifClient(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                    '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button> ' +
+                    '<button type="button"  class="btn btn-danger btn-sm"  onclick="modalDelete(' + value.id + ')" data-toggle="tooltip" data-placement="left"  title="Supprimer"><i class="bi bi-trash3"></i></button>' +
+                    "</td>" +
+                    "</tr>"
+                })
+                $("#dataClient").html(html);
+                Personnalisation_colonne();
+              }
+            }
+          })
           //fin pagination
         },
-        error: function () {
+        error: function() {
 
         },
       });
     }
     /* fonction click boutton ajout client */
-    $("#btnClient").click(function () {
+    $("#btnClient").click(function() {
       let data = $("#formClient").serialize();
       $.ajax({
         type: "ajax",
@@ -609,18 +373,18 @@
         data: data,
         // async: false,
         dataType: "json",
-        beforeSend: function () {
+        beforeSend: function() {
           $("#btnClient").attr("disabled", "disabled");
           $("#btnClient").find("#loadingAddClient").addClass("spinner-border spinner-border-sm");
         },
-        success: function (response) {
+        success: function(response) {
           $("#modalClient").modal("hide");
           $("#btnClient").removeAttr("disabled", "disabled");
           $("#btnClient").find("#loadingAddClient").removeClass("spinner-border spinner-border-sm");
           showAllClient();
           successMessage();
         },
-        error: function () {
+        error: function() {
           $("#btnClient").removeAttr("disabled", "disabled");
           $("#btnClient").find("#loadingAddClient").removeClass("spinner-border spinner-border-sm");
           errorMessage();
@@ -629,7 +393,10 @@
     });
     /* fonction editer client */
     function showModalUpdate(value) {
-      $("#modalEditClient").modal("show")
+      $('#btnClient').attr('hidden', 'hidden')
+      $('#btnEditer').removeAttr('hidden', 'hidden')
+      $("#modalClient").modal("show")
+      $("#modalClient").find(".modal-title").text("Modification");
       $.ajax({
         method: "get",
         type: "ajax",
@@ -639,10 +406,12 @@
           id: value
         },
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
           $("input[name=nomClient]").val(data.nomClient);
           $("input[name=prenomClient]").val(data.prenomClient);
-          $("input[name=telFixe]").val(data.telFixe);
+          $("input[name=fixe]").val(data.telFixe);
+          $("select[name=etat]").val(data.etat).change();
+          $("input[name=gerant]").val(data.nomGerant);
           $("input[name=portable1]").val(data.telPortable1);
           $("input[name=portable2]").val(data.telPortable2);
           $("input[name=reference]").val(data.refClient);
@@ -650,20 +419,21 @@
           $("input[name=nomGerant]").val(data.nomGerant);
           $("input[name=email]").val(data.email);
           $("input[name=id]").val(data.id);
-          if (data.etat == 1) {
-            $('input[name=etat]').attr('checked', 'checked');
-          } else {
-            $('input[name=etat]').removeAttr('checked', 'checked')
+          if (data.abonnement == "photocopie") {
+            $('input[name=photocopie]').attr('checked', 'checked')
+          }
+          if (data.abonnement == "maintenance") {
+            $('input[name=maintenance]').attr('checked', 'checked')
           }
         },
-        error: function () {
+        error: function() {
           errorMessage();
         },
       });
     }
     /*boutton editer client */
-    $('#btnEditer').click(function () {
-      let data = $("#formEditClient").serialize();
+    $('#btnEditer').click(function() {
+      let data = $("#formClient").serialize();
       $.ajax({
         type: "ajax",
         method: "post",
@@ -671,18 +441,18 @@
         data: data,
         // async: false,
         dataType: "json",
-        beforeSend: function () {
+        beforeSend: function() {
           $("#btnEditer").attr("disabled", "disabled");
           $("#btnEditer").find("#loadingUpdateClient").addClass("spinner-border spinner-border-sm");
         },
-        success: function (response) {
+        success: function(response) {
           $("#btnEditer").removeAttr("disabled", "disabled");
           $("#btnEditer").find("#loadingUpdateClient").removeClass("spinner-border spinner-border-sm");
           $("#modalEditClient").modal("hide");
           successMessage()
           showAllClient()
         },
-        error: function () {
+        error: function() {
           $("#btnEditer").removeAttr("disabled", "disabled");
           $("#btnEditer").find("#loadingUpdateClient").removeClass("spinner-border spinner-border-sm");
           errorMessage()
@@ -702,18 +472,19 @@
           id: value
         },
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
           $("input[name=id]").val(data.id);
 
         },
-        error: function () {
+        error: function() {
           errorMessage();
         },
       });
     }
     /* fonction click modifier client */
     function modifClient(value) {
-      $("#modalDetailleClient").modal("show");
+      $('#btnClient').attr('hidden', 'hidden')
+      $('#btnEditer').attr('hidden', 'hidden')
       $.ajax({
         method: "get",
         type: "ajax",
@@ -723,10 +494,13 @@
           id: value
         },
         dataType: "json",
-        success: function (data) {
+        success: function(data) {
+          console.log(data)
           $("input[name=nomClient]").val(data.nomClient);
           $("input[name=prenomClient]").val(data.prenomClient);
-          $("input[name=telFixe]").val(data.telFixe);
+          $("input[name=fixe]").val(data.telFixe);
+          $("select[name=etat]").val(data.etat);
+          $("input[name=gerant]").val(data.nomGerant);
           $("input[name=portable1]").val(data.telPortable1);
           $("input[name=portable2]").val(data.telPortable2);
           $("input[name=reference]").val(data.refClient);
@@ -734,14 +508,10 @@
           $("input[name=nomGerant]").val(data.nomGerant);
           $("input[name=email]").val(data.email);
           $("input[name=id]").val(data.id);
-          if (data.etat == 1) {
-            $('input[name=etat]').attr('checked', 'checked');
-          } else {
-            $('input[name=etat]').removeAttr('checked', 'checked')
-          }
-
+          $("#modalClient").modal("show");
+          $("#modalClient").find(".modal-title").text("Detaille");
         },
-        error: function (error) {
+        error: function(error) {
           console.log(error)
         }
       })
@@ -758,17 +528,17 @@
           param: param
         },
         dataType: "json",
-        beforeSend: function () {
+        beforeSend: function() {
           $("#dataClient").html("<td colspan='7' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
         },
-        success: function (data) {
+        success: function(data) {
           $("#dataClient").html("<td colspan='7' class='text-center'>No data</td>");
           let i;
           let html = "";
           let telPortable2;
           if (data.length > 0) {
             console.log(data)
-            $.each(data, function (index, value) {
+            $.each(data, function(index, value) {
               let date = moment(value.datePaiment).format("ll")
               if (value.telPortable2 == null) {
                 telPortable2 = "";
@@ -794,7 +564,7 @@
             $("#dataClient").html("<tr><td colspan =11 class='text-center'>No data</td></tr>");
           }
         },
-        error: function () {
+        error: function() {
           errorMessage();
         },
       });
@@ -820,11 +590,11 @@
             },
             async: false,
             dataType: "json",
-            success: function (data) {
+            success: function(data) {
               successMessage();
               showAllClient();
             },
-            error: function () {
+            error: function() {
               errorMessage();
             },
           });
@@ -832,7 +602,7 @@
         }
       })
     }
-    $('.closeModal').click(function () {
+    $('.closeModal').click(function() {
       $('.modal').modal('hide');
     })
     /* fonction controle champ client */
@@ -856,115 +626,113 @@
     }
 
 
-  $("#all_check").click(function() {
-    if($("#check_nom").prop('checked')) {
-      localStorage.setItem("nom", "afficher");
-      $(".colonne_nom").show();
-    } else {
-      localStorage.setItem("nom", "masquer");
-      $(".colonne_nom").hide();
+    $("#all_check").click(function() {
+      if ($("#check_nom").prop('checked')) {
+        localStorage.setItem("nom", "afficher");
+        $(".colonne_nom").show();
+      } else {
+        localStorage.setItem("nom", "masquer");
+        $(".colonne_nom").hide();
+      }
+
+      if ($("#check_prenom").prop('checked')) {
+        localStorage.setItem("prenom", "afficher");
+        $(".colonne_prenom").show();
+      } else {
+        localStorage.setItem("prenom", "masquer");
+        $(".colonne_prenom").hide();
+      }
+
+      if ($("#check_tel").prop('checked')) {
+        localStorage.setItem("tel", "afficher");
+        $(".colonne_tel").show();
+      } else {
+        localStorage.setItem("tel", "masquer");
+        $(".colonne_tel").hide();
+      }
+
+      if ($("#check_ref").prop('checked')) {
+        localStorage.setItem("ref", "afficher");
+        $(".colonne_ref").show();
+      } else {
+        localStorage.setItem("ref", "masquer");
+        $(".colonne_ref").hide();
+      }
+
+      if ($("#check_etat").prop('checked')) {
+        localStorage.setItem("etat", "afficher");
+        $(".colonne_etat").show();
+      } else {
+        localStorage.setItem("etat", "masquer");
+        $(".colonne_etat").hide();
+      }
+
+      if ($("#check_email").prop('checked')) {
+        localStorage.setItem("email", "afficher");
+        $(".colonne_email").show();
+      } else {
+        localStorage.setItem("email", "masquer");
+        $(".colonne_email").hide();
+      }
+    });
+
+    function Personnalisation_colonne() {
+      if (localStorage.getItem("nom") == "masquer") {
+        $(".colonne_nom").hide();
+        $("#check_nom").prop("checked", false);
+      }
+
+      if (localStorage.getItem("prenom") == "masquer") {
+        $(".colonne_prenom").hide();
+        $("#check_prenom").prop("checked", false);
+      }
+
+      if (localStorage.getItem("tel") == "masquer") {
+        $(".colonne_tel").hide();
+        $("#check_tel").prop("checked", false);
+      }
+
+      if (localStorage.getItem("ref") == "masquer") {
+        $(".colonne_ref").hide();
+        $("#check_ref").prop("checked", false);
+      }
+
+      if (localStorage.getItem("etat") == "masquer") {
+        $(".colonne_etat").hide();
+        $("#check_etat").prop("checked", false);
+      }
+
+      if (localStorage.getItem("email") == "masquer") {
+        $(".colonne_email").hide();
+        $("#check_email").prop("checked", false);
+      }
     }
 
-    if($("#check_prenom").prop('checked')) {
-      localStorage.setItem("prenom", "afficher");
-      $(".colonne_prenom").show();
-    } else {
-      localStorage.setItem("prenom", "masquer");
-      $(".colonne_prenom").hide();
+
+    $("#searchClient").keyup(function() {
+      let parametre = $('input[name=searchClient]').val()
+      if (parametre.length >= 2) {
+        searchAllClient();
+      }
+
+      if (parametre == "") {
+        showAllClient();
+      }
+    });
+
+    function date_now() {
+
+      var now = new Date();
+
+      var day = ("0" + now.getDate()).slice(-2);
+      var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+      var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+      $('#datePaiment').val(today);
+
     }
 
-    if($("#check_tel").prop('checked')) {
-      localStorage.setItem("tel", "afficher");
-      $(".colonne_tel").show();
-    } else {
-      localStorage.setItem("tel", "masquer");
-      $(".colonne_tel").hide();
-    }
-
-    if($("#check_ref").prop('checked')) {
-      localStorage.setItem("ref", "afficher");
-      $(".colonne_ref").show();
-    } else {
-      localStorage.setItem("ref", "masquer");
-      $(".colonne_ref").hide();
-    }
-
-    if($("#check_etat").prop('checked')) {
-      localStorage.setItem("etat", "afficher");
-      $(".colonne_etat").show();
-    } else {
-      localStorage.setItem("etat", "masquer");
-      $(".colonne_etat").hide();
-    }
-
-    if($("#check_email").prop('checked')) {
-      localStorage.setItem("email", "afficher");
-      $(".colonne_email").show();
-    } else {
-      localStorage.setItem("email", "masquer");
-      $(".colonne_email").hide();
-    }
-  });
-
-  function Personnalisation_colonne(){
-    if (localStorage.getItem("nom") =="masquer") {
-      $(".colonne_nom").hide();
-      $("#check_nom").prop("checked", false);
-    }
-
-    if (localStorage.getItem("prenom") =="masquer") {
-      $(".colonne_prenom").hide();
-      $("#check_prenom").prop("checked", false);
-    }
-
-    if (localStorage.getItem("tel") =="masquer") {
-      $(".colonne_tel").hide();
-      $("#check_tel").prop("checked", false);
-    }
-
-    if (localStorage.getItem("ref") =="masquer") {
-      $(".colonne_ref").hide();
-      $("#check_ref").prop("checked", false);
-    }
-
-    if (localStorage.getItem("etat") =="masquer") {
-      $(".colonne_etat").hide();
-      $("#check_etat").prop("checked", false);
-    }
-
-    if (localStorage.getItem("email") =="masquer") {
-      $(".colonne_email").hide();
-      $("#check_email").prop("checked", false);
-    }
-  }
-
-
-  $("#searchClient").keyup(function() {
-    let parametre = $('input[name=searchClient]').val()
-    if (parametre.length >= 2) {
-      searchAllClient();
-    }
-
-    if (parametre == "") {
-      showAllClient();
-    }
-  });
-
-  function date_now() {
-
-    var now = new Date();
-
-    var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
-    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
-
-    $('#datePaiment').val(today);
-
-  }
-
-  date_now();
-  
-  
+    date_now();
   </script>
   {% endblock %}

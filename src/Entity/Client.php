@@ -43,9 +43,9 @@ class Client
     #[Groups(['client:read'])]
     private ?string $refClient = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 255)]
     #[Groups(['client:read'])]
-    private ?bool $etat = null;
+    private ?string $etat = null;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Sav::class)]
     private Collection $savs;
@@ -148,12 +148,12 @@ class Client
         return $this;
     }
 
-    public function isEtat(): ?bool
+    public function getEtat(): ?string
     {
         return $this->etat;
     }
 
-    public function setEtat(bool $etat): self
+    public function setEtat(string $etat): self
     {
         $this->etat = $etat;
 
