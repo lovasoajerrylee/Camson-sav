@@ -196,6 +196,12 @@
             </ul>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_produit') }}">
+                <i class="ri-user-2-fill"></i>
+                <span>Produit</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{ path('app_utilisateur') }}">
                 <i class="ri-user-follow-fill"></i>
                 <span>Utilisateur</span>
@@ -516,7 +522,6 @@
     $('.closeModal').click(function () {
         $('.modal').modal('hide');
     })
-    $('select').selectpicker();
 </script>
 </body>
 

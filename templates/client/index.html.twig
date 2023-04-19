@@ -40,7 +40,7 @@
           </h5>
           <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="formClient" method="post">
+        <form id="formClient">
           <input type="text" name="id" hidden>
           <div class="modal-body">
             <div class="modal-body">
@@ -421,9 +421,14 @@
           $("input[name=id]").val(data.id);
           if (data.abonnement == "photocopie") {
             $('input[name=photocopie]').attr('checked', 'checked')
+            $('input[name=maintenance]').removeAttr('checked', 'checked')
           }
           if (data.abonnement == "maintenance") {
             $('input[name=maintenance]').attr('checked', 'checked')
+            $('input[name=photocopie]').attr('checked', 'checked')
+          }else if(data.abonnement == "photocopie, maintenance"){
+            $('input[name=maintenance]').attr('checked', 'checked')
+            $('input[name=photocopie]').attr('checked', 'checked')
           }
         },
         error: function() {
@@ -499,7 +504,7 @@
           $("input[name=nomClient]").val(data.nomClient);
           $("input[name=prenomClient]").val(data.prenomClient);
           $("input[name=fixe]").val(data.telFixe);
-          $("select[name=etat]").val(data.etat);
+          $("select[name=etat]").val(data.etat).change();
           $("input[name=gerant]").val(data.nomGerant);
           $("input[name=portable1]").val(data.telPortable1);
           $("input[name=portable2]").val(data.telPortable2);
@@ -508,6 +513,17 @@
           $("input[name=nomGerant]").val(data.nomGerant);
           $("input[name=email]").val(data.email);
           $("input[name=id]").val(data.id);
+          if (data.abonnement == "photocopie") {
+            $('input[name=photocopie]').attr('checked', 'checked')
+            $('input[name=maintenance]').removeAttr('checked', 'checked')
+          }
+          if (data.abonnement == "maintenance") {
+            $('input[name=maintenance]').attr('checked', 'checked')
+            $('input[name=photocopie]').removeAttr('checked', 'checked')
+          }else if(data.abonnement == "photocopie, maintenance"){
+            $('input[name=maintenance]').attr('checked', 'checked')
+            $('input[name=photocopie]').attr('checked', 'checked')
+          }
           $("#modalClient").modal("show");
           $("#modalClient").find(".modal-title").text("Detaille");
         },

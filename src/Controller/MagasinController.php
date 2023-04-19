@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MagasinController extends AbstractController
 {
-
     private $em;
+    private $MagasinRepository;
 
     public function __construct(MagasinRepository $MagasinRepository, EntityManagerInterface $em)
     {
