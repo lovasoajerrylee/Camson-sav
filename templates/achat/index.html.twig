@@ -12,7 +12,7 @@
     </nav>
 </div>
 
-<div class="d-flex bd-highlight mb-3">
+{# <div class="d-flex bd-highlight mb-3">
 	<div class="me-auto p-2 bd-highlight">
 		<div class="row">
 			<div class="col-md-10">
@@ -27,7 +27,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> #}
 <!-- ====================== =FIN AJOUTER produit ===========================-->
 <!-- ====================== =LISTE produit ===========================-->
 
@@ -81,6 +81,128 @@
 
     <div class=""></div>
 </div>
+
+
+
+<!-- =======================Modal Detail Achat===========================-->
+<div class="modal fade" id="modalClient" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModalLabel">
+            <i class="ti-marker-alt m-r-10"></i>
+          </h5>
+          <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Nom Client</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="nomClient" id="nom_Client" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Prénom</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="prenomClient" id="prenomClient" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Date d'achat</label>
+                      <div>
+                        <input type="date" class="form-control input-lg" name="datePaiement" id="datePaiment" onchange="ctrlChamp()" value="{{ 'now'|date('Y-m-d') }}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Reférence client</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="reference" id="reference" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Gerant</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="gerant" id="gerant" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Portable 1</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="portable1" id="portable1" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Portable 2</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="portable2" id="portable2" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">Tél. Fixe</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="fixe" id="fixe" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {# <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="control-label">email</label>
+                      <div>
+                        <input type="email" class="form-control input-lg" name="email" id="email" onkeyup="ctrlChamp()">
+                      </div>
+                    </div>
+                  </div>
+                </div> #}
+                <br> <br>  <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                        <label class="control-label">Référence du Produit</label>
+                        <div>
+                            <input type="text" class="form-control input-lg" name="reference_produit" id="email" onkeyup="ctrlChamp()">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                        <label class="control-label">Nom du produit</label>
+                        <div>
+                            <input type="text" class="form-control input-lg" name="nom_produit" id="email" onkeyup="ctrlChamp()">
+                        </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
 
    
 <!-- ====================== =SCRIPT ===========================-->
@@ -159,8 +281,6 @@
                         "<td class='colonne_abonnement'>" + value.date + "</td>" +
                         "<td class=''>" +
                         '<button type="button" class="btn btn-dark btn-sm" onclick="modifClient(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
-                        '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button> ' +
-                        '<button type="button"  class="btn btn-danger btn-sm"  onclick="modalDelete(' + value.id + ')" data-toggle="tooltip" data-placement="left"  title="Supprimer"><i class="bi bi-trash3"></i></button>' +
                         "</td>" +
                         "</tr>"
                     })
@@ -175,6 +295,44 @@
 
             },
         });
+    }
+
+
+    function modifClient(value) {
+        $('#btnClient').attr('hidden', 'hidden')
+        $('#btnEditer').attr('hidden', 'hidden')
+        $.ajax({
+            method: "get",
+            type: "ajax",
+            url: '{{ path("app_achat_by_id") }}',
+            async: false,
+            data: {
+            id: value
+            },
+            dataType: "json",
+            success: function(data) {
+            console.log(data)
+            $("input[name=nomClient]").val(data.nom_client);
+            $("input[name=prenomClient]").val(data.prenom_client);
+            $("input[name=fixe]").val(data.tel_fixe);
+            $("select[name=etat]").val(data.etat).change();
+            $("input[name=gerant]").val(data.nom_gerant);
+            $("input[name=portable1]").val(data.tel_portable1);
+            $("input[name=portable2]").val(data.tel_portable2);
+            $("input[name=reference]").val(data.ref_client);
+            $("input[name=datePaiment]").val(moment(data.date).format("YYYY-MM-DD"));
+            $("input[name=nomGerant]").val(data.nom_gerant);
+            $("input[name=email]").val(data.email);
+            $("input[name=id]").val(data.id);
+            $("input[name=reference_produit").val(data.reference_produit);
+            $("input[name=nom_produit]").val(data.nom_produit);
+            $("#modalClient").modal("show");
+            $("#modalClient").find(".modal-title").text("Detaille");
+            },
+            error: function(error) {
+            console.log(error)
+            }
+        })
     }
 
 </script>

@@ -82,4 +82,25 @@ class AchatController extends AbstractController
         );
         return $response;
     }
+
+
+
+    #[Route('/afficherDetailAchat', name: 'app_achat_by_id')]
+    public function getIdDetaile(Request $request)
+    {
+        $id = $request->get('id');
+        $achat = $this->AchatRepository->getAchatById($id);
+        $response = $this->json(
+            $achat,
+            200,
+            ['Content-Type' => 'appication/json'],
+            [
+                'groups' => [
+                    'achat:read',
+                ],
+            ]
+        );
+        return $response;
+    }
+
 }
