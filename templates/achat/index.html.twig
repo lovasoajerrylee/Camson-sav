@@ -1,0 +1,456 @@
+{% extends 'template.html.twig' %}
+{% block title %}Camson Group | Produit{% endblock %}
+{% block body %}
+<link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
+<div class="pagetitle">
+    <h1>Achat et vente</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+            <li class="breadcrumb-item active"><a href="#">Achat et vente</a></li>
+        </ol>
+    </nav>
+</div>
+<div class="d-flex bd-highlight mb-3">
+    <div class="me-auto p-2 bd-highlight">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Rechercher..." name="searchproduit" id="searchproduit">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn bg-camson" type="button"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="p-2 bd-highlight">
+        <button class="btn bg-camson" type="button" onclick="showAllproduit()"><i class="ri-refresh-line"></i></button>
+        <button class="btn bg-dark btnSav text-white" id="ajoutproduit">
+            <i class="ri-user-3-fill"></i> Nouvelle produit
+        </button>
+    </div>
+    <div class="modal fade" id="modalproduit" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalLabel">
+                        <i class="ti-marker-alt m-r-10"></i>
+                    </h5>
+                    <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formproduit">
+                    <input type="text" name="id" hidden>
+                    <div class="modal-body">
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="form-group">
+                                    <label class="control-label">reference</label>
+                                    <input type="text" class="form-control input-lg" name="reference_produit">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Nom</label>
+                                    <input type="text" class="form-control input-lg" name="nom_produit">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Magasin</label>
+                                    <select name="magasin_id" id="magasinSelect" class="form-control"></select>
+                                </div>
+                            </div>
+                            <!--Footer Modal-->
+                            <div class="modal-footer flex-center">
+                                <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Annuler</button>
+                                <button type="button" class="btn btn-info text-white" id="btnSave">Creer <span id="loadingAddproduit"></span>
+                                    <button type="button" class="btn btn-info text-white" id="btnModifier">Modifier <span id="loadingAddproduit"></span>
+                                    </button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!-- ====================== =FIN AJOUTER produit ===========================-->
+<!-- ====================== =LISTE produit ===========================-->
+<div class="card cardCamson">
+    <div class="card-header">
+    </div>
+    <!-- /.col -->
+    <div class="card-body" id="valider">
+        <table class="table">
+            <thead class="table bg-dark text-white">
+                <tr>
+                    <th class="colonne_ref">Reference</th>
+                    <th class="colonne_nom">Nom</th>
+                    <th class="colonne_magasin">Magasin</th>
+                    <th class="">actions</th>
+                </tr>
+            </thead>
+            <tbody id="dataProduit">
+            </tbody>
+        </table>
+        <div id="demo"></div>
+    </div>
+    <div class="">
+    </div>
+    <!-- ====================== =FIN LISTE produit ===========================-->
+    <!-- Modal personnaliser colonne -->
+    <div class="modal fade" id="modal_personnaliser_colonne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="all_check">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="check_reference" checked>
+                        <label class="form-check-label" for="check_reference">Nom</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="check_nom" checked>
+                        <label class="form-check-label" for="check_nom">Prénom</label>
+                    </div>
+                </div>
+                {# <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary">Enregistrer</button>
+        </div> #}
+            </div>
+        </div>
+    </div>
+    <!-- Modal personnaliser colonne -->
+
+    <!-- ====================== =SCRIPT ===========================-->
+    <script src="{{ asset('assets/js/pagination.js') }}"></script>
+    <script>
+        $("#ajoutproduit").click(function() {
+            $("#formproduit")[0].reset();
+            $(".input_fields_wrap").html('');
+            $("#modalproduit").modal("show");
+            $("#modalproduit").find(".modal-title").text("Formulaire d'ajout");
+            $('input[name=photocopie]').removeAttr('checked', 'checked')
+            $('input[name=maintenance]').removeAttr('checked', 'checked')
+            $('#btnSave').removeAttr('hidden', 'hidden')
+            $('#btnModifier').attr('hidden', 'hidden')
+        })
+
+        showAllproduit();
+
+        function showAllproduit() {
+            $('input[name=searchproduit]').val('');
+            $.ajax({
+                type: "ajax",
+                url: '{{ path("app_all_produit") }}',
+                // async: false,
+                dataType: "json",
+                beforeSend: function() {
+                    $("#dataProduit").html("<td colspan='4' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+                },
+                success: function(data) {
+                    var result = [];
+                    //pagination produit
+                    $('#demo').pagination({
+                        dataSource: function(done) {
+                            result.push(data);
+                            done(result[0]);
+                            console.log(result[0]);
+                            if (result[0].length <= 15) {
+                                $('#demo').attr('hidden', 'hidden');
+                            } else {
+                                $('#demo').removeAttr('hidden');
+                            }
+                        },
+                        callback: function(data, pagination) {
+                            let html = ""
+                            let telPortable2;
+                            if (data.length <= 0) {
+                                $("#dataProduit").html("<td colspan ='4' class='text-center'>No data</td>")
+                                // $("tfoot").attr("hidden", 'hidden')
+                            } else {
+                                // $("tfoot").removeAttr("hidden", 'hidden')
+                                $.each(data, function(index, value) {
+                                    html += "<tr>" +
+                                        "<td class='colonne_ref'>" + value.referenceProduit + "</td>" +
+                                        "<td class='colonne_nom'>" + value.nomProduit + "</td>" +
+                                        "<td class='colonne_magasin'>" + value.magasin.nomMag + "</td>" +
+                                        "<td>" +
+                                        '<button type="button" class="btn btn-dark btn-sm" onclick="modifproduit(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
+                                        '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button> ' +
+                                        '<button type="button"  class="btn btn-danger btn-sm"  onclick="modalDelete(' + value.id + ')" data-toggle="tooltip" data-placement="left"  title="Supprimer"><i class="bi bi-trash3"></i></button>' +
+                                        "</td>" +
+                                        "</tr>"
+                                })
+                                $("#dataProduit").html(html);
+                            }
+                        }
+                    })
+                    //fin pagination
+                },
+                error: function() {
+
+                },
+            });
+        }
+
+
+
+        showAllmagasin();
+
+        function showAllmagasin() {
+            $.ajax({
+                type: "ajax",
+                url: '{{ path("app_magasin_all_magasin") }}',
+                // async: false,
+                dataType: "json",
+                success: function(data) {
+                    let html = "<option value='' selected>Selectionner</option>";
+                    $.each(data, function(index, value) {
+                        html += "<option value=" + value.id + ">" + value.nomMag + "</option>"
+                    })
+                    $("#magasinSelect").html(html);
+                },
+                error: function(error) {
+                    console.log(error)
+                },
+            });
+        }
+
+
+
+
+        /* fonction click boutton ajout produit */
+        $("#btnSave").click(function() {
+            let data = $("#formproduit").serialize();
+            $.ajax({
+                type: "ajax",
+                method: "post",
+                url: '{{ path("app_produit_new") }}',
+                data: data,
+                // async: false,
+                dataType: "json",
+                beforeSend: function() {
+                    $("#btnSave").find("#loadingAddproduit").addClass("spinner-border spinner-border-sm");
+                },
+                success: function(response) {
+                    $("#modalproduit").modal("hide");
+                    $("#btnSave").find("#loadingAddproduit").removeClass("spinner-border spinner-border-sm");
+                    showAllproduit();
+                    successMessage();
+                },
+                error: function() {
+                    $("#btnSave").find("#loadingAddproduit").removeClass("spinner-border spinner-border-sm");
+                    errorMessage();
+                },
+            });
+        });
+        /* fonction editer produit */
+        function showModalUpdate(value) {
+            $('#btnSave').attr('hidden', 'hidden')
+            $('#btnModifier').removeAttr('hidden', 'hidden')
+            $.ajax({
+                method: "get",
+                type: "ajax",
+                url: '{{ path("app_getProduit_findById") }}',
+                async: false,
+                data: {
+                    id: value
+                },
+                dataType: "json",
+                success: function(data) {
+                    $("input[name=id]").val(data.id);
+                    $("input[name=nom_produit]").val(data.nomProduit);
+                    $("input[name=reference_produit]").val(data.referenceProduit);
+                    $("select[name=magasin_id]").val(data.magasin.id).change();
+                    $("#modalproduit").modal("show")
+                    $("#modalproduit").find(".modal-title").text("Modification");
+                },
+                error: function() {
+                    errorMessage();
+                },
+            });
+        }
+        /*boutton editer produit */
+        $('#btnModifier').click(function() {
+            let data = $("#formproduit").serialize();
+            $.ajax({
+                type: "ajax",
+                method: "post",
+                url: '{{ path("app_update_produit") }}',
+                data: data,
+                // async: false,
+                dataType: "json",
+                beforeSend: function() {
+                    $("#btnModifier").find("#loadingUpdateproduit").addClass("spinner-border spinner-border-sm");
+                },
+                success: function(response) {
+                    $("#btnModifier").find("#loadingUpdateproduit").removeClass("spinner-border spinner-border-sm");
+                    $("#modalproduit").modal("hide");
+                    successMessage()
+                    showAllproduit()
+                },
+                error: function() {
+                    $("#btnModifier").find("#loadingUpdateproduit").removeClass("spinner-border spinner-border-sm");
+                    errorMessage()
+                },
+            });
+        })
+
+        /* fonction click modifier produit */
+        function modifproduit(value) {
+            $('#btnSave').attr('hidden', 'hidden')
+            $('#btnModifier').attr('hidden', 'hidden')
+            $.ajax({
+                method: "get",
+                type: "ajax",
+                url: '{{ path("app_getProduit_findById") }}',
+                async: false,
+                data: {
+                    id: value
+                },
+                dataType: "json",
+                success: function(data) {
+                    console.log(data)
+                    $("input[name=nom_produit]").val(data.nomProduit);
+                    $("input[name=reference_produit]").val(data.referenceProduit);
+                    $("select[name=magasin_id]").val(data.magasin.id).change();
+                    $("#modalproduit").modal("show");
+                    $("#modalproduit").find(".modal-title").text("Detaille");
+                },
+                error: function(error) {
+                    console.log(error)
+                }
+            })
+        }
+        /* fonction click boutton recherche produit */
+        /* modal de suppression produit */
+        function modalDelete(value) {
+            Swal.fire({
+                title: 'Suppression',
+                text: "Voulez-vous vraiment supprimer le champ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok, supprimer!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        method: "post",
+                        type: "ajax",
+                        url: '{{ path("app_produit_delete") }}',
+                        data: {
+                            id: value
+                        },
+                        async: false,
+                        dataType: "json",
+                        success: function(data) {
+                            successMessage();
+                            showAllproduit();
+                        },
+                        error: function() {
+                            errorMessage();
+                        },
+                    });
+
+                }
+            })
+        }
+        $('.closeModal').click(function() {
+            $('.modal').modal('hide');
+        })
+        /* fonction controle champ produit */
+        function ctrlChamp() {
+            let nomproduit = $("input[name=nomproduit]").val()
+            let prenomproduit = $("input[name=prenomproduit]").val()
+            let telFixe = $("input[name=fixe]").val()
+            let portable1 = $("input[name=portable1]").val()
+            let portable2 = $("input[name=portable2]").val()
+            let reference = $("input[name=reference]").val()
+            let datePaiment = $("input[name=datePaiement]").val()
+            let dateproduit = $("input[name=dateproduit]").val()
+            let nomGerant = $("input[name=gerant]").val()
+            let email = $("input[name=email]").val()
+            if (dateproduit == "" || prenomproduit == "" || nomproduit == "" || datePaiment == "" || telFixe == "" || portable1 == "" || portable2 == "" || reference == "" || email == "" || nomGerant == "") {}
+        }
+
+
+        $("#all_check").click(function() {
+            if ($("#check_reference").prop('checked')) {
+                localStorage.setItem("nom", "afficher");
+                $(".colonne_ref").show();
+            } else {
+                localStorage.setItem("nom", "masquer");
+                $(".colonne_ref").hide();
+            }
+
+            if ($("#check_nom").prop('checked')) {
+                localStorage.setItem("prenom", "afficher");
+                $(".colonne_nom").show();
+            } else {
+                localStorage.setItem("prenom", "masquer");
+                $(".colonne_nom").hide();
+            }
+
+            if ($("#check_magasin").prop('checked')) {
+                localStorage.setItem("tel", "afficher");
+                $(".colonne_magasin").show();
+            } else {
+                localStorage.setItem("tel", "masquer");
+                $(".colonne_magasin").hide();
+            }
+
+            if ($("#check_ref").prop('checked')) {
+                localStorage.setItem("ref", "afficher");
+                $(".colonne_ref").show();
+            } else {
+                localStorage.setItem("ref", "masquer");
+                $(".colonne_ref").hide();
+            }
+
+            if ($("#check_etat").prop('checked')) {
+                localStorage.setItem("etat", "afficher");
+                $(".colonne_etat").show();
+            } else {
+                localStorage.setItem("etat", "masquer");
+                $(".colonne_etat").hide();
+            }
+
+            if ($("#check_email").prop('checked')) {
+                localStorage.setItem("email", "afficher");
+                $(".colonne_email").show();
+            } else {
+                localStorage.setItem("email", "masquer");
+                $(".colonne_email").hide();
+            }
+        });
+
+
+        $("#searchproduit").keyup(function() {
+            let parametre = $('input[name=searchproduit]').val()
+            if (parametre.length >= 2) {
+                // searchAllproduit();
+            }
+
+            if (parametre == "") {
+                showAllproduit();
+            }
+        });
+
+        function date_now() {
+
+            var now = new Date();
+
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+            $('#datePaiment').val(today);
+
+        }
+
+        date_now();
+    </script>
+    {% endblock %}
