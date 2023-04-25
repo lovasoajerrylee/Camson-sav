@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class AchatController extends AbstractController
 {
@@ -56,6 +58,7 @@ class AchatController extends AbstractController
 
         $achat->setClient($client);
         $achat->setProduit($produit);
+        $achat->setDate(new \DateTime());
 
         $this->em->persist($achat);
         $this->em->flush();
@@ -64,5 +67,19 @@ class AchatController extends AbstractController
             'message' => 'Ok',
             'code' => 200,
         ]);
+    }
+
+    #[Route('/get_all_achat', name: 'app_all_achat')]
+    public function getAllAchat()
+    {
+        $achat = $this->AchatRepository->getTousAchat();
+
+        $response = $this->json(
+            $achat,
+            200,
+            ['Content-Type' => 'appication/json'],
+            ['groups' => ['achat:read', 'achat:read']]
+        );
+        return $response;
     }
 }

@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\AchatRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AchatRepository::class)]
 class Achat
@@ -14,10 +17,15 @@ class Achat
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'achats')]
+    #[Groups(['achat:read'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'achats')]
+    #[Groups(['achat:read'])]
     private ?Produit $produit = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date = null;
 
     public function getId(): ?int
     {
@@ -44,6 +52,18 @@ class Achat
     public function setProduit(?Produit $produit): self
     {
         $this->produit = $produit;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }
