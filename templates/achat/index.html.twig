@@ -144,10 +144,7 @@
                 let telPortable2;
                 if (data.length <= 0) {
                     $("#dataClient").html("<td colspan ='9' class='text-center'>No data</td>")
-                    // $("tfoot").attr("hidden", 'hidden')
                 } else {
-                    // $("tfoot").removeAttr("hidden", 'hidden')
-
                     $.each(data, function(index, value) {
                     let date = moment(value.datePaiment).format("ll")
                     if (value.telPortable2 == null) {
@@ -155,13 +152,9 @@
                     } else {
                         telPortable2 = value.telPortable2;
                     }
-                    // if () {
-
-                    // } else {
-
-                    // }
+                   
                     html += "<tr>" +
-                        "<td class='colonne_nom'>" + value.nom_client + "</td>" +
+                        "<td class='colonne_nom'>" + value.nom_client + " " + value.prenom_client + "</td>" +
                         "<td class='colonne_nom'>" + value.nom_produit + "</td>" +
                         "<td class='colonne_abonnement'>" + value.date + "</td>" +
                         "<td class=''>" +
