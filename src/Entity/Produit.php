@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -26,6 +28,14 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'produits')]
     #[Groups(['produit:read'])]
     private ?Magasin $magasin = null;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Achat::class)]
+    private Collection $achats;
+
+    public function __construct()
+    {
+        $this->achats = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -64,6 +74,36 @@ class Produit
     public function setMagasin(?Magasin $magasin): self
     {
         $this->magasin = $magasin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Achat>
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Achat $achat): self
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats->add($achat);
+            $achat->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): self
+    {
+        if ($this->achats->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getProduit() === $this) {
+                $achat->setProduit(null);
+            }
+        }
 
         return $this;
     }

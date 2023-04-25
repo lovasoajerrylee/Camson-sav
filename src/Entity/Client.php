@@ -66,9 +66,13 @@ class Client
     #[Groups(['client:read'])]
     private ?string $abonnement = null;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Achat::class)]
+    private Collection $achats;
+
     public function __construct()
     {
         $this->savs = new ArrayCollection();
+        $this->achats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -234,6 +238,36 @@ class Client
     public function setAbonnement(?string $abonnement): self
     {
         $this->abonnement = $abonnement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Achat>
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Achat $achat): self
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats->add($achat);
+            $achat->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): self
+    {
+        if ($this->achats->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getClient() === $this) {
+                $achat->setClient(null);
+            }
+        }
 
         return $this;
     }
