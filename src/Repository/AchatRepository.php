@@ -70,7 +70,7 @@ class AchatRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            SELECT * FROM cg2023_achat INNER JOIN cg2023_client ON cg2023_achat.client_id = cg2023_client.id 
+            SELECT cg2023_achat.id,client_id,produit_id,date,nom_client,prenom_client,tel_fixe,tel_portable1,tel_portable2,ref_client,etat,date_paiment,email,nom_produit FROM cg2023_achat INNER JOIN cg2023_client ON cg2023_achat.client_id = cg2023_client.id 
             INNER JOIN cg2023_produit ON cg2023_achat.produit_id = cg2023_produit.id
         ';
         $stmt = $conn->prepare($sql);
