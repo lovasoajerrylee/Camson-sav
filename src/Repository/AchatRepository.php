@@ -94,4 +94,17 @@ class AchatRepository extends ServiceEntityRepository
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetch();
     }
+
+    public function getAllPanier($client): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "SELECT * FROM `cg2023_panier`cg2023_achat INNER JOIN cg2023_client ON cg2023_achat.client_id = cg2023_client.id 
+            INNER JOIN cg2023_produit ON cg2023_achat.produit_id = cg2023_produit.id WHERE client_id = '$client'";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
 }

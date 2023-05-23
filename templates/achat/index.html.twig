@@ -307,9 +307,26 @@ input[type=submit] {
                  
                 </div>
                 </div>
+                <div class="m-2">
+                  <table class="table">
+                  <thead class="table bg-dark text-white">
+                    <tr>
+                      <th class="colonne_nom">Produit</th>
+                      <th class="colonne_prenom">Quantité</th>
+                      <th class="colonne_email">Prix</th>
+                      <th class="colonne_abonnement">Sous Total</th>
+                      <th class="">actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dataPanier">
+                  </tbody>
+                </table>
+                <div id="demo"></div>
+                </div>
+                
                 <div class="modal-footer">
                   <button type="button" onclick="ajouterPanier()" class="btn btn-success" data-bs-dismiss="modal">Ajouter au panier</button>
-                  <button type="button" class="btn btn-primary">Enregistrer</button>
+                  <button type="button" class="btn btn-primary">Faire l'achat</button>
                 </div>
             </div>
         </div>
@@ -474,8 +491,6 @@ input[type=submit] {
 
     
     function ouvrir_panier() {
-      var input_ref_client = $("#client").val();
-      var ref_client = input_ref_client.substring(0, input_ref_client.indexOf(' '));
       var magasin = $("#magasin").val();
 
 
@@ -501,6 +516,8 @@ input[type=submit] {
           console.log(error)
         }
       })
+
+      showPanier();
     }
 
 
@@ -535,12 +552,15 @@ input[type=submit] {
 
 
     function ajouterPanier(){
-      var client = $("#client").val();
+      var input_ref_client = $("#client").val();
+      var ref_client = input_ref_client.substring(0, input_ref_client.indexOf(' '));
       var magasin = $("#magasin").val();
       var produit = $("#produit_panier").val();
       var prix_unitaire = $("#prix_unitaire").val();
       var quantite = $("#quantite").val();
       var sous_total = $("#sous_total").val();
+
+      console.log(ref_client);
 
       $.ajax({
         method: "get",
@@ -548,7 +568,7 @@ input[type=submit] {
         url: '{{ path("app_panier_new") }}',
         async: false,
         data: {
-          client: client, 
+          ref_client: ref_client, 
           magasin: magasin,
           produit: produit,
           prix: prix_unitaire,
@@ -689,6 +709,76 @@ input[type=submit] {
 
       /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
       autocomplete(document.getElementById("client"), all_client);
+
+
+
+
+
+
+
+
+
+    function showPanier() {
+      var input_ref_client = $("#client").val();
+      var ref_client = input_ref_client.substring(0, input_ref_client.indexOf(' '));
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_all_panier") }}',
+        data: {
+          ref_client: ref_client
+        },
+        dataType: "json",
+        beforeSend: function() {
+          $("#dataPanier").html("<td colspan='7' class='text-center'><span class='spinner-border spinner-border-sm text-camson'></span></td>");
+        },
+        success: function(data) {
+          var result = [];
+          //pagination client
+          $('#demo').pagination({
+            dataSource: function(done) {
+              result.push(data);
+              done(result[0]);
+              console.log(result[0]);
+              if (result[0].length <= 15) {
+                $('#demo').attr('hidden', 'hidden');
+              } else {
+                $('#demo').removeAttr('hidden');
+              }
+            },
+            callback: function(data, pagination) {
+              let html = ""
+              let telPortable2;
+              if (data.length <= 0) {
+                $("#dataClient").html("<td colspan ='9' class='text-center'>No data</td>")
+                // $("tfoot").attr("hidden", 'hidden')
+              } else {
+                // $("tfoot").removeAttr("hidden", 'hidden')
+                $.each(data, function(index, value) {
+                  console.log(value);
+                  
+                  html += "<tr>" +
+                    "<td class='colonne_nom'>" + value.nom_produit + "</td>" +
+                    "<td class='colonne_prenom'>" + value.quantite + "</td>" +
+                    "<td class='colonne_tel'>" + value.prix + "</td>" +
+                    "<td class='colonne_ref'>" + value.sous_total + "</td>" +
+                    "<td class=''>" +
+                    '<button type="button"  class="btn btn-danger btn-sm"  onclick="modalDelete(' + value.id + ')" data-toggle="tooltip" data-placement="left"  title="Supprimer"><i class="bi bi-trash3"></i></button>' +
+                    "</td>" +
+                    "</tr>";
+                })
+                $("#dataPanier").html(html);
+                // Personnalisation_colonne();
+              }
+            }
+          })
+          //fin pagination
+        },
+        error: function() {
+
+        },
+      });
+    }
 
 </script>
 

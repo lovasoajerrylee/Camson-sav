@@ -154,11 +154,11 @@ class AchatController extends AbstractController
     {
         $panier = new Panier();
 
-        $input_client = $request->request->get('client');
+        $input_client = $request->get('ref_client');
         $input_magasin = (int) $request->get('magasin');
-        $input_produit = (int) $request->request->get('produit');
+        $input_produit = (int) $request->get('produit');
         $prix = $request->get('prix');
-        $quantite = (int) $request->request->get('quantite');
+        $quantite = (int) $request->get('quantite');
         $total = $request->get('total');
 
         $client = $this->ClientRepository->findOneBy(['refClient' => $input_client]);
@@ -173,6 +173,8 @@ class AchatController extends AbstractController
         $panier->setQuantite($quantite);
         $panier->setSousTotal($total);
 
+        // dd($input_client);
+
         $this->em->persist($panier);
         $this->em->flush();
 
@@ -180,6 +182,24 @@ class AchatController extends AbstractController
             'message' => 'Ok',
             'code' => 200,
         ]);
+    }
+
+
+    #[Route('/get_all_Panier', name: 'app_all_panier')]
+    public function getAllPanier(Request $request)
+    {
+        $client = $request->get('ref_client');
+        $client_entity = $this->ClientRepository->findOneBy(['refClient' => $client]);
+        $panier = $this->AchatRepository->getAllPanier($client_entity->getId());
+        
+
+        $response = $this->json(
+            $panier,
+            200,
+            ['Content-Type' => 'appication/json'],
+            ['groups' => ['achat:read', 'achat:read']]
+        );
+        return $response;
     }
 
 }

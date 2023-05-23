@@ -11,23 +11,30 @@ class Panier
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['panier:read'])]
     private ?int $id = null;
 
+    #[Groups(['panier:read'])]
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     private ?Client $Client = null;
 
+    #[Groups(['panier:read'])]
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     private ?Magasin $Magazin = null;
 
+    #[Groups(['panier:read'])]
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     private ?Produit $Produit = null;
 
+    #[Groups(['panier:read'])]
     #[ORM\Column]
     private ?int $Quantite = null;
 
+    #[Groups(['panier:read'])]
     #[ORM\Column]
     private ?int $PrixUnitaire = null;
 
+    #[Groups(['panier:read'])]
     #[ORM\Column]
     private ?int $SousTotal = null;
 
