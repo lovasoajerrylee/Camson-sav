@@ -45,7 +45,7 @@
                         <div class="modal-body">
                             <div class="container-fluid">
                                 <div class="form-group">
-                                    <label class="control-label">reference</label>
+                                    <label class="control-label">Référence</label>
                                     <input type="text" class="form-control input-lg" name="reference_produit">
                                 </div>
                                 <div class="form-group">
@@ -55,6 +55,14 @@
                                 <div class="form-group">
                                     <label class="control-label">Magasin</label>
                                     <select name="magasin_id" id="magasinSelect" class="form-control"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Prix</label>
+                                     <input type="text" name="prix_produit" id="magasinSelect" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Quantité</label>
+                                    <input type="text" name="quantite_produit" id="magasinSelect" class="form-control">
                                 </div>
                             </div>
                             <!--Footer Modal-->
@@ -82,9 +90,11 @@
         <table class="table">
             <thead class="table bg-dark text-white">
                 <tr>
-                    <th class="colonne_ref">Reference</th>
+                    <th class="colonne_ref">Référence</th>
                     <th class="colonne_nom">Nom</th>
                     <th class="colonne_magasin">Magasin</th>
+                     <th class="colonne_quantite">Quantité</th>
+                      <th class="colonne_prix">Prix</th>
                     <th class="">actions</th>
                 </tr>
             </thead>
@@ -175,6 +185,8 @@
                                         "<td class='colonne_ref'>" + value.referenceProduit + "</td>" +
                                         "<td class='colonne_nom'>" + value.nomProduit + "</td>" +
                                         "<td class='colonne_magasin'>" + value.magasin.nomMag + "</td>" +
+                                        "<td class='colonne_quantite'>" + value.Quantite + "</td>" +
+                                        "<td class='colonne_prix'>" + value.Prix + "</td>" +
                                         "<td>" +
                                         '<button type="button" class="btn btn-dark btn-sm" onclick="modifproduit(' + value.id + ')" data-toggle="tooltip" data-placement="right" title="Detaille"><i class="bi bi-eye-fill"></i></button> ' +
                                         '<button type="button" onclick="showModalUpdate(' + value.id + ')" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="left" title="Modifier"><i class="bi bi-pencil-square"></i></button> ' +

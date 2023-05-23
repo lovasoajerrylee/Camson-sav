@@ -5,9 +5,12 @@ namespace App\Controller;
 use App\Entity\Achat;
 use App\Entity\Client;
 use App\Entity\Produit;
+use App\Entity\Panier;
 use App\Repository\AchatRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\PanierRepository;
+use App\Repository\MagasinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,14 +27,18 @@ class AchatController extends AbstractController
     private $AchatRepository;
     private $ClientRepository;
     private $ProduitRepository;
+    private $PanierRepository;
+    private $MagasinRepository;
 
-    public function __construct(AchatRepository $AchatRepository, ClientRepository $ClientRepository, ProduitRepository $ProduitRepository, EntityManagerInterface $em)
+    public function __construct(AchatRepository $AchatRepository, ClientRepository $ClientRepository, ProduitRepository $ProduitRepository, PanierRepository $PanierRepository, MagasinRepository $MagasinRepository, EntityManagerInterface $em)
 
     {
         $this->em = $em;
         $this->AchatRepository = $AchatRepository;
         $this->ClientRepository = $ClientRepository;
         $this->ProduitRepository = $ProduitRepository;
+        $this->PanierRepository = $PanierRepository;
+        $this->MagasinRepository = $MagasinRepository;
     }
 
 
@@ -101,6 +108,78 @@ class AchatController extends AbstractController
             ]
         );
         return $response;
+    }
+
+
+    #[Route('/afficher_produit_by_magasin', name: 'app_show_product_by_magasin')]
+    public function findByMagasin(Request $request)
+    {
+        $id = $request->get('id');
+        $produit = $this->ProduitRepository->findByMagasin($id);
+        $response = $this->json(
+            $produit,
+            200,
+            ['Content-Type' => 'appication/json'],
+            [
+                'groups' => [
+                    'achat:read',
+                ],
+            ]
+        );
+        return $response;
+    }
+
+
+    #[Route('/afficher_prix_produit', name: 'app_show_prix_product')]
+    public function findPrixProduct(Request $request)
+    {
+        $id = $request->get('id');
+        $produit = $this->ProduitRepository->findPrixProduct($id);
+        $response = $this->json(
+            $produit,
+            200,
+            ['Content-Type' => 'appication/json'],
+            [
+                'groups' => [
+                    'achat:read',
+                ],
+            ]
+        );
+        return $response;
+    }
+
+
+    #[Route('/new_panier', name: 'app_panier_new', methods: ['GET', 'POST'])]
+    public function addPanier(Request $request)
+    {
+        $panier = new Panier();
+
+        $input_client = $request->request->get('client');
+        $input_magasin = (int) $request->get('magasin');
+        $input_produit = (int) $request->request->get('produit');
+        $prix = $request->get('prix');
+        $quantite = (int) $request->request->get('quantite');
+        $total = $request->get('total');
+
+        $client = $this->ClientRepository->findOneBy(['refClient' => $input_client]);
+        $magasin = $this->MagasinRepository->find($input_magasin);
+        $produit = $this->ProduitRepository->find($input_produit);
+
+
+        $panier->setClient($client);
+        $panier->setMagazin($magasin);
+        $panier->setProduit($produit);
+        $panier->setPrixUnitaire($prix);
+        $panier->setQuantite($quantite);
+        $panier->setSousTotal($total);
+
+        $this->em->persist($panier);
+        $this->em->flush();
+
+        return new JsonResponse([
+            'message' => 'Ok',
+            'code' => 200,
+        ]);
     }
 
 }

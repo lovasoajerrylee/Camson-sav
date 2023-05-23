@@ -1,6 +1,64 @@
 {% extends 'template.html.twig' %}
 {% block title %}Camson Group | Produit{% endblock %}
 {% block body %}
+<style>
+
+
+/*the container must be positioned relative:*/
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+input[type=text] {
+  background-color: #f1f1f1;
+  width: 100%;
+}
+
+input[type=submit] {
+  background-color: DodgerBlue;
+  color: #fff;
+  cursor: pointer;
+}
+
+.autocomplete-items {
+  width: 290px;
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 70%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #ffcbcb; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+</style>
 <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
 <div class="pagetitle">
     <h1>Achat et vente</h1>
@@ -35,29 +93,27 @@
 
 <div class="card">
     <div class="card-body m-3">
-        <form class="row" id="form_achat">
-            <div class="col-lg-6">
+        <div class="row" id="form_achat">
+            <div class="col-lg-5">
                 <div class="form-group">
-                    <label class="control-label">Identification du Client</label>
+                    <label class="control-label">Référence Client</label>
                     <div>
                         <input type="text" class="form-control input-lg" name="client" id="client">
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <div class="form-group">
-                    <label class="control-label">Identification du Produit</label>
+                    <label class="control-label">Référence Magasin</label>
                     <div>
-                        <input type="text" class="form-control input-lg" name="produit" id="produit">
+                        <select name="magasin" id="magasin" class="form-control"></select>
                     </div>
                 </div>
             </div>
-            <center>
-            <div class="col-lg-6 mt-3">
-                <button type="button" class="btn btn-info text-white" id="btnSaveAchat">Faire l'achat <span id="loadingAddAchat"></span>
+            <div class="col-lg-2 mt-4">
+                <button data-bs-toggle="modal" onclick="ouvrir_panier()" data-bs-target="#modal_pannier" type="button" class="btn btn-info text-white">OK<span id="loadingAddAchat"></span>
             </div> 
-            </center>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -206,6 +262,60 @@
     </div>
   </div>
 
+
+   <!-- Modal Pannier -->
+    <div class="modal fade" id="modal_pannier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header"><h4>Pannier</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="all_check">
+                  <div class="row">
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label class="control-label">Produit</label>
+                      <div>
+                       <select name="produit_panier" id="produit_panier" class="form-control" onchange="getPrixUnitaire()"></select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label class="control-label">Quantité</label>
+                      <div>
+                        <input type="number" onchange="calculSousTotal()" class="form-control input-lg" name="quantite" id="quantite">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label class="control-label">Prix unitaire</label>
+                      <div>
+                        <input type="number" class="form-control input-lg" name="prix_unitaire" id="prix_unitaire">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label class="control-label">Sous Total</label>
+                      <div>
+                        <input type="number" class="form-control input-lg" name="sous_total" id="sous_total">
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" onclick="ajouterPanier()" class="btn btn-success" data-bs-dismiss="modal">Ajouter au panier</button>
+                  <button type="button" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Pankier -->
+
    
 <!-- ====================== =SCRIPT ===========================-->
 <script src="{{ asset('assets/js/pagination.js') }}"></script>
@@ -336,6 +446,249 @@
             }
         })
     }
+
+
+
+    showAllmagasin();
+
+    function showAllmagasin() {
+        $.ajax({
+            type: "ajax",
+            url: '{{ path("app_magasin_all_magasin") }}',
+            // async: false,
+            dataType: "json",
+            success: function(data) {
+                let html = "<option value='' selected>Selectionner</option>";
+                $.each(data, function(index, value) {
+                    html += "<option value=" + value.id + ">" + value.nomMag + "</option>"
+                })
+                $("#magasin").html(html);
+            },
+            error: function(error) {
+                console.log(error)
+            },
+        });
+    }
+
+
+
+    
+    function ouvrir_panier() {
+      var input_ref_client = $("#client").val();
+      var ref_client = input_ref_client.substring(0, input_ref_client.indexOf(' '));
+      var magasin = $("#magasin").val();
+
+
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_show_product_by_magasin") }}',
+        async: false,
+        data: {
+        id: magasin
+        },
+        dataType: "json",
+
+        success: function(data) {
+          console.log(data)
+          let html = "<option value='' selected>Selectionner</option>";
+            $.each(data, function(index, value) {
+                html += "<option value=" + value.id + ">" + value.nom_produit + "</option>"
+            })
+            $("#produit_panier").html(html);
+          },
+          error: function(error) {
+          console.log(error)
+        }
+      })
+    }
+
+
+
+    function getPrixUnitaire() {
+      var produit = $("#produit_panier").val();
+
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_show_prix_product") }}',
+        //async: false,
+        data: {
+        id: produit
+        },
+        dataType: "json",
+
+        success: function(data) {
+          $("#prix_unitaire").val(data.prix);
+        }
+      })
+    }
+
+
+    function calculSousTotal() {
+      var prix_unitaire = $("#prix_unitaire").val();
+      var quantite = $("#quantite").val();
+      var sous_total = prix_unitaire * quantite;
+      $("#sous_total").val(sous_total);
+    }
+
+
+
+    function ajouterPanier(){
+      var client = $("#client").val();
+      var magasin = $("#magasin").val();
+      var produit = $("#produit_panier").val();
+      var prix_unitaire = $("#prix_unitaire").val();
+      var quantite = $("#quantite").val();
+      var sous_total = $("#sous_total").val();
+
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_panier_new") }}',
+        async: false,
+        data: {
+          client: client, 
+          magasin: magasin,
+          produit: produit,
+          prix: prix_unitaire,
+          quantite: quantite,
+          total: sous_total
+        },
+        dataType: "json",
+
+        success: function(data) {
+          successMessage();
+        },
+        error: function(error) {
+        console.log(error)
+      }
+    })
+  }
+
+
+   
+
+    var all_client = [];
+    function autocomplete(inp, arr) {
+      
+      $.ajax({
+            type: "ajax",
+            url: '{{ path("app_client_all_client") }}',
+            dataType: "json",
+            success: function(data) {
+                $.each(data, function(index, value) {
+                    all_client.push(value.refClient+" - "+value.nomClient+" "+value.prenomClient);
+                })
+               
+            },
+            error: function(error) {
+                console.log(error)
+            },
+        });
+
+        console.log(all_client)
+
+
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false;}
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+              /*check if the item starts with the same letters as the text field value:*/
+              if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                /*create a DIV element for each matching element:*/
+                b = document.createElement("DIV");
+                /*make the matching letters bold:*/
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                /*insert a input field that will hold the current array item's value:*/
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                /*execute a function when someone clicks on the item value (DIV element):*/
+                b.addEventListener("click", function(e) {
+                    /*insert the value for the autocomplete text field:*/
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    closeAllLists();
+                });
+                a.appendChild(b);
+              }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+              /*If the arrow DOWN key is pressed,
+              increase the currentFocus variable:*/
+              currentFocus++;
+              /*and and make the current item more visible:*/
+              addActive(x);
+            } else if (e.keyCode == 38) { //up
+              /*If the arrow UP key is pressed,
+              decrease the currentFocus variable:*/
+              currentFocus--;
+              /*and and make the current item more visible:*/
+              addActive(x);
+            } else if (e.keyCode == 13) {
+              /*If the ENTER key is pressed, prevent the form from being submitted,*/
+              e.preventDefault();
+              if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+              }
+            }
+        });
+        function addActive(x) {
+          /*a function to classify an item as "active":*/
+          if (!x) return false;
+          /*start by removing the "active" class on all items:*/
+          removeActive(x);
+          if (currentFocus >= x.length) currentFocus = 0;
+          if (currentFocus < 0) currentFocus = (x.length - 1);
+          /*add class "autocomplete-active":*/
+          x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+          /*a function to remove the "active" class from all autocomplete items:*/
+          for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+          }
+        }
+        function closeAllLists(elmnt) {
+          /*close all autocomplete lists in the document,
+          except the one passed as an argument:*/
+          var x = document.getElementsByClassName("autocomplete-items");
+          for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+              x[i].parentNode.removeChild(x[i]);
+            }
+          }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+      }
+
+
+      /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+      autocomplete(document.getElementById("client"), all_client);
 
 </script>
 

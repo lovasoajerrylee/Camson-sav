@@ -74,11 +74,15 @@ class ProduitController extends AbstractController
         $nom_produit = $request->request->get('nom_produit');
         $reference_produit = $request->get('reference_produit');
         $magasin_id = $request->request->get('magasin_id');
+        $prix = $request->request->get('prix_produit');
+        $quantite = $request->request->get('quantite_produit');
         $magasin = $this->MagasinRepository->find($magasin_id);
 
         $produit->setNomProduit($nom_produit);
         $produit->setReferenceProduit($reference_produit);
         $produit->setMagasin($magasin);
+        $produit->setPrix($prix);
+        $produit->setQuantite($quantite);
         $this->em->persist($produit);
         $this->em->flush();
 

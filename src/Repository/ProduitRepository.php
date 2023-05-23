@@ -63,4 +63,29 @@ class ProduitRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByMagasin($id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT * FROM `cg2023_produit` WHERE `magasin_id` = '.$id.'';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
+
+    public function findPrixProduct($id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT prix FROM `cg2023_produit` WHERE id = '.$id.'';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetch();
+    }
 }

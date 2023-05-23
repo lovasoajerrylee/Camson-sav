@@ -32,9 +32,21 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Achat::class)]
     private Collection $achats;
 
+    #[ORM\Column]
+    #[Groups(['produit:read'])]
+    private ?int $Quantite = null;
+
+    #[ORM\Column]
+    #[Groups(['produit:read'])]
+    private ?int $Prix = null;
+
+    #[ORM\OneToMany(mappedBy: 'Produit', targetEntity: Panier::class)]
+    private Collection $paniers;
+
     public function __construct()
     {
         $this->achats = new ArrayCollection();
+        $this->paniers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,6 +114,60 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($achat->getProduit() === $this) {
                 $achat->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->Quantite;
+    }
+
+    public function setQuantite(int $Quantite): self
+    {
+        $this->Quantite = $Quantite;
+
+        return $this;
+    }
+
+    public function getPrix(): ?int
+    {
+        return $this->Prix;
+    }
+
+    public function setPrix(int $Prix): self
+    {
+        $this->Prix = $Prix;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Panier>
+     */
+    public function getPaniers(): Collection
+    {
+        return $this->paniers;
+    }
+
+    public function addPanier(Panier $panier): self
+    {
+        if (!$this->paniers->contains($panier)) {
+            $this->paniers->add($panier);
+            $panier->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanier(Panier $panier): self
+    {
+        if ($this->paniers->removeElement($panier)) {
+            // set the owning side to null (unless already changed)
+            if ($panier->getProduit() === $this) {
+                $panier->setProduit(null);
             }
         }
 
