@@ -383,7 +383,6 @@ input[type=submit] {
                 dataSource: function(done) {
                 result.push(data);
                 done(result[0]);
-                console.log(result[0]);
                 if (result[0].length <= 15) {
                     $('#demo').attr('hidden', 'hidden');
                 } else {
@@ -440,26 +439,25 @@ input[type=submit] {
             },
             dataType: "json",
             success: function(data) {
-            console.log(data)
-            $("input[name=nomClient]").val(data.nom_client);
-            $("input[name=prenomClient]").val(data.prenom_client);
-            $("input[name=fixe]").val(data.tel_fixe);
-            $("select[name=etat]").val(data.etat).change();
-            $("input[name=gerant]").val(data.nom_gerant);
-            $("input[name=portable1]").val(data.tel_portable1);
-            $("input[name=portable2]").val(data.tel_portable2);
-            $("input[name=reference]").val(data.ref_client);
-            $("input[name=datePaiment]").val(moment(data.date).format("YYYY-MM-DD"));
-            $("input[name=nomGerant]").val(data.nom_gerant);
-            $("input[name=email]").val(data.email);
-            $("input[name=id]").val(data.id);
-            $("input[name=reference_produit").val(data.reference_produit);
-            $("input[name=nom_produit]").val(data.nom_produit);
-            $("#modalClient").modal("show");
-            $("#modalClient").find(".modal-title").text("Detaille");
-            },
-            error: function(error) {
-            console.log(error)
+              $("input[name=nomClient]").val(data.nom_client);
+              $("input[name=prenomClient]").val(data.prenom_client);
+              $("input[name=fixe]").val(data.tel_fixe);
+              $("select[name=etat]").val(data.etat).change();
+              $("input[name=gerant]").val(data.nom_gerant);
+              $("input[name=portable1]").val(data.tel_portable1);
+              $("input[name=portable2]").val(data.tel_portable2);
+              $("input[name=reference]").val(data.ref_client);
+              $("input[name=datePaiment]").val(moment(data.date).format("YYYY-MM-DD"));
+              $("input[name=nomGerant]").val(data.nom_gerant);
+              $("input[name=email]").val(data.email);
+              $("input[name=id]").val(data.id);
+              $("input[name=reference_produit").val(data.reference_produit);
+              $("input[name=nom_produit]").val(data.nom_produit);
+              $("#modalClient").modal("show");
+              $("#modalClient").find(".modal-title").text("Detaille");
+              },
+              error: function(error) {
+              console.log(error)
             }
         })
     }
@@ -505,7 +503,6 @@ input[type=submit] {
         dataType: "json",
 
         success: function(data) {
-          console.log(data)
           let html = "<option value='' selected>Selectionner</option>";
             $.each(data, function(index, value) {
                 html += "<option value=" + value.id + ">" + value.nom_produit + "</option>"
