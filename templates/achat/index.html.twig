@@ -782,22 +782,23 @@ input[type=submit] {
       var ref_client = input_ref_client.substring(0, input_ref_client.indexOf(' '));
 
       $.ajax({
-        method: "get",
-        type: "ajax",
-        url: '{{ path("app_transfert_panier") }}',
-        async: false,
-        data: {
-          ref_client: ref_client
-        },
-        dataType: "json",
+          method: "get",
+          type: "ajax",
+          url: '{{ path("app_transfert_panier") }}',
+          async: false,
+          data: {
+            ref_client: ref_client
+          },
+          dataType: "json",
 
-        success: function(data) {
-          successMessage();
-        },
-        error: function(error) {
-        console.log(error)
-      }
-    })
+          success: function(data) {
+            successMessage();
+          },
+          error: function(error) {
+          console.log(error)
+        }
+      })
+    }
 
 </script>
 
