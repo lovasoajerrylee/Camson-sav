@@ -202,4 +202,22 @@ class AchatController extends AbstractController
         return $response;
     }
 
+
+    #[Route('/transfert_Panier', name: 'app_transfert_panier')]
+    public function transfertPanier(Request $request)
+    {
+        $client = $request->get('ref_client');
+        $client_entity = $this->ClientRepository->findOneBy(['refClient' => $client]);
+        $panier = $this->AchatRepository->transfertPanier($client_entity->getId());
+        
+
+        $response = $this->json(
+            $panier,
+            200,
+            ['Content-Type' => 'appication/json'],
+            ['groups' => ['achat:read', 'achat:read']]
+        );
+        return $response;
+    }
+
 }

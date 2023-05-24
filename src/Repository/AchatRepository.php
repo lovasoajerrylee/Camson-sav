@@ -106,4 +106,18 @@ class AchatRepository extends ServiceEntityRepository
         // returns an array of arrays (i.e. a raw data set)
         return $resultSet->fetchAllAssociative();
     }
+
+    public function transfertPanier($client)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "INSERT INTO cg2023_panier (client_id, produit_id)
+            SELECT client_id, produit_id FROM cg2023_panier WHERE condition client_id = '$client'";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        return true;
+    }
+
+
 }

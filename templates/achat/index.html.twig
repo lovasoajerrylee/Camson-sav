@@ -326,7 +326,7 @@ input[type=submit] {
                 
                 <div class="modal-footer">
                   <button type="button" onclick="ajouterPanier()" class="btn btn-success" data-bs-dismiss="modal">Ajouter au panier</button>
-                  <button type="button" class="btn btn-primary">Faire l'achat</button>
+                  <button type="button" onclick="transfertPanier()" class="btn btn-primary">Faire l'achat</button>
                 </div>
             </div>
         </div>
@@ -776,6 +776,28 @@ input[type=submit] {
         },
       });
     }
+
+    function transfertPanier(){
+      var input_ref_client = $("#client").val();
+      var ref_client = input_ref_client.substring(0, input_ref_client.indexOf(' '));
+
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_transfert_panier") }}',
+        async: false,
+        data: {
+          ref_client: ref_client
+        },
+        dataType: "json",
+
+        success: function(data) {
+          successMessage();
+        },
+        error: function(error) {
+        console.log(error)
+      }
+    })
 
 </script>
 
