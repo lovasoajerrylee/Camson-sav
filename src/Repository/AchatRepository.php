@@ -111,7 +111,7 @@ class AchatRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = "INSERT INTO cg2023_panier (client_id, produit_id)
+        $sql = "INSERT INTO cg2023_achat (client_id, produit_id)
             SELECT client_id, produit_id FROM cg2023_panier WHERE client_id = '$client'";
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery();
