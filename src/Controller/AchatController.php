@@ -220,4 +220,43 @@ class AchatController extends AbstractController
         return $response;
     }
 
+
+
+    #[Route('/delete_Panier', name: 'app_delete_panier')]
+    public function deletePanier(Request $request)
+    {
+        $id = $request->get('id');
+       
+        $panier = $this->em->getRepository(Panier::class)->find($id);
+
+        $this->em->remove($panier);
+        $this->em->flush();
+        
+
+        $response = $this->json(
+            $panier,
+            200,
+            ['Content-Type' => 'appication/json'],
+            ['groups' => ['achat:read', 'achat:read']]
+        );
+        return $response;
+    }
+
+
+    #[Route('/vider_Panier', name: 'app_vider_panier')]
+    public function viderPanier(Request $request)
+    {
+        $client = $request->get('ref_client');
+        $client_entity = $this->ClientRepository->findOneBy(['refClient' => $client]);
+        $panier = $this->AchatRepository->viderPanier($client_entity->getId());
+        
+
+        $response = $this->json(
+            $panier,
+            200,
+            ['Content-Type' => 'appication/json'],
+            ['groups' => ['achat:read', 'achat:read']]
+        );
+        return $response;
+    }
 }

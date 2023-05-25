@@ -760,7 +760,7 @@ input[type=submit] {
                     "<td class='colonne_tel'>" + value.prix_unitaire + "</td>" +
                     "<td class='colonne_ref'>" + value.sous_total + "</td>" +
                     "<td class=''>" +
-                    '<button type="button"  class="btn btn-danger btn-sm"  onclick="modalDelete(' + value.id + ')" data-toggle="tooltip" data-placement="left"  title="Supprimer"><i class="bi bi-trash3"></i></button>' +
+                    '<button type="button" class="btn btn-danger btn-sm"  onclick="deletePanier(' + value.id + ')" title="Supprimer"><i class="bi bi-trash3"></i></button>' +
                     "</td>" +
                     "</tr>";
                 })
@@ -793,9 +793,56 @@ input[type=submit] {
 
           success: function(data) {
             successMessage();
+            viderPanier();
           },
           error: function(error) {
           console.log(error)
+        }
+      })
+    }
+
+    function deletePanier(id) {
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_delete_panier") }}',
+        async: false,
+        data: {
+          id: id
+        },
+        dataType: "json",
+
+        success: function(data) {
+          showPanier();
+          successMessage();
+        },
+        error: function(error) {
+        console.log(error)
+        }
+      })
+    }
+
+
+    function viderPanier() {
+      var input_ref_client = $("#client").val();
+      var ref_client = input_ref_client.substring(0, input_ref_client.indexOf(' '));
+
+      $.ajax({
+        method: "get",
+        type: "ajax",
+        url: '{{ path("app_vider_panier") }}',
+        async: false,
+        data: {
+          ref_client: ref_client
+        },
+        dataType: "json",
+
+        success: function(data) {
+          showPanier();
+          successMessage();
+        },
+        error: function(error) {
+        console.log(error)
         }
       })
     }

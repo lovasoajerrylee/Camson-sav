@@ -99,7 +99,7 @@ class AchatRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = "SELECT cg2023_produit.nom_produit, cg2023_panier.quantite,cg2023_panier.prix_unitaire,cg2023_panier.sous_total FROM `cg2023_panier` INNER JOIN cg2023_client ON cg2023_panier.client_id = cg2023_client.id INNER JOIN cg2023_produit ON cg2023_panier.produit_id = cg2023_produit.id WHERE client_id = '$client'";
+        $sql = "SELECT cg2023_panier.id,cg2023_produit.nom_produit, cg2023_panier.quantite,cg2023_panier.prix_unitaire,cg2023_panier.sous_total FROM `cg2023_panier` INNER JOIN cg2023_client ON cg2023_panier.client_id = cg2023_client.id INNER JOIN cg2023_produit ON cg2023_panier.produit_id = cg2023_produit.id WHERE client_id = '$client'";
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery();
 
@@ -113,6 +113,18 @@ class AchatRepository extends ServiceEntityRepository
 
         $sql = "INSERT INTO cg2023_achat (client_id, produit_id)
             SELECT client_id, produit_id FROM cg2023_panier WHERE client_id = '$client'";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        return true;
+    }
+
+    
+    public function viderPanier($client)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "DELETE FROM cg2023_panier WHERE client_id = '$client'";
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery();
 
