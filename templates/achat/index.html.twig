@@ -575,6 +575,7 @@ input[type=submit] {
         dataType: "json",
 
         success: function(data) {
+          showPanier();
           successMessage();
         },
         error: function(error) {
