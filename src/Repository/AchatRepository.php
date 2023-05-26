@@ -132,4 +132,28 @@ class AchatRepository extends ServiceEntityRepository
     }
 
 
+    public function soustraireQuantiteProduit($id,$quantite)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "UPDATE `cg2023_produit` SET quantite = quantite - $quantite WHERE `cg2023_produit`.`id` = '$id'";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        return true;
+    }
+
+
+    public function additionQuantiteProduit($id,$quantite)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "UPDATE `cg2023_produit` SET quantite = quantite + $quantite WHERE `cg2023_produit`.`id` = '$id'";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        return true;
+    }
+
+
 }

@@ -173,10 +173,10 @@ class AchatController extends AbstractController
         $panier->setQuantite($quantite);
         $panier->setSousTotal($total);
 
-        // dd($input_client);
-
         $this->em->persist($panier);
         $this->em->flush();
+
+        $this->AchatRepository->soustraireQuantiteProduit($input_produit,$quantite);
 
         return new JsonResponse([
             'message' => 'Ok',
@@ -231,6 +231,8 @@ class AchatController extends AbstractController
 
         $this->em->remove($panier);
         $this->em->flush();
+
+        $this->AchatRepository->additionQuantiteProduit($panier->getProduit()->getId(),$panier->getQuantite());
         
 
         $response = $this->json(
