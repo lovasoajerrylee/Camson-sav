@@ -37,6 +37,9 @@ class ClientController extends AbstractController
         return $response;
     }
 
+    /*
+     * La page d'accueil des listes clients
+     */
     #[Route('/', name: 'app_client_index')]
     public function index(): Response
     {
