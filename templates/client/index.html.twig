@@ -187,7 +187,7 @@
 
 <!-- ====================== =LISTE CLIENT ===========================-->
 <div class="card cardCamson">
-  <div class="card-header  ">
+  <div class="card-header text-end">
     <a href="#" class="float-right m-3" data-bs-toggle="modal" data-bs-target="#modal_personnaliser_colonne"><i class="fa-solid fa-gear"></i></a>
   </div>
   <!-- /.col -->
@@ -281,16 +281,30 @@
   <!-- ====================== =SCRIPT ===========================-->
   <script src="{{ asset('assets/js/pagination.js') }}"></script>
   <script>
+
     $("#ajoutClient").click(function() {
-      $("#formClient")[0].reset();
-      $(".input_fields_wrap").html('');
-      $("#modalClient").modal("show");
+      clearClientForm();
       $("#modalClient").find(".modal-title").text("Formulaire d'ajout");
-      $('input[name=photocopie]').removeAttr('checked', 'checked')
-      $('input[name=maintenance]').removeAttr('checked', 'checked')
-      $('#btnClient').removeAttr('hidden', 'hidden')
-      $('#btnEditer').attr('hidden', 'hidden')
+      $("#modalClient").modal("show");
+
     })
+
+    function clearClientForm()
+    {
+      /* Variables init */
+      let clientForm = $("#formClient")[0];
+      let wraps = $(".input_fields_wrap");
+      let btnEdit = $('#btnEditer');
+      let btnClient = $('#btnClient');
+      let abnInputs = $('input[name=photocopie]','input[name=maintenance]');
+
+      clientForm.reset();
+      wraps.html('');
+      abnInputs.removeAttr('checked', 'checked')
+      btnClient.removeAttr('hidden', 'hidden');
+      btnEdit.attr('hidden', 'hidden');
+
+    }
 
     showAllClient();
 

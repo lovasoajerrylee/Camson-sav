@@ -37,6 +37,7 @@ class ClientController extends AbstractController
         return $response;
     }
 
+
     /*
      * La page d'accueil des listes clients
      */
