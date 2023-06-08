@@ -473,7 +473,7 @@ input[type=submit] {
             // async: false,
             dataType: "json",
             success: function(data) {
-                let html = "<option value='' selected>Selectionner</option>";
+                let html = "<option value='' selected>Séléctionner</option>";
                 $.each(data, function(index, value) {
                     html += "<option value=" + value.id + ">" + value.nomMag + "</option>"
                 })
@@ -503,7 +503,7 @@ input[type=submit] {
         dataType: "json",
 
         success: function(data) {
-          let html = "<option value='' selected>Selectionner</option>";
+          let html = "<option value='' selected>Séléctionner</option>";
             $.each(data, function(index, value) {
                 html += "<option value=" + value.id + ">" + value.nom_produit + "</option>"
             })
@@ -718,6 +718,23 @@ input[type=submit] {
       else{
         $('#magasin').prop('disabled', true);
       }
+    })
+
+    $("#magasin").click(function () {
+      var client = $("#client").val();
+      var magasin = $("#magasin").val();
+      if (!client) {
+        alert('Le champ client ne doit pas être vide');
+
+      }
+
+      if (!client && magasin !== "Séléctionner" ) {
+        $('#btnOk').prop('disabled', false);
+      }
+      else{
+        $('#btnOk').prop('disabled', true);
+      }
+
     })
 
 
