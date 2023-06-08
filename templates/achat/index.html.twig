@@ -710,7 +710,7 @@ input[type=submit] {
 
     
 
-    $("#client").keydown(function () {
+    $("#client").keyup(function () {
       var client = $("#client").val();
       if (client == "") {
         $('#magasin').prop('disabled', false);
