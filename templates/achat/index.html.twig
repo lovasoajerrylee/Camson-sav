@@ -712,7 +712,7 @@ input[type=submit] {
 
     $("#client").keyup(function () {
       var client = $("#client").val();
-      if (client == "") {
+      if (client) {
         $('#magasin').prop('disabled', false);
       }
       else{
