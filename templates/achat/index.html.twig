@@ -731,7 +731,7 @@ input[type=submit] {
       if (client && magasin !== "Séléctionner" ) {
         $('#btnOk').prop('disabled', false);
       }
-      else{
+      else if (magasin == "Séléctionner" ){
         $('#btnOk').prop('disabled', true);
       }
 
