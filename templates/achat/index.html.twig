@@ -710,8 +710,14 @@ input[type=submit] {
 
     
 
-    $("#client").click(function () {
-      alert("danger");
+    $("#client").keydown(function () {
+      var client = $("#client").val();
+      if (client == "") {
+        $('#magasin').prop('disabled', false);
+      }
+      else{
+        $('#magasin').prop('disabled', true);
+      }
     })
 
 
