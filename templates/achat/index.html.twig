@@ -111,7 +111,7 @@ input[type=submit] {
                 </div>
             </div>
             <div class="col-lg-2 mt-4">
-                <button data-bs-toggle="modal" onclick="ouvrir_panier()" data-bs-target="#modal_pannier" type="button" class="btn btn-info text-white" disabled>OK<span id="loadingAddAchat"></span>
+                <button data-bs-toggle="modal" id="btnOk" onclick="ouvrir_panier()" data-bs-target="#modal_pannier" type="button" class="btn btn-info text-white" disabled>OK<span id="loadingAddAchat"></span>
             </div> 
         </div>
     </div>
@@ -708,8 +708,11 @@ input[type=submit] {
       /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
       autocomplete(document.getElementById("client"), all_client);
 
+    
 
-
+    $("#client").onclick(function () {
+      alert("danger");
+    })
 
 
 
@@ -847,6 +850,8 @@ input[type=submit] {
         }
       })
     }
+
+
 
 </script>
 
