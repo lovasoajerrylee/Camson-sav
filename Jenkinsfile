@@ -2,13 +2,13 @@ pipeline {
   agent any
 
   stages {
-    stage('Clonage du référentiel') {
+    stage('Clonage du referentiel') {
       steps {
         checkout scm
       }
     }
 
-    stage('Installation des dépendances') {
+    stage('Installation des dependances') {
       steps {
         sh 'composer install  --optimize-autoloader'
       }
