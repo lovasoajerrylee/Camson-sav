@@ -98,7 +98,7 @@ input[type=submit] {
                 <div class="form-group">
                     <label class="control-label">Référence Client</label>
                     <div>
-                        <input type="text" class="form-control input-lg" name="client" id="client">
+                        <input type="text" class="form-control input-lg" name="client" id="client" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -106,12 +106,12 @@ input[type=submit] {
                 <div class="form-group">
                     <label class="control-label">Référence Magasin</label>
                     <div>
-                        <select name="magasin" id="magasin" class="form-control"></select>
+                        <select name="magasin" id="magasin" class="form-control" disabled></select>
                     </div>
                 </div>
             </div>
             <div class="col-lg-2 mt-4">
-                <button data-bs-toggle="modal" onclick="ouvrir_panier()" data-bs-target="#modal_pannier" type="button" class="btn btn-info text-white">OK<span id="loadingAddAchat"></span>
+                <button data-bs-toggle="modal" id="btnOk" onclick="ouvrir_panier()" data-bs-target="#modal_pannier" type="button" class="btn btn-info text-white" disabled>OK<span id="loadingAddAchat"></span>
             </div> 
         </div>
     </div>
@@ -473,7 +473,7 @@ input[type=submit] {
             // async: false,
             dataType: "json",
             success: function(data) {
-                let html = "<option value='' selected>Selectionner</option>";
+                let html = "<option value='' selected>Séléctionner</option>";
                 $.each(data, function(index, value) {
                     html += "<option value=" + value.id + ">" + value.nomMag + "</option>"
                 })
@@ -503,7 +503,7 @@ input[type=submit] {
         dataType: "json",
 
         success: function(data) {
-          let html = "<option value='' selected>Selectionner</option>";
+          let html = "<option value='' selected>Séléctionner</option>";
             $.each(data, function(index, value) {
                 html += "<option value=" + value.id + ">" + value.nom_produit + "</option>"
             })
@@ -708,8 +708,34 @@ input[type=submit] {
       /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
       autocomplete(document.getElementById("client"), all_client);
 
+    
 
+    $("#client").keyup(function () {
+      var client = $("#client").val();
+      if (client) {
+        $('#magasin').prop('disabled', false);
+      }
+      else{
+        $('#magasin').prop('disabled', true);
+      }
+    })
 
+    $("#magasin").change(function () {
+      var client = $("#client").val();
+      var magasin = $("#magasin").val();
+      if (!client) {
+        alert('Le champ client ne doit pas être vide');
+
+      }
+
+      if (client && magasin !== "Séléctionner" ) {
+        $('#btnOk').prop('disabled', false);
+      }
+      if (magasin == "Séléctionner" ){
+        $('#btnOk').prop('disabled', true);
+      }
+
+    })
 
 
 
@@ -847,6 +873,8 @@ input[type=submit] {
         }
       })
     }
+
+
 
 </script>
 
