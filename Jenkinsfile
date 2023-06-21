@@ -23,6 +23,7 @@ pipeline {
 
     stage('Cloning db for test') {
       steps {
+        sh 'php bin/console doctrine:database:drop --force --env=test'
         sh 'php bin/console doctrine:database:create --env=test'
         sh 'php bin/console doctrine:migrations:migrate -n --env=test'
       }
