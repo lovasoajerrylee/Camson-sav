@@ -27,10 +27,10 @@ pipeline {
       }
     }
 
-    stage('Déploiement') {
-      steps {
-        // Placez ici les commandes spécifiques à votre déploiement, telles que le transfert des fichiers sur le serveur distant, l'activation des tâches de maintenance, etc.
-      }
-    }
+//     stage('Déploiement') {
+//       steps {
+//         // Placez ici les commandes spécifiques à votre déploiement, telles que le transfert des fichiers sur le serveur distant, l'activation des tâches de maintenance, etc.
+//       }
+//     }
   }
 }
