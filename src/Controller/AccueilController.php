@@ -11,7 +11,7 @@ class AccueilController extends AbstractController
     #[Route('/', name: 'app_accueil')]
     public function index(): Response
     {
-        
+
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute("app_login");
