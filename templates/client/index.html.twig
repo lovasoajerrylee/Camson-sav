@@ -505,12 +505,38 @@
 
 
         /* fonction click boutton ajout client */
-        $("#btnClient").click(function () {
+        $('#btnEditer').click(function () {
             let data = $("#formClient").serialize();
-            $.ajax({
-                type: "ajax",
-                method: "post",
-                url: '{{ path("app_client_new") }}',
+            let btnEditer = $(this);
+
+            fetch('{{ path("app_edit") }}', {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then(response => response.json())
+                .then(() => {
+                    btnEditer.prop("disabled", false);
+                    btnEditer.find("#loadingUpdateClient").removeClass("spinner-border spinner-border-sm");
+                    $("#modalEditClient").modal("hide");
+                    successMessage();
+                    showAllClient();
+                })
+                .catch(() => {
+                    btnEditer.prop("disabled", false);
+                    btnEditer.find("#loadingUpdateClient").removeClass("spinner-border spinner-border-sm");
+                    errorMessage();
+                });
+        });
+
+        /* $("#btnClient").click(function () {
+             let data = $("#formClient").serialize();
+             $.ajax({
+                 type: "ajax",
+                 method: "post",
+                 url: '{{ path("app_client_new") }}',
                 data: data,
                 // async: false,
                 dataType: "json",
@@ -531,7 +557,7 @@
                     errorMessage();
                 },
             });
-        });
+        });*/
 
         /* fonction editer client */
         function showModalUpdate(value) {

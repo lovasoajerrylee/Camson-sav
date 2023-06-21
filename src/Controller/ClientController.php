@@ -235,6 +235,7 @@ class ClientController extends AbstractController
     #[Route('/client/delete', name: 'app_client_delete')]
     public function deleteMagasin(Request $request)
     {
+        /* On ne supprime jamais une enitité crée; Il faut toujours joué avec son état */
         $idMagasinInput = $request->get('id');
         $magasin = $this->ClientRepository->find($idMagasinInput);
         $this->em->remove($magasin);
