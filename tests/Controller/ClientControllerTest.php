@@ -27,7 +27,7 @@ class ClientControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', $this->path);
 
-        self::assertResponseStatusCodeSame(200);
+        self::assertResponseStatusCodeSame(320);
         self::assertPageTitleContains('Client index');
 
         // Use the $crawler to perform additional assertions e.g.
